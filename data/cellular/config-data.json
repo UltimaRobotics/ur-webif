@@ -1,0 +1,15 @@
+{
+  "cellular_configuration": {
+    "action": "update_configuration",
+    "apn": "internet.ooreddo.tn",
+    "auth_type": "none",
+    "auto_connect": true,
+    "data_limit_enabled": false,
+    "data_limit_mb": 0,
+    "data_roaming": true,
+    "network_selection": "automatic",
+    "password": "",
+    "preferred_network_type": "5g-only",
+    "username": ""
+  }
+}

@@ -1,0 +1,50 @@
+{
+    "interfaces": [
+        {
+            "created_date": "2025-01-15T10:15:00Z",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "wlan0",
+            "ip_address": "192.168.1.101",
+            "last_modified": "2025-01-15T10:15:00Z",
+            "name": "Wireless Interface",
+            "netmask": "255.255.255.0",
+            "priority": 1,
+            "status": "standby",
+            "type": "wireless"
+        },
+        {
+            "created_date": "2025-01-15T10:00:00Z",
+            "enabled": true,
+            "gateway": "",
+            "id": "lo",
+            "ip_address": "127.0.0.1",
+            "last_modified": "2025-01-15T10:00:00Z",
+            "name": "Loopback Interface",
+            "netmask": "255.0.0.0",
+            "priority": 2,
+            "status": "online",
+            "type": "loopback"
+        },
+        {
+            "created_date": "2025-01-15T10:00:00Z",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "eth0",
+            "ip_address": "192.168.1.100",
+            "last_modified": "2025-01-15T10:00:00Z",
+            "name": "Ethernet Interface",
+            "netmask": "255.255.255.0",
+            "priority": 3,
+            "status": "online",
+            "type": "ethernet"
+        }
+    ],
+    "last_modified": "2025-09-21T13:28:14Z",
+    "statistics": {
+        "offline_count": 0,
+        "online_count": 2,
+        "standby_count": 1,
+        "total_interfaces": 3
+    }
+}

@@ -1,0 +1,182 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reboot Device Confirmation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Popup Container -->
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white w-[100vw] h-[100vh] shadow-lg overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="border-b border-neutral-200 p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-yellow-100 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-triangle-exclamation text-yellow-600 text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl text-neutral-900">Confirm Device Reboot</h1>
+                        <p class="text-neutral-500 text-sm">This action will restart the selected flight controller</p>
+                    </div>
+                </div>
+                <button id="popup-close" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-neutral-500"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6">
+            <div class="max-w-2xl mx-auto">
+                <div class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-6 rounded">
+                    <div class="flex items-center">
+                        <i class="fa-solid fa-triangle-exclamation text-yellow-400 mr-3"></i>
+                        <div>
+                            <p class="text-sm text-yellow-800 font-medium">Warning: Device Reboot</p>
+                            <p class="text-sm text-yellow-700 mt-1">
+                                Rebooting the flight controller will temporarily interrupt all operations and connections.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="space-y-4 mb-6">
+                    <div>
+                        <h3 class="text-lg font-medium text-neutral-900 mb-3">What happens during reboot:</h3>
+                        <ul class="space-y-2 text-sm text-neutral-600">
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-circle-dot text-neutral-400 mt-1.5 mr-3 text-xs"></i>
+                                <span>Flight controller will shut down all active connections</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-circle-dot text-neutral-400 mt-1.5 mr-3 text-xs"></i>
+                                <span>System will perform a clean restart (approximately 30-60 seconds)</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-circle-dot text-neutral-400 mt-1.5 mr-3 text-xs"></i>
+                                <span>All configurations and settings will be preserved</span>
+                            </li>
+                            <li class="flex items-start">
+                                <i class="fa-solid fa-circle-dot text-neutral-400 mt-1.5 mr-3 text-xs"></i>
+                                <span>MAVLink connections will be re-established automatically</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                        <h4 class="text-sm font-medium text-neutral-900 mb-2">Before proceeding, ensure:</h4>
+                        <ul class="space-y-1 text-sm text-neutral-600">
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i>
+                                <span>Vehicle is in a safe state (disarmed if applicable)</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i>
+                                <span>No critical operations are in progress</span>
+                            </li>
+                            <li class="flex items-center">
+                                <i class="fa-solid fa-check text-green-500 mr-2 text-xs"></i>
+                                <span>Power supply is stable and secure</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <p class="text-neutral-600 text-sm leading-relaxed mb-4">
+                        Are you sure you want to reboot this flight controller device?
+                    </p>
+                    
+                    <div class="text-xs text-neutral-500">
+                        This action cannot be undone and will temporarily interrupt all communications.
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+            <div class="flex items-center justify-between max-w-2xl mx-auto">
+                <button class="text-neutral-600 hover:text-neutral-800 text-sm">
+                    <i class="fa-solid fa-info-circle mr-1"></i>
+                    View System Logs
+                </button>
+                <div class="flex items-center space-x-3">
+                    <button id="popup-cancel" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50 transition-colors">
+                        Cancel
+                    </button>
+                    <button id="confirm-reboot" class="bg-red-600 text-white px-8 py-2 rounded-lg hover:bg-red-700 transition-colors">
+                        <i class="fa-solid fa-power-off mr-2"></i>
+                        Reboot Device
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    registerRebootPopupHandlers();
+});
+
+function registerRebootPopupHandlers() {
+    const closeBtn = document.getElementById('popup-close');
+    const cancelBtn = document.getElementById('popup-cancel');
+    const confirmBtn = document.getElementById('confirm-reboot');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', hideRebootPopup);
+    }
+    
+    if (cancelBtn) {
+        cancelBtn.addEventListener('click', hideRebootPopup);
+    }
+    
+    if (confirmBtn) {
+        confirmBtn.addEventListener('click', function() {
+            // Send reboot command to parent window
+            window.parent.postMessage({
+                type: 'device-reboot-confirmed',
+                action: 'reboot-flight-controller'
+            }, '*');
+            
+            // Also send event if sendEvent is available in parent
+            if (window.parent.sendEvent) {
+                window.parent.sendEvent('button_click', 'confirm-device-reboot', { 
+                    action: 'reboot-flight-controller-confirmed' 
+                });
+            }
+            
+            hideRebootPopup();
+        });
+    }
+}
+
+function hideRebootPopup() {
+    // Send message to parent window to close popup
+    window.parent.postMessage({type: 'close-reboot-popup'}, '*');
+}
+
+// Listen for messages from parent window
+window.addEventListener('message', function(event) {
+    if (event.data.type === 'close-reboot-popup') {
+        // Popup is being closed, perform cleanup if needed
+        console.log('Reboot popup closed');
+    }
+});
+</script>
+
+</body>
+</html>

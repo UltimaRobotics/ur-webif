@@ -1,0 +1,1276 @@
+<!-- Backup & Restore Section -->
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl text-neutral-900 flex items-center">
+                <i class="fa-solid fa-database mr-3 text-neutral-600"></i>
+                System Backup & Restore
+            </h1>
+            <p class="text-neutral-600 mt-1">Manage your system backups and restore configurations</p>
+        </div>
+    </div>
+
+    <!-- Success Notification -->
+    <div id="success-notification" class="bg-green-50 border border-green-200 rounded-lg p-4 flex items-center" style="display: none;">
+        <div class="flex-shrink-0 mr-3">
+            <i class="fa-solid fa-circle-check text-green-500 text-lg"></i>
+        </div>
+        <div class="flex-1">
+            <h3 class="text-green-800">Operation completed successfully</h3>
+            <p class="text-sm text-green-700 mt-1" id="success-message">Action completed</p>
+        </div>
+        <button class="text-green-400 hover:text-red-600 ml-3" onclick="closeNotification()">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Error Notification -->
+    <div id="error-notification" class="bg-red-50 border border-red-200 rounded-lg p-4 flex items-center" style="display: none;">
+        <div class="flex-shrink-0 mr-3">
+            <i class="fa-solid fa-circle-exclamation text-red-500 text-lg"></i>
+        </div>
+        <div class="flex-1">
+            <h3 class="text-red-800">Operation failed</h3>
+            <p class="text-sm text-red-700 mt-1" id="error-message">An error occurred</p>
+        </div>
+        <button class="text-red-400 hover:text-red-600 ml-3" onclick="closeErrorNotification()">
+            <i class="fa-solid fa-times"></i>
+        </button>
+    </div>
+
+    <!-- Create Backup Section -->
+    <div class="bg-white rounded-lg border border-neutral-200">
+        <div class="p-6 cursor-pointer" onclick="window.toggleSection('create-backup-content', 'create-backup-chevron')" id="create-backup-header">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fa-solid fa-box-archive text-blue-600"></i>
+                    </div>
+                    <h2 class="text-lg text-neutral-900">Create Backup</h2>
+                </div>
+                <i class="fa-solid fa-chevron-down text-neutral-400 transform transition-transform duration-200" id="create-backup-chevron"></i>
+            </div>
+        </div>
+        <div id="create-backup-content" class="hidden p-6 pt-0">
+
+        <p class="text-sm text-neutral-600 mb-6">Create a comprehensive backup of your system configuration, data, and settings. This backup can be used to restore your system to its current state.</p>
+
+        <div class="space-y-4 mb-6">
+            <div class="bg-neutral-50 rounded-lg border border-neutral-200 p-4">
+                <h3 class="text-neutral-800 mb-3">Backup Options</h3>
+                <div class="space-y-3">
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" id="full-backup-checkbox" class="mt-0.5 mr-3 rounded border-neutral-300" checked>
+                        <div>
+                            <span class="text-sm text-neutral-700">Full Backup</span>
+                            <p class="text-xs text-neutral-500 mt-1">Include complete system configuration, data, logs, and all settings</p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" id="partial-backup-checkbox" class="mt-0.5 mr-3 rounded border-neutral-300">
+                        <div>
+                            <span class="text-sm text-neutral-700">Partial Backup</span>
+                            <p class="text-xs text-neutral-500 mt-1">Select specific configuration files and data to include in the backup</p>
+                        </div>
+                    </label>
+
+                    <div id="partial-backup-selection" class="ml-6 mt-3 space-y-2 hidden">
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="network-config-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">Network Configuration Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes network settings, firewall rules, and interface configurations.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="license-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">License Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes system license information and activation keys.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="authentication-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">Authentication Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes user accounts, passwords, API keys, and authentication data.</p>
+                                <div class="mt-2 bg-yellow-50 border border-yellow-200 rounded-md p-2 flex items-start">
+                                    <i class="fa-solid fa-triangle-exclamation text-yellow-500 mr-2 mt-0.5 text-xs"></i>
+                                    <p class="text-xs text-yellow-700">Security Warning: This option includes sensitive authentication data. Ensure the backup is stored securely.</p>
+                                </div>
+                            </div>
+                        </label>
+                         <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="cellular-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">Cellular Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes cellular network settings and configurations.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="vpn-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">VPN Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes VPN configurations and connection profiles.</p>
+                            </div>
+                        </label>
+                        <label class="flex items-start cursor-pointer">
+                            <input type="checkbox" id="wireless-backup" class="mt-0.5 mr-3 rounded border-neutral-300">
+                            <div>
+                                <span class="text-sm text-neutral-700">Wireless Backup</span>
+                                <p class="text-xs text-neutral-500 mt-1">Includes Wi-Fi settings, passwords, and network profiles.</p>
+                            </div>
+                        </label>
+                    </div>
+
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" id="include-credentials-checkbox" class="mt-0.5 mr-3 rounded border-neutral-300">
+                        <div>
+                            <span class="text-sm text-neutral-700">Include All Credentials</span>
+                            <p class="text-xs text-neutral-500 mt-1">This option will include all credential types, including network and authentication data.</p>
+                        </div>
+                    </label>
+
+                    <label class="flex items-start cursor-pointer">
+                        <input type="checkbox" class="mt-0.5 mr-3 rounded border-neutral-300" id="encrypt-checkbox">
+                        <div>
+                            <span class="text-sm text-neutral-700">Encrypt Backup</span>
+                            <p class="text-xs text-neutral-500 mt-1">Password protect and encrypt the backup file for additional security</p>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div id="encryption-password" class="bg-neutral-50 rounded-lg border border-neutral-200 p-4" style="display: none;">
+                <h3 class="text-neutral-800 mb-3">Encryption Settings</h3>
+                <div class="space-y-3">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-1">Backup Password</label>
+                        <input type="password" id="backup-password" class="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Enter a strong password">
+                        <p class="text-xs text-neutral-500 mt-1">Use a strong password with at least 12 characters</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-1">Confirm Password</label>
+                        <input type="password" id="confirm-password" class="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Confirm your password">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estimate Size Button -->
+            <div class="bg-neutral-50 rounded-lg border border-neutral-200 p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <h3 class="text-neutral-800">Backup Size Estimation</h3>
+                    <button id="estimate-size-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-md text-sm flex items-center">
+                        <i class="fa-solid fa-calculator mr-2"></i>
+                        Estimate Size
+                    </button>
+                </div>
+                <p class="text-xs text-neutral-500">Click to calculate the estimated backup size based on your selected options</p>
+            </div>
+        </div>
+
+        <div id="backup-information" class="bg-neutral-50 rounded-lg border border-neutral-200 p-4 mb-6" style="display: none;">
+            <h3 class="text-neutral-800 mb-3">Backup Information</h3>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="bg-white rounded-md p-3">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">Estimated Size</div>
+                    <div id="estimated-size" class="text-lg text-neutral-800">Calculating...</div>
+                </div>
+                <div class="bg-white rounded-md p-3">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">File Format</div>
+                    <div class="text-lg text-neutral-800">.uhb</div>
+                </div>
+                <div class="bg-white rounded-md p-3">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">Creation Date</div>
+                    <div id="creation-date" class="text-lg text-neutral-800">-</div>
+                </div>
+                <div class="bg-white rounded-md p-3">
+                    <div class="text-xs text-neutral-500 uppercase tracking-wide">Compression</div>
+                    <div class="text-lg text-neutral-800">GZIP</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+                <button id="create-backup-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed">
+                    <i class="fa-solid fa-box-archive mr-2"></i>
+                    <span>Create Backup</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Progress Section -->
+    <div id="backup-progress-section" class="bg-white rounded-lg border border-neutral-200 p-6" style="display: none;">
+        <div class="flex items-center mb-4">
+            <div class="w-8 h-8 bg-orange-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fa-solid fa-spinner fa-spin text-orange-600"></i>
+            </div>
+            <h2 class="text-lg text-neutral-900">Backup in Progress</h2>
+        </div>
+
+        <div class="space-y-4">
+            <div class="bg-neutral-50 rounded-lg p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-sm text-neutral-700">Progress</span>
+                    <span id="backup-progress-percentage" class="text-sm text-neutral-600">0%</span>
+                </div>
+                <div class="w-full bg-neutral-200 rounded-full h-2">
+                    <div id="backup-progress-bar" class="bg-blue-600 h-2 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="backup-progress-status" class="text-xs text-neutral-500 mt-2">Initializing backup process...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Restore Section -->
+    <div class="bg-white rounded-lg border border-neutral-200">
+        <div class="p-6 cursor-pointer" onclick="window.toggleSection('restore-backup-content', 'restore-backup-chevron')" id="restore-backup-header">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fa-solid fa-rotate-left text-green-600"></i>
+                    </div>
+                    <h2 class="text-lg text-neutral-900">Restore from Backup</h2>
+                </div>
+                <i class="fa-solid fa-chevron-down text-neutral-400 transform transition-transform duration-200" id="restore-backup-chevron"></i>
+            </div>
+        </div>
+        <div id="restore-backup-content" class="hidden p-6 pt-0">
+
+        <p class="text-sm text-neutral-600 mb-6">Upload a backup file to restore your system to a previous state. This process will replace your current configuration.</p>
+
+        <div class="bg-red-50 border border-red-200 rounded-lg p-4 mb-6 flex items-start">
+            <i class="fa-solid fa-triangle-exclamation text-red-500 mr-3 mt-0.5"></i>
+            <div>
+                <h4 class="text-red-800">Warning: Destructive Operation</h4>
+                <p class="text-sm text-red-700 mt-1">Restoring will overwrite current configuration. This action cannot be undone. Please ensure you have a recent backup before proceeding.</p>
+            </div>
+        </div>
+
+        <div class="bg-neutral-50 rounded-lg border border-neutral-200 p-4 mb-6">
+            <h3 class="text-neutral-800 mb-3">Upload Backup File</h3>
+            <div class="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center" id="file-drop-zone">
+                <div class="w-12 h-12 bg-neutral-100 rounded-lg flex items-center justify-center mx-auto mb-3">
+                    <i class="fa-solid fa-cloud-arrow-up text-neutral-600 text-xl"></i>
+                </div>
+                <h4 class="text-neutral-800 mb-2">Drop your backup file here</h4>
+                <p class="text-sm text-neutral-500 mb-4">or click to browse and select a file</p>
+                <input type="file" id="backup-file-input" accept=".uhb" style="display: none;">
+                <button id="choose-file-btn" class="bg-white border border-neutral-300 rounded-md px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-50">
+                    Choose File
+                </button>
+                <p class="text-xs text-neutral-500 mt-2">Accepts .uhb files up to 10GB</p>
+            </div>
+            <div id="selected-file-info" class="mt-3" style="display: none;">
+                <div class="bg-blue-50 border border-blue-200 rounded-md p-3 flex items-center">
+                    <i class="fa-solid fa-file-archive text-blue-600 mr-3"></i>
+                    <div class="flex-1">
+                        <p class="text-sm text-blue-800" id="selected-file-name">filename.uhb</p>
+                        <p class="text-xs text-blue-600" id="selected-file-size">2.4 MB</p>
+                    </div>
+                    <button id="remove-file-btn" class="text-blue-400 hover:text-blue-600">
+                        <i class="fa-solid fa-times"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-neutral-50 rounded-lg border border-neutral-200 p-4 mb-6">
+            <h3 class="text-neutral-800 mb-3">Restore Options</h3>
+            <div class="space-y-3">
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox" id="wipe-before-restore" class="mt-0.5 mr-3 rounded border-neutral-300">
+                    <div>
+                        <span class="text-sm text-neutral-700">Wipe Current Settings Before Restore</span>
+                        <p class="text-xs text-neutral-500 mt-1">Completely clear all current settings before applying the backup</p>
+                    </div>
+                </label>
+
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox" id="validate-integrity" class="mt-0.5 mr-3 rounded border-neutral-300" checked>
+                    <div>
+                        <span class="text-sm text-neutral-700">Validate Backup File Integrity</span>
+                        <p class="text-xs text-neutral-500 mt-1">Verify the backup file is not corrupted before starting the restore process</p>
+                    </div>
+                </label>
+
+                <label class="flex items-start cursor-pointer">
+                    <input type="checkbox" id="create-backup-before-restore" class="mt-0.5 mr-3 rounded border-neutral-300">
+                    <div>
+                        <span class="text-sm text-neutral-700">Create Backup Before Restore</span>
+                        <p class="text-xs text-neutral-500 mt-1">Automatically create a backup of current settings before restoring</p>
+                    </div>
+                </label>
+            </div>
+        </div>
+
+        <div class="flex justify-between">
+                <button id="cancel-restore-btn" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-md hover:bg-neutral-50">
+                    Cancel
+                </button>
+                <button id="restore-btn" class="bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-md flex items-center disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                    <i class="fa-solid fa-rotate-left mr-2"></i>
+                    <span>Restore</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Backups Section -->
+    <div class="bg-white rounded-lg border border-neutral-200">
+        <div class="p-6 cursor-pointer" onclick="window.toggleSection('recent-backups-content', 'recent-backups-chevron')" id="recent-backups-header">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <div class="w-8 h-8 bg-gray-100 rounded-lg flex items-center justify-center mr-3">
+                        <i class="fa-solid fa-clock-rotate-left text-gray-600"></i>
+                    </div>
+                    <h2 class="text-lg text-neutral-900">Recent Backups</h2>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="refresh-backups-btn" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-md text-sm flex items-center" onclick="event.stopPropagation()">
+                        <i class="fa-solid fa-refresh mr-2"></i>
+                        Refresh
+                    </button>
+                    <i class="fa-solid fa-chevron-down text-neutral-400 transform transition-transform duration-200" id="recent-backups-chevron"></i>
+                </div>
+            </div>
+        </div>
+        <div id="recent-backups-content" class="hidden p-6 pt-0">
+
+        <div id="backup-list" class="space-y-3">
+                <div class="text-center py-8 text-neutral-500">
+                    <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                    <p>Loading backup history...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Backup Section Implementation using HTTP mechanisms consistent with other sections
+    class BackupSectionManager {
+        constructor() {
+            this.apiUrl = window.app?.apiUrl || '/api';
+            this.isInitialized = false;
+            this.backupInProgress = false;
+            this.restoreInProgress = false;
+            this.selectedFile = null;
+
+            console.log('[BACKUP] BackupSectionManager initialized with API URL:', this.apiUrl);
+            this.initializeSection();
+        }
+
+        async initializeSection() {
+            if (this.isInitialized) return;
+
+            console.log('[BACKUP] Initializing backup section...');
+
+            try {
+                await this.setupEventListeners();
+                await this.loadBackupHistory();
+                this.isInitialized = true;
+                console.log('[BACKUP] Section initialization completed');
+
+                // Send page load event
+                this.sendEvent('page_load', 'backup-restore-section', { 
+                    url: window.location.href,
+                    timestamp: Date.now()
+                });
+            } catch (error) {
+                console.error('[BACKUP] Failed to initialize section:', error);
+                this.showError('Failed to initialize backup section: ' + error.message);
+            }
+        }
+
+        setupEventListeners() {
+            console.log('[BACKUP] Setting up event listeners...');
+
+            // Encryption toggle
+            const encryptCheckbox = document.getElementById('encrypt-checkbox');
+            const encryptionPassword = document.getElementById('encryption-password');
+
+            if (encryptCheckbox && encryptionPassword) {
+                encryptCheckbox.addEventListener('change', (e) => {
+                    encryptionPassword.style.display = e.target.checked ? 'block' : 'none';
+                    console.log('[BACKUP] Encryption toggle:', e.target.checked);
+                });
+            }
+
+            // Backup type toggles (mutually exclusive)
+            const fullBackupCheckbox = document.getElementById('full-backup-checkbox');
+            const partialBackupCheckbox = document.getElementById('partial-backup-checkbox');
+            const partialBackupSelectionDiv = document.getElementById('partial-backup-selection');
+
+            if (fullBackupCheckbox && partialBackupCheckbox) {
+                fullBackupCheckbox.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        partialBackupCheckbox.checked = false;
+                        partialBackupSelectionDiv.classList.add('hidden');
+                    }
+                    console.log('[BACKUP] Full backup selected:', e.target.checked);
+                });
+
+                partialBackupCheckbox.addEventListener('change', (e) => {
+                    if (e.target.checked) {
+                        fullBackupCheckbox.checked = false;
+                        partialBackupSelectionDiv.classList.remove('hidden');
+                    } else {
+                        partialBackupSelectionDiv.classList.add('hidden');
+                    }
+                    console.log('[BACKUP] Partial backup selected:', e.target.checked);
+                });
+            }
+
+            this.setupEstimateSizeButton();
+            this.setupCreateBackupButton();
+            this.setupFileHandling();
+            this.setupAutoEstimation();
+            this.setupRestoreButton();
+            this.setupCancelRestoreButton();
+            this.setupRefreshButton();
+        }
+
+        setupEstimateSizeButton() {
+            const estimateSizeBtn = document.getElementById('estimate-size-btn');
+            if (estimateSizeBtn) {
+                estimateSizeBtn.addEventListener('click', () => this.estimateBackupSize(true));
+            }
+        }
+
+        setupAutoEstimation() {
+            const fullBackupCheckbox = document.getElementById('full-backup-checkbox');
+            const partialBackupCheckbox = document.getElementById('partial-backup-checkbox');
+            const partialBackupSelectionDiv = document.getElementById('partial-backup-selection');
+            const estimateSizeBtn = document.getElementById('estimate-size-btn');
+
+            const checkboxes = [
+                fullBackupCheckbox,
+                partialBackupCheckbox,
+                document.getElementById('network-config-backup'),
+                document.getElementById('license-backup'),
+                document.getElementById('authentication-backup'),
+                document.getElementById('cellular-backup'),
+                document.getElementById('vpn-backup'),
+                document.getElementById('wireless-backup'),
+                document.getElementById('include-credentials-checkbox'),
+                document.getElementById('encrypt-checkbox')
+            ];
+
+            const handleCheckboxChange = () => {
+                if (estimateSizeBtn && !this.backupInProgress) {
+                    // Automatically trigger estimation if estimate size button is present
+                    // and no backup is currently in progress.
+                    this.estimateBackupSize(false); // Set skip_ui_update to false for auto-estimation
+                }
+            };
+
+            checkboxes.forEach(checkbox => {
+                if (checkbox) {
+                    checkbox.addEventListener('change', handleCheckboxChange);
+                }
+            });
+
+            // Also trigger if partial backup selection is shown/hidden
+            if (partialBackupCheckbox && partialBackupSelectionDiv) {
+                partialBackupCheckbox.addEventListener('change', () => {
+                    if (partialBackupCheckbox.checked) {
+                         handleCheckboxChange();
+                    }
+                });
+            }
+        }
+
+        setupCreateBackupButton() {
+            const createBackupBtn = document.getElementById('create-backup-btn');
+            if (createBackupBtn) {
+                createBackupBtn.addEventListener('click', () => this.createBackup());
+            }
+        }
+
+        setupFileHandling() {
+            const chooseFileBtn = document.getElementById('choose-file-btn');
+            const backupFileInput = document.getElementById('backup-file-input');
+            const fileDropZone = document.getElementById('file-drop-zone');
+            const removeFileBtn = document.getElementById('remove-file-btn');
+
+            if (chooseFileBtn && backupFileInput) {
+                chooseFileBtn.addEventListener('click', () => backupFileInput.click());
+
+                backupFileInput.addEventListener('change', (e) => {
+                    if (e.target.files.length > 0) {
+                        this.handleFileSelection(e.target.files[0]);
+                    }
+                });
+            }
+
+            // Drag and drop functionality
+            if (fileDropZone) {
+                fileDropZone.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.add('border-blue-400', 'bg-blue-50');
+                });
+
+                fileDropZone.addEventListener('dragleave', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.remove('border-blue-400', 'bg-blue-50');
+                });
+
+                fileDropZone.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    fileDropZone.classList.remove('border-blue-400', 'bg-blue-50');
+
+                    if (e.dataTransfer.files.length > 0) {
+                        this.handleFileSelection(e.dataTransfer.files[0]);
+                    }
+                });
+            }
+
+            if (removeFileBtn) {
+                removeFileBtn.addEventListener('click', () => {
+                    this.clearFileSelection();
+                });
+            }
+        }
+
+        setupRestoreButton() {
+            const restoreBtn = document.getElementById('restore-btn');
+            if (restoreBtn) {
+                restoreBtn.addEventListener('click', () => this.restoreBackup());
+            }
+        }
+
+        setupCancelRestoreButton() {
+            const cancelRestoreBtn = document.getElementById('cancel-restore-btn');
+            if (cancelRestoreBtn) {
+                cancelRestoreBtn.addEventListener('click', () => this.cancelRestore());
+            }
+        }
+
+        setupRefreshButton() {
+            const refreshBackupsBtn = document.getElementById('refresh-backups-btn');
+            if (refreshBackupsBtn) {
+                refreshBackupsBtn.addEventListener('click', () => this.loadBackupHistory());
+            }
+        }
+
+        handleFileSelection(file) {
+            // Validate file type
+            const validExtensions = ['.uhb'];
+            const fileName = file.name.toLowerCase();
+            const isValid = validExtensions.some(ext => fileName.endsWith(ext));
+
+            if (!isValid) {
+                this.showError('Invalid file type. Please select a .uhb file.');
+                return;
+            }
+
+            // Validate file size (10GB limit)
+            const maxSize = 10 * 1024 * 1024 * 1024; // 10GB in bytes
+            if (file.size > maxSize) {
+                this.showError('File size exceeds 10GB limit.');
+                return;
+            }
+
+            this.selectedFile = file;
+
+            // Update UI
+            const selectedFileInfo = document.getElementById('selected-file-info');
+            const selectedFileName = document.getElementById('selected-file-name');
+            const selectedFileSize = document.getElementById('selected-file-size');
+            const restoreBtn = document.getElementById('restore-btn');
+
+            if (selectedFileInfo && selectedFileName && selectedFileSize) {
+                selectedFileName.textContent = file.name;
+                selectedFileSize.textContent = this.formatFileSize(file.size);
+                selectedFileInfo.style.display = 'block';
+            }
+
+            if (restoreBtn) {
+                restoreBtn.disabled = false;
+            }
+
+            console.log('[BACKUP] File selected:', file.name, 'Size:', this.formatFileSize(file.size));
+        }
+
+        clearFileSelection() {
+            this.selectedFile = null;
+
+            const selectedFileInfo = document.getElementById('selected-file-info');
+            const backupFileInput = document.getElementById('backup-file-input');
+            const restoreBtn = document.getElementById('restore-btn');
+
+            if (selectedFileInfo) {
+                selectedFileInfo.style.display = 'none';
+            }
+
+            if (backupFileInput) {
+                backupFileInput.value = '';
+            }
+
+            if (restoreBtn) {
+                restoreBtn.disabled = true;
+            }
+
+            console.log('[BACKUP] File selection cleared');
+        }
+
+        async estimateBackupSize(isUserInitiated = true) {
+            console.log('[BACKUP] Estimating backup size...');
+
+            const backupOptions = this.getBackupOptions();
+            const backupInformation = document.getElementById('backup-information');
+            const estimatedSize = document.getElementById('estimated-size');
+            const creationDate = document.getElementById('creation-date');
+
+            // Validation - ensure at least one backup type is selected
+            if (!backupOptions.full_backup && !backupOptions.partial_backup) {
+                this.showError('Please select either Full Backup or Partial Backup');
+                return;
+            }
+
+            if (estimatedSize) {
+                estimatedSize.textContent = 'Calculating...';
+            }
+            if (backupInformation) {
+                backupInformation.style.display = 'block';
+            }
+
+            try {
+                const response = await this.makeRequest('/backup/estimate-size', {
+                    method: 'POST',
+                    body: backupOptions
+                });
+
+                console.log('[BACKUP] Size estimation response:', response);
+
+                if (response.success) {
+                    if (estimatedSize) estimatedSize.textContent = response.estimated_size;
+                    if (creationDate) creationDate.textContent = response.creation_date;
+                } else {
+                    if (estimatedSize) estimatedSize.textContent = 'Error calculating size';
+                    if (creationDate) creationDate.textContent = 'N/A';
+                    console.error('[BACKUP] Size estimation failed:', response.error);
+                }
+
+                // Send event
+                this.sendEvent('button_click', 'estimate-size-btn', { 
+                    action: 'estimate_backup_size',
+                    options: backupOptions
+                });
+            } catch (error) {
+                console.error('[BACKUP] Error estimating backup size:', error);
+                if (estimatedSize) estimatedSize.textContent = 'Error calculating size';
+                if (creationDate) creationDate.textContent = 'N/A';
+                this.showError('Failed to estimate backup size: ' + error.message);
+            }
+        }
+
+        async createBackup() {
+            if (this.backupInProgress) {
+                console.log('[BACKUP] Backup already in progress');
+                return;
+            }
+
+            console.log('[BACKUP] Creating backup...');
+
+            const backupOptions = this.getBackupOptions();
+
+            // Validation
+            if (!backupOptions.full_backup && !backupOptions.partial_backup) {
+                this.showError('Please select either Full Backup or Partial Backup');
+                return;
+            }
+
+            if (backupOptions.encrypt_backup) {
+                const password = document.getElementById('backup-password')?.value;
+                const confirmPassword = document.getElementById('confirm-password')?.value;
+
+                if (!password || password.length < 12) {
+                    this.showError('Password must be at least 12 characters long');
+                    return;
+                }
+
+                if (password !== confirmPassword) {
+                    this.showError('Passwords do not match');
+                    return;
+                }
+            }
+
+            this.backupInProgress = true;
+            this.setButtonState('create-backup-btn', false);
+
+            // Show progress section
+            const progressSection = document.getElementById('backup-progress-section');
+            if (progressSection) {
+                progressSection.style.display = 'block';
+                this.updateProgress(10, 'Creating backup...');
+            }
+
+            try {
+                const response = await this.makeRequest('/backup/create', {
+                    method: 'POST',
+                    body: backupOptions
+                });
+
+                console.log('[BACKUP] Create backup response:', response);
+
+                if (response.success) {
+                    this.updateProgress(90, 'Backup created, preparing download...');
+
+                    this.showSuccessNotification('Backup created successfully', `${response.filename} has been created and will download automatically`);
+                    await this.loadBackupHistory(); // Refresh backup list
+
+                    // Automatically download the created backup
+                    if (response.backup_id) {
+                        this.updateProgress(100, 'Downloading backup...');
+                        await this.downloadBackupById(response.backup_id);
+                    }
+                } else {
+                    throw new Error(response.error || 'Failed to create backup');
+                }
+
+                // Send event
+                this.sendEvent('button_click', 'create-backup-btn', { 
+                    action: 'create_backup',
+                    options: backupOptions
+                });
+            } catch (error) {
+                console.error('[BACKUP] Error creating backup:', error);
+                this.showError('Failed to create backup: ' + error.message);
+            } finally {
+                this.backupInProgress = false;
+                this.setButtonState('create-backup-btn', true);
+
+                // Hide progress section after a delay
+                setTimeout(() => {
+                    const progressSection = document.getElementById('backup-progress-section');
+                    if (progressSection) {
+                        progressSection.style.display = 'none';
+                    }
+                }, 3000);
+            }
+        }
+
+        async restoreBackup() {
+            if (this.restoreInProgress) {
+                console.log('[BACKUP] Restore already in progress');
+                return;
+            }
+
+            if (!this.selectedFile) {
+                this.showError('Please select a backup file first');
+                return;
+            }
+
+            console.log('[BACKUP] Restoring backup...');
+
+            const restoreOptions = this.getRestoreOptions();
+
+            // Confirmation dialog
+            const confirmed = confirm(
+                'This will restore your system from the selected backup file. ' +
+                'Current configuration will be overwritten. This action cannot be undone. ' +
+                'Do you want to continue?'
+            );
+
+            if (!confirmed) {
+                console.log('[BACKUP] Restore cancelled by user');
+                return;
+            }
+
+            this.restoreInProgress = true;
+            this.setButtonState('restore-btn', false);
+
+            try {
+                // Create FormData for file upload
+                const formData = new FormData();
+                formData.append('backup_file', this.selectedFile);
+                formData.append('options', JSON.stringify(restoreOptions));
+
+                const response = await fetch(`${this.apiUrl}/backup/restore`, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+                console.log('[BACKUP] Restore backup response:', data);
+
+                if (data.success) {
+                    this.showSuccessNotification('Restore initiated successfully', 'The system will reboot after completion.');
+                } else {
+                    throw new Error(data.error || 'Failed to restore backup');
+                }
+
+                // Send event
+                this.sendEvent('button_click', 'restore-btn', { 
+                    action: 'restore_backup',
+                    filename: this.selectedFile.name,
+                    options: restoreOptions
+                });
+            } catch (error) {
+                console.error('[BACKUP] Error restoring backup:', error);
+                this.showError('Failed to restore backup: ' + error.message);
+            } finally {
+                this.restoreInProgress = false;
+                this.setButtonState('restore-btn', true);
+            }
+        }
+
+        cancelRestore() {
+            console.log('[BACKUP] Cancelling restore...');
+            this.clearFileSelection();
+
+            // Reset restore options
+            const wipeCheckbox = document.getElementById('wipe-before-restore');
+            const createBackupCheckbox = document.getElementById('create-backup-before-restore');
+
+            if (wipeCheckbox) wipeCheckbox.checked = false;
+            if (createBackupCheckbox) createBackupCheckbox.checked = false;
+        }
+
+        async loadBackupHistory() {
+            console.log('[BACKUP] Loading backup history...');
+
+            const backupList = document.getElementById('backup-list');
+            if (!backupList) return;
+
+            // Show loading state
+            backupList.innerHTML = `
+                <div class="text-center py-8 text-neutral-500">
+                    <i class="fa-solid fa-spinner fa-spin text-4xl mb-3"></i>
+                    <p>Loading backup history...</p>
+                </div>
+            `;
+
+            try {
+                const response = await this.makeRequest('/backup/list', {
+                    method: 'GET'
+                });
+
+                console.log('[BACKUP] Backup history response:', response);
+
+                if (response.success && response.backups) {
+                    this.renderBackupHistory(response.backups);
+                } else {
+                    throw new Error(response.error || 'Failed to load backup history');
+                }
+            } catch (error) {
+                console.error('[BACKUP] Error loading backup history:', error);
+                backupList.innerHTML = `
+                    <div class="text-center py-8 text-red-500">
+                        <i class="fa-solid fa-exclamation-triangle text-4xl mb-3"></i>
+                        <p>Failed to load backup history</p>
+                        <p class="text-sm mt-2">${error.message}</p>
+                    </div>
+                `;
+            }
+        }
+
+        renderBackupHistory(backups) {
+            const backupList = document.getElementById('backup-list');
+            if (!backupList) return;
+
+            if (!backups || backups.length === 0) {
+                backupList.innerHTML = `
+                    <div class="text-center py-8 text-neutral-500">
+                        <i class="fa-solid fa-folder-open text-4xl mb-3"></i>
+                        <p>No backups found</p>
+                        <p class="text-sm mt-2">Create your first backup to see it here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const backupItems = backups.map(backup => {
+                const backupId = backup.filename || backup.id;
+                const displaySize = backup.formatted_size || this.formatFileSize(backup.size || 0);
+                const displayDate = backup.created_at || backup.created_date || 'Unknown';
+
+                return `
+                <div class="bg-neutral-50 rounded-lg border border-neutral-200 p-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                            <i class="fa-solid fa-file-archive text-blue-600"></i>
+                        </div>
+                        <div>
+                            <h4 class="text-sm font-medium text-neutral-900">${backup.filename || backup.id}</h4>
+                            <div class="flex items-center space-x-4 text-xs text-neutral-500 mt-1">
+                                <span>Size: ${displaySize}</span>
+                                <span>Created: ${displayDate}</span>
+                                <span class="px-2 py-1 rounded-full text-xs ${this.getBackupTypeColor(backup.type)}">${backup.type || 'unknown'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <button class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-3 py-1 rounded-md text-xs" 
+                                onclick="window.backupManager.downloadBackup('${backupId}')">
+                            <i class="fa-solid fa-download mr-1"></i>
+                            Download
+                        </button>
+                        <button class="bg-red-100 hover:bg-red-200 text-red-700 px-3 py-1 rounded-md text-xs"
+                                onclick="window.backupManager.deleteBackup('${backupId}')">
+                            <i class="fa-solid fa-trash mr-1"></i>
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            }).join('');
+
+            backupList.innerHTML = backupItems;
+        }
+
+        getBackupTypeColor(type) {
+            switch (type?.toLowerCase()) {
+                case 'full': return 'bg-green-100 text-green-800';
+                case 'partial': return 'bg-yellow-100 text-yellow-800';
+                case 'encrypted': return 'bg-purple-100 text-purple-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        async downloadBackup(backupId) {
+            console.log('[BACKUP] Downloading backup:', backupId);
+
+            try {
+                const response = await fetch(`${this.apiUrl}/backup/download/${backupId}`, {
+                    method: 'GET'
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                // Check if response is JSON (error) or binary (file)
+                const contentType = response.headers.get('content-type');
+
+                if (contentType && contentType.includes('application/json')) {
+                    const jsonResponse = await response.json();
+                    if (!jsonResponse.success) {
+                        throw new Error(jsonResponse.error || 'Download failed');
+                    }
+                    throw new Error('Unexpected JSON response for file download');
+                }
+
+                // Create blob and download
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = backupId;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                this.showSuccessNotification('Download started', 'Backup file download has been initiated');
+
+                // Send event
+                this.sendEvent('button_click', 'download-backup', { 
+                    action: 'download_backup',
+                    backup_id: backupId
+                });
+            } catch (error) {
+                console.error('[BACKUP] Error downloading backup:', error);
+                this.showError('Failed to download backup: ' + error.message);
+            }
+        }
+
+        async downloadBackupById(backupId) {
+            return this.downloadBackup(backupId);
+        }
+
+        async deleteBackup(backupId) {
+            const confirmed = confirm('Are you sure you want to delete this backup? This action cannot be undone.');
+            if (!confirmed) return;
+
+            console.log('[BACKUP] Deleting backup:', backupId);
+
+            try {
+                const url = `${this.apiUrl}/backup/delete/${backupId}`;
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                // Check if response is JSON
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/json')) {
+                    throw new Error('Server returned non-JSON response');
+                }
+
+                const data = await response.json();
+
+                if (data.success) {
+                    this.showSuccessNotification('Backup deleted', 'The backup has been permanently removed');
+                    await this.loadBackupHistory(); // Refresh list
+                } else {
+                    throw new Error(data.error || 'Failed to delete backup');
+                }
+
+                // Send event
+                this.sendEvent('button_click', 'delete-backup', { 
+                    action: 'delete_backup',
+                    backup_id: backupId
+                });
+            } catch (error) {
+                console.error('[BACKUP] Error deleting backup:', error);
+                this.showError('Failed to delete backup: ' + error.message);
+            }
+        }
+
+        updateProgress(percentage, status) {
+            const progressBar = document.getElementById('backup-progress-bar');
+            const progressPercentage = document.getElementById('backup-progress-percentage');
+            const progressStatus = document.getElementById('backup-progress-status');
+
+            if (progressBar) {
+                progressBar.style.width = `${percentage}%`;
+            }
+            if (progressPercentage) {
+                progressPercentage.textContent = `${percentage}%`;
+            }
+            if (progressStatus) {
+                progressStatus.textContent = status;
+            }
+        }
+
+        getBackupOptions() {
+            const options = {
+                full_backup: document.getElementById('full-backup-checkbox')?.checked || false,
+                partial_backup: document.getElementById('partial-backup-checkbox')?.checked || false,
+                include_credentials: document.getElementById('include-credentials-checkbox')?.checked || false,
+                encrypt_backup: document.getElementById('encrypt-checkbox')?.checked || false,
+                password: document.getElementById('backup-password')?.value || ''
+            };
+
+            // Add partial backup selections if partial backup is selected
+            if (options.partial_backup) {
+                options.network_config_backup = document.getElementById('network-config-backup')?.checked || false;
+                options.license_backup = document.getElementById('license-backup')?.checked || false;
+                options.authentication_backup = document.getElementById('authentication-backup')?.checked || false;
+                options.cellular_backup = document.getElementById('cellular-backup')?.checked || false;
+                options.vpn_backup = document.getElementById('vpn-backup')?.checked || false;
+                options.wireless_backup = document.getElementById('wireless-backup')?.checked || false;
+            }
+
+            return options;
+        }
+
+        getRestoreOptions() {
+            return {
+                wipe_before_restore: document.getElementById('wipe-before-restore')?.checked || false,
+                validate_integrity: document.getElementById('validate-integrity')?.checked || false,
+                create_backup_before_restore: document.getElementById('create-backup-before-restore')?.checked || false
+            };
+        }
+
+        async makeRequest(endpoint, options = {}) {
+            const url = `${this.apiUrl}${endpoint}`;
+
+            const defaultOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            };
+
+            // Add session token if available
+            if (window.app?.sessionToken) {
+                defaultOptions.headers['Authorization'] = `Bearer ${window.app.sessionToken}`;
+            }
+
+            const requestOptions = { ...defaultOptions, ...options };
+
+            // Ensure body is properly serialized
+            if (requestOptions.body && typeof requestOptions.body === 'object' && !(requestOptions.body instanceof FormData)) {
+                requestOptions.body = JSON.stringify(requestOptions.body);
+            }
+
+            console.log('[BACKUP] Making request to:', url, 'Options:', requestOptions);
+
+            try {
+                const response = await fetch(url, requestOptions);
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${data.message || response.statusText}`);
+                }
+
+                return data;
+            } catch (error) {
+                console.error(`[BACKUP] Request failed for ${endpoint}:`, error);
+                throw error;
+            }
+        }
+
+        showSuccessNotification(title, message) {
+            const notification = document.getElementById('success-notification');
+            const titleElement = notification?.querySelector('h3');
+            const messageElement = document.getElementById('success-message');
+
+            if (titleElement) titleElement.textContent = title;
+            if (messageElement) messageElement.textContent = message;
+            if (notification) {
+                notification.style.display = 'flex';
+
+                // Auto-hide after 5 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 5000);
+            }
+        }
+
+        showError(message) {
+            const notification = document.getElementById('error-notification');
+            const messageElement = document.getElementById('error-message');
+
+            if (messageElement) messageElement.textContent = message;
+            if (notification) {
+                notification.style.display = 'flex';
+
+                // Auto-hide after 7 seconds
+                setTimeout(() => {
+                    notification.style.display = 'none';
+                }, 7000);
+            }
+        }
+
+        setButtonState(buttonId, enabled) {
+            const button = document.getElementById(buttonId);
+            if (button) {
+                button.disabled = !enabled;
+
+                const span = button.querySelector('span');
+                const icon = button.querySelector('i');
+
+                if (!enabled) {
+                    if (icon) icon.className = 'fa-solid fa-spinner fa-spin mr-2';
+                    if (span) span.textContent = buttonId.includes('create') ? 'Creating...' : 'Processing...';
+                } else {
+                    if (icon) {
+                        icon.className = buttonId.includes('create') ? 'fa-solid fa-box-archive mr-2' : 'fa-solid fa-rotate-left mr-2';
+                    }
+                    if (span) {
+                        span.textContent = buttonId.includes('create') ? 'Create Backup' : 'Restore';
+                    }
+                }
+            }
+        }
+
+        formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+        }
+
+        sendEvent(eventType, elementId, data) {
+            // Use the global app's sendEvent if available, otherwise use window.sendEvent
+            if (window.app && typeof window.app.sendEvent === 'function') {
+                window.app.sendEvent(eventType, elementId, data);
+            } else if (typeof window.sendEvent === 'function') {
+                window.sendEvent(eventType, elementId, data);
+            } else {
+                console.log('[BACKUP] Event would be sent:', { eventType, elementId, data });
+            }
+        }
+    }
+
+    // Global toggle function for expandable sections
+    window.toggleSection = function(contentId, chevronId) {
+        const content = document.getElementById(contentId);
+        const chevron = document.getElementById(chevronId);
+
+        if (content && chevron) {
+            const isHidden = content.classList.contains('hidden');
+
+            if (isHidden) {
+                content.classList.remove('hidden');
+                chevron.classList.add('rotate-180');
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.remove('rotate-180');
+            }
+        }
+    }
+
+    // Global functions for HTML onclick handlers
+    function closeNotification() {
+        const notification = document.getElementById('success-notification');
+        if (notification) {
+            notification.style.display = 'none';
+        }
+    }
+
+    function closeErrorNotification() {
+        const notification = document.getElementById('error-notification');
+        if (notification) {
+            notification.style.display = 'none';
+        }
+    }
+
+    // Initialize the backup section manager
+    let backupManager = null;
+
+    function initializeBackupSection() {
+        if (backupManager) {
+            console.log('[BACKUP] Section already initialized');
+            return;
+        }
+
+        console.log('[BACKUP] Initializing backup section...');
+        backupManager = new BackupSectionManager();
+
+        // Make it globally accessible for onclick handlers
+        window.backupManager = backupManager;
+    }
+
+    // Multiple initialization methods for different loading scenarios
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeBackupSection);
+    } else {
+        // Try to initialize immediately
+        initializeBackupSection();
+    }
+
+    // Also try to initialize when the section becomes visible (for dynamic loading)
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach((mutation) => {
+                if (mutation.type === 'childList' && !backupManager) {
+                    const backupSection = document.querySelector('#backup-restore-section, [id*="backup"]');
+                    if (backupSection && backupSection.offsetParent !== null) {
+                        initializeBackupSection();
+                    }
+                }
+            });
+        });
+
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
+    // Fallback initialization with a slight delay
+    setTimeout(() => {
+        if (!backupManager) {
+            console.log('[BACKUP] Fallback initialization...');
+            initializeBackupSection();
+        }
+    }, 1000);
+</script>

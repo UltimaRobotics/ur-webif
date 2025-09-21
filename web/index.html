@@ -1,0 +1,1375 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UR WebIF API - Login</title>
+    <link rel="icon" type="image/svg+xml" href="https://unpkg.com/heroicons@2.1.1/24/outline/shield-check.svg">
+
+    <!-- Embedded Styles - No External Dependencies -->
+    <link rel="stylesheet" href="assets/css/embedded-styles.css">
+
+    <style>
+        /* Connection status styles */
+        .connection-status {
+            position: fixed;
+            top: 15px;
+            right: 15px;
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 4px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            z-index: 1000;
+        }
+
+        .connection-status .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 8px;
+        }
+
+        .connection-status.connected {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .connection-status.connected .status-dot {
+            background-color: #10b981;
+        }
+
+        .connection-status.connecting {
+            background-color: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .connection-status.connecting .status-dot {
+            background-color: #3b82f6;
+        }
+
+        .connection-status.disconnected,
+        .connection-status.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .connection-status.disconnected .status-dot,
+        .connection-status.error .status-dot {
+            background-color: #ef4444;
+        }
+
+        /* Notification styles */
+        .notification {
+            position: fixed;
+            top: 15px;
+            left: 15px;
+            background-color: #262626;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 6px;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+            z-index: 1000;
+            max-width: 90%;
+            text-align: center;
+        }
+
+        .notification.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .notification.error {
+            background-color: #f87171;
+        }
+
+        .notification.success {
+            background-color: #34d399;
+        }
+
+        /* Popup styles */
+        .popup-overlay {
+            position: fixed;
+            inset: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .popup-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .popup-content {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+
+        .popup-overlay.show .popup-content {
+            transform: scale(1);
+        }
+
+        .popup-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 40px;
+        }
+
+        .popup-icon.success {
+            background-color: #d1fae5;
+            color: #065f46;
+        }
+
+        .popup-icon.error {
+            background-color: #fee2e2;
+            color: #991b1b;
+        }
+
+        .popup-title {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            color: #1f2937;
+        }
+
+        .popup-message {
+            color: #6b7280;
+            margin-bottom: 24px;
+            line-height: 1.5;
+        }
+
+        .popup-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .popup-button {
+            padding: 12px 24px;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.2s ease;
+        }
+
+        .popup-button.primary {
+            background-color: #1f2937;
+            color: white;
+        }
+
+        .popup-button.primary:hover {
+            background-color: #374151;
+        }
+
+        .popup-button.secondary {
+            background-color: transparent;
+            color: #6b7280;
+            border: 1px solid #d1d5db;
+        }
+
+        .popup-button.secondary:hover {
+            background-color: #f9fafb;
+        }
+
+        .popup-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .attempt-info {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            padding: 16px;
+            margin: 16px 0;
+            text-align: left;
+        }
+
+        .attempt-info-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            font-size: 14px;
+        }
+
+        .lockout-warning {
+            background-color: #fee2e2;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 8px;
+            margin: 16px 0;
+            border: 1px solid #fecaca;
+        }
+
+        /* Custom icon styles */
+        .icon {
+            display: inline-block;
+            vertical-align: middle;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .icon-lock { width: 24px; height: 24px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 0 0-5.25 5.25v3a3 3 0 0 0-3 3v6a3 3 0 0 0 3 3h7.5a3 3 0 0 0 3-3v-6a3 3 0 0 0-3-3v-3c0-2.975 2.362-5.401 5.25-5.258v.752a3.75 3.75 0 1 1-1.5 0v-.752a5.25 5.25 0 0 0-3.75-5.254V2.75ZM15 1.5a3.75 3.75 0 1 1-7.5 0v.752a5.25 5.25 0 0 0 1.5 10.262v3.738a1.5 1.5 0 0 0 1.5 1.5h7.5a1.5 1.5 0 0 0 1.5-1.5v-3.752a5.25 5.25 0 0 0-1.5-10.262v-.752Z" clip-rule="evenodd" /></svg>'); }
+        .icon-xl { width: 40px; height: 40px; }
+        .icon-user { width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M7.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Zm-3.75 6a3.75 3.75 0 0 0-3.75 3.75v1.5a.75.75 0 0 0 .75.75h13.5a.75.75 0 0 0 .75-.75v-1.5a3.75 3.75 0 0 0-3.75-3.75h-6Z" clip-rule="evenodd" /></svg>'); }
+        .icon-eye-slash { width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M10.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Zm1.5 8.25a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z" /><path fill-rule="evenodd" d="M11.25 2.405a9.146 9.146 0 0 1 3.534.776a9.146 9.146 0 0 1 3.487 2.248a9.146 9.146 0 0 1 2.248 3.487c.396.73.617 1.556.776 2.405a9.146 9.146 0 0 1-1.467 5.832a9.146 9.146 0 0 1-3.487 2.248c-.73.617-1.556.776-2.405.776a9.146 9.146 0 0 1-3.487-2.248 9.146 9.146 0 0 1-2.248-3.487c-.396-.73-.617-1.556-.776-2.405a9.146 9.146 0 0 1 1.467-5.832 9.146 9.146 0 0 1 3.487-2.248c.73-.617 1.556-.776 2.405-.776ZM10.5 10.5a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" clip-rule="evenodd" /></svg>'); }
+        .icon-eye { width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5"><path d="M10.5 10.5a3 3 0 1 0 6 0 3 3 0 0 0-6 0Z" /><path fill-rule="evenodd" d="M11.25 2.405a9.146 9.146 0 0 1 3.534.776a9.146 9.146 0 0 1 3.487 2.248a9.146 9.146 0 0 1 2.248 3.487c.396.73.617 1.556.776 2.405a9.146 9.146 0 0 1-1.467 5.832a9.146 9.146 0 0 1-3.487 2.248c-.73.617-1.556.776-2.405.776a9.146 9.146 0 0 1-3.487-2.248 9.146 9.146 0 0 1-2.248-3.487c-.396-.73-.617-1.556-.776-2.405a9.146 9.146 0 0 1 1.467-5.832 9.146 9.146 0 0 1 3.487-2.248c.73-.617 1.556-.776 2.405-.776ZM10.5 6a4.5 4.5 0 1 1 9 0 4.5 4.5 0 0 1-9 0Z" clip-rule="evenodd" /></svg>'); }
+        .icon-chevron-down { width: 16px; height: 16px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M11.47 4.72a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L12 6.314l-4.47 4.472a.75.75 0 0 1-1.06-1.06l4.5-4.5Z" clip-rule="evenodd" /></svg>'); }
+        .icon-chevron-down.rotated { transform: rotate(180deg); }
+        .icon-upload { width: 32px; height: 32px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8"><path fill-rule="evenodd" d="M11.47 3.72a.75.75 0 0 1 1.06 0l4.5 4.5a.75.75 0 0 1-1.06 1.06L12 5.693L7.97 9.723a.75.75 0 0 1-1.06-1.06l4.5-4.5Zm3.75 7.787v6a.75.75 0 0 1-1.5 0v-6a.75.75 0 0 1 1.5 0Zm-1.5 5.25a.75.75 0 0 0-1.5 0v1.5h3v-1.5a.75.75 0 0 0-1.5 0Z" clip-rule="evenodd" /></svg>'); }
+        .icon-3xl { width: 48px; height: 48px; }
+        .icon-shield { width: 16px; height: 16px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4"><path fill-rule="evenodd" d="M19.5 4.5c-2.306-1.13-4.865-1.356-7.255-.795a3.748 3.748 0 0 0-1.084.467c-.76.348-1.45.86-2.078 1.486C8.785 5.76 8.49 5.27 8.198 4.794c-.75-1.47-1.943-2.51-3.322-2.987C3.084 1.386 1.5 2.178 1.5 3.751v11.418c0 1.407 1.078 2.683 2.418 2.959.661.144 1.364.267 2.078.358.315.043.638.078.97.109.73.188 1.497.317 2.27.317.677 0 1.318-.083 1.926-.205a7.532 7.532 0 0 0 2.736-.794c.585-.247.109.638-.41.966a7.537 7.537 0 0 1-2.475.609c-.897 0-1.782-.075-2.652-.227C4.385 20.312 2.5 19.486 2.5 18.251V3.752c0-1.16.93-2.133 2.082-2.397.617-.144 1.28-.25 1.974-.317C5.446 1.08 6.177 1 6.928 1c.75 0 1.47.075 2.193.227.724.154 1.407.348 2.054.585.75.348 1.45.86 2.078 1.486.315.315.585.75.794 1.192.21.442.385.966.533 1.486.315.533.638 1.06 1.084.467 2.389-.562 4.948-.336 7.255-.795.315-.144.638-.267.97-.358.315-.083.638-.154.97-.154.144 0 .267 0 .382.043.382.154.76.315 1.146.49.382.188.76.382 1.146.533.382.154.76.315 1.146.49v3.15Z" clip-rule="evenodd" /></svg>'); }
+        .icon-spinner { width: 20px; height: 20px; background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" class="w-5 h-5"><path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-7.223a.75.75 0 0 0-1.122-.948l-2.725 2.19a.75.75 0 0 0 .369 1.305.75.75 0 0 0 .699-.22l2.725-2.19Z" clip-rule="evenodd" /><path d="M10 16.5a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13Z" /></svg>'); animation: spin 1s linear infinite; }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body class="h-full bg-neutral-50 text-neutral-900">
+    <!-- API Connection Status Indicator -->
+    <div id="api-status" class="connection-status disconnected">
+        <div class="status-dot"></div>
+        <span id="api-status-text">Disconnected</span>
+        <span id="api-quality" class="connection-quality"></span>
+    </div>
+
+    <!-- Notification Container -->
+    <div id="notification" class="notification"></div>
+
+    <!-- Main Login Container -->
+    <div class="min-h-screen flex items-center justify-center p-4">
+        <div class="w-full max-w-md">
+            <div class="bg-white rounded-lg border border-neutral-200 shadow-sm p-8">
+
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="w-12 h-12 bg-neutral-800 rounded-lg mx-auto mb-4 flex items-center justify-center">
+                        <span class="icon icon-lock icon-xl text-white"></span>
+                    </div>
+                    <h1 class="text-2xl text-neutral-900 mb-2">Welcome back</h1>
+                    <p class="text-neutral-600">Sign in to your account</p>
+                </div>
+
+                <!-- Login Form -->
+                <form id="login-form" class="space-y-6">
+
+                    <!-- Username Field -->
+                    <div class="space-y-2">
+                        <label for="username" class="block text-sm text-neutral-700">Username</label>
+                        <div class="relative">
+                            <input type="text" id="username" name="username" 
+                                   class="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent" 
+                                   placeholder="Enter your username" required>
+                            <span class="icon icon-user absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400"></span>
+                        </div>
+                    </div>
+
+                    <!-- Password Field -->
+                    <div class="space-y-2">
+                        <label for="password" class="block text-sm text-neutral-700">Password</label>
+                        <div class="relative">
+                            <input type="password" id="password" name="password" 
+                                   class="w-full px-3 py-2 border border-neutral-300 rounded-md focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-transparent" 
+                                   placeholder="Enter your password" required>
+                            <span id="password-toggle" class="icon icon-eye-slash absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 cursor-pointer"></span>
+                        </div>
+                    </div>
+
+                    <!-- File Upload Section -->
+                    <div class="space-y-2">
+                        <div class="flex items-center justify-between cursor-pointer" id="file-section-toggle">
+                            <label class="block text-sm text-neutral-700">Authentication File (Optional)</label>
+                            <span id="expand-icon" class="icon icon-chevron-down text-neutral-600 transition-transform duration-200"></span>
+                        </div>
+                        <div id="file-upload-area" class="hidden space-y-2">
+                            <div id="file-drop-zone" class="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center hover:border-neutral-400 transition-colors cursor-pointer">
+                                <span id="upload-icon" class="icon icon-upload icon-3xl text-neutral-400 mb-3"></span>
+                                <p class="text-sm text-neutral-600 mb-1">Drag and drop authentication file here, or click to browse</p>
+                                <p class="text-xs text-neutral-500">Supports: UACC files</p>
+                                <input type="file" class="hidden" id="file-upload" accept=".uacc">
+                            </div>
+                            <div id="file-info" class="hidden text-sm text-neutral-600"></div>
+                            <div id="validation-result" class="hidden mt-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Options -->
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center">
+                            <input type="checkbox" id="remember-me" name="remember-me" 
+                                   class="h-4 w-4 text-neutral-600 border-neutral-300 rounded focus:ring-neutral-500">
+                            <label for="remember-me" class="ml-2 text-sm text-neutral-700">Remember me</label>
+                        </div>
+                        <button type="button" id="forgot-password-btn" class="text-sm text-neutral-600 hover:text-neutral-900 hover:underline cursor-pointer bg-transparent border-none">Forgot password?</button>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button type="submit" id="login-button" class="btn-primary">
+                        <span id="login-text">Sign in</span>
+                        <span id="login-spinner" class="icon icon-spinner ml-2 hidden"></span>
+                    </button>
+
+                </form>
+
+                <!-- Footer -->
+                <div class="mt-8 text-center">
+                    <p class="text-sm text-neutral-600">
+                        Don't have an account? 
+                        <span class="text-neutral-900 hover:underline cursor-pointer">Sign up</span>
+                    </p>
+                </div>
+            </div>
+
+            <!-- Security Notice -->
+            <div class="mt-6 text-center">
+                <p class="text-xs text-neutral-500 flex items-center justify-center">
+                    <span class="icon icon-shield mr-1"></span>
+                    Your information is protected by 256-bit SSL encryption
+                </p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Success Popup -->
+    <div id="success-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon success">✓</div>
+            <h2 class="popup-title">Login Successful!</h2>
+            <p class="popup-message" id="success-message">Welcome back! You have been successfully authenticated.</p>
+            <div class="popup-buttons">
+                <button class="popup-button primary" id="continue-btn">Continue to Dashboard</button>
+                <button class="popup-button secondary" id="close-success-btn">Close</button>
+            </div>
+            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <div style="display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; margin-bottom: 8px;">
+                    <span class="icon icon-shield" style="margin-right: 4px;"></span>
+                    Secure session established
+                </div>
+                <p style="font-size: 12px; color: #6b7280;">
+                    Your session will automatically expire in 30 minutes of inactivity
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Popup -->
+    <div id="error-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon error">✗</div>
+            <h2 class="popup-title">Login Failed</h2>
+            <p class="popup-message" id="error-message">We couldn't verify your credentials. Please check your details and try again.</p>
+
+            <div id="error-details" style="background-color: #fee2e2; border: 1px solid #fecaca; border-radius: 8px; padding: 16px; margin: 16px 0; text-align: left;">
+                <div style="display: flex; align-items: flex-start;">
+                    <span style="color: #991b1b; margin-right: 12px; margin-top: 2px;">⚠️</span>
+                    <div>
+                        <h3 style="color: #991b1b; font-size: 14px; margin-bottom: 4px;">Authentication Error</h3>
+                        <p id="detailed-error-message" style="color: #7f1d1d; font-size: 14px;">Invalid username or password. Please verify your credentials and try again.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="attempt-info" class="attempt-info">
+                <div class="attempt-info-row">
+                    <span>Attempts remaining:</span>
+                    <span id="attempts-remaining">5</span>
+                </div>
+                <div class="attempt-info-row">
+                    <span>Total attempts allowed:</span>
+                    <span id="total-attempts">5</span>
+                </div>
+            </div>
+
+            <div id="lockout-warning" class="lockout-warning" style="display: none;">
+                <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                    <span style="margin-right: 8px;">🔒</span>
+                    <h3 style="font-size: 14px; font-weight: 600;">Account Temporarily Locked</h3>
+                </div>
+                <p style="font-size: 14px;">Please wait <span id="lockout-time">5 minutes</span> before trying again.</p>
+            </div>
+
+            <div class="popup-buttons">
+                <button class="popup-button primary" id="retry-btn">Try Again</button>
+                <button class="popup-button secondary" id="close-error-btn">Close</button>
+            </div>
+
+            <div style="margin-top: 24px; padding-top: 24px; border-top: 1px solid #e5e7eb;">
+                <div style="display: flex; align-items: center; justify-content: center; font-size: 12px; color: #6b7280; margin-bottom: 8px;">
+                    <span class="icon icon-shield" style="margin-right: 4px;"></span>
+                    Security Notice
+                </div>
+                <p style="font-size: 12px; color: #6b7280;">
+                    Your account will be temporarily locked after <span id="max-attempts">5</span> failed login attempts
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Forgot Password Popup -->
+    <div id="forgot-password-popup" class="popup-overlay">
+        <div class="popup-content">
+            <div class="popup-icon" style="background-color: #dbeafe; color: #1d4ed8;">?</div>
+            <h2 class="popup-title">Reset Password</h2>
+            <p class="popup-message">Enter your email address and we'll send you instructions to reset your password.</p>
+
+            <form id="forgot-password-form" style="margin: 24px 0;">
+                <div style="text-align: left; margin-bottom: 16px;">
+                    <label for="reset-email" style="display: block; font-size: 14px; color: #374151; margin-bottom: 8px;">Email Address</label>
+                    <input type="email" id="reset-email" 
+                           style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 16px;"
+                           placeholder="Enter your email address" required>
+                </div>
+
+                <div class="popup-buttons">
+                    <button type="submit" class="popup-button primary" id="send-reset-btn">Send Reset Instructions</button>
+                    <button type="button" class="popup-button secondary" id="try-default-btn">Try Default Credentials</button>
+                    <button type="button" class="popup-button secondary" id="close-forgot-btn">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Section Management Scripts -->
+    <script src="assets/js/sections/SystemSection.js"></script>
+    <script src="assets/js/sections/CellularSection.js"></script>
+    <script src="assets/js/sections/LicenseSection.js"></script>
+    <script src="assets/js/sections/VpnSection.js"></script>
+    <script src="assets/js/sections/WirelessSection.js"></script>
+    <script src="assets/js/sections/BackupSection.js"></script>
+
+    <script>
+        // JWT Utilities
+        class JWTUtils {
+            base64UrlDecode(str) {
+                str += '==='.slice(0, (4 - str.length % 4) % 4);
+                str = str.replace(/-/g, '+').replace(/_/g, '/');
+                return atob(str);
+            }
+
+            parseJWT(token) {
+                try {
+                    if (!token || typeof token !== 'string') return null;
+                    const parts = token.split('.');
+                    if (parts.length !== 3) return null;
+
+                    const header = JSON.parse(this.base64UrlDecode(parts[0]));
+                    const payload = JSON.parse(this.base64UrlDecode(parts[1]));
+
+                    return { header, payload, signature: parts[2], raw: token };
+                } catch (error) {
+                    console.error('[JWT] Error parsing JWT:', error);
+                    return null;
+                }
+            }
+
+            isTokenExpired(token) {
+                const jwt = this.parseJWT(token);
+                if (!jwt || !jwt.payload.exp) return true;
+
+                const currentTime = Math.floor(Date.now() / 1000);
+                return jwt.payload.exp < currentTime;
+            }
+
+            getUserInfo(token) {
+                const jwt = this.parseJWT(token);
+                if (!jwt) return null;
+
+                return {
+                    username: jwt.payload.username || jwt.payload.sub,
+                    role: jwt.payload.role || 'user',
+                    exp: jwt.payload.exp,
+                    iat: jwt.payload.iat,
+                    sessionId: jwt.payload.sessionId || jwt.payload.jti
+                };
+            }
+        }
+
+        // Popup Manager
+        class PopupManager {
+            showPopup(popupId) {
+                const popup = document.getElementById(popupId);
+                if (popup) {
+                    popup.classList.add('show');
+                    document.body.style.overflow = 'hidden';
+                }
+            }
+
+            hidePopup(popupId) {
+                const popup = document.getElementById(popupId);
+                if (popup) {
+                    popup.classList.remove('show');
+                    document.body.style.overflow = '';
+                }
+            }
+
+            hideAllPopups() {
+                const popups = document.querySelectorAll('.popup-overlay');
+                popups.forEach(popup => {
+                    popup.classList.remove('show');
+                });
+                document.body.style.overflow = '';
+            }
+
+            showSuccessPopup(options = {}) {
+                const messageEl = document.getElementById('success-message');
+                if (messageEl && options.message) {
+                    messageEl.textContent = options.message;
+                }
+                this.showPopup('success-popup');
+            }
+
+            showErrorPopup(options = {}) {
+                const messageEl = document.getElementById('error-message');
+                const detailedMessageEl = document.getElementById('detailed-error-message');
+                const attemptsRemainingEl = document.getElementById('attempts-remaining');
+                const totalAttemptsEl = document.getElementById('total-attempts');
+                const maxAttemptsEl = document.getElementById('max-attempts');
+                const attemptInfoEl = document.getElementById('attempt-info');
+                const lockoutWarningEl = document.getElementById('lockout-warning');
+                const lockoutTimeEl = document.getElementById('lockout-time');
+                const retryBtnEl = document.getElementById('retry-btn');
+
+                if (messageEl && options.message) {
+                    messageEl.textContent = options.message;
+                }
+
+                if (detailedMessageEl && options.detailedMessage) {
+                    detailedMessageEl.textContent = options.detailedMessage;
+                }
+
+                if (attemptsRemainingEl && options.attemptsRemaining !== undefined) {
+                    attemptsRemainingEl.textContent = options.attemptsRemaining;
+                }
+
+                if (totalAttemptsEl && options.totalAttempts !== undefined) {
+                    totalAttemptsEl.textContent = options.totalAttempts;
+                }
+
+                if (maxAttemptsEl && options.totalAttempts !== undefined) {
+                    maxAttemptsEl.textContent = options.totalAttempts;
+                }
+
+                // Handle lockout
+                if (options.isBanned && options.lockoutSeconds > 0) {
+                    if (attemptInfoEl) attemptInfoEl.style.display = 'none';
+                    if (lockoutWarningEl) lockoutWarningEl.style.display = 'block';
+                    if (retryBtnEl) retryBtnEl.disabled = true;
+
+                    if (lockoutTimeEl) {
+                        const minutes = Math.floor(options.lockoutSeconds / 60);
+                        const seconds = options.lockoutSeconds % 60;
+                        lockoutTimeEl.textContent = minutes > 0 ? `${minutes} minute(s)` : `${seconds} second(s)`;
+                    }
+                } else {
+                    if (attemptInfoEl) attemptInfoEl.style.display = 'block';
+                    if (lockoutWarningEl) lockoutWarningEl.style.display = 'none';
+                    if (retryBtnEl) retryBtnEl.disabled = false;
+                }
+
+                this.showPopup('error-popup');
+            }
+
+            showForgotPasswordPopup() {
+                this.showPopup('forgot-password-popup');
+            }
+        }
+
+        // Main Login Manager
+        class LoginManager {
+            constructor() {
+                this.apiUrl = null;
+                this.connectionState = 'disconnected';
+                this.clientId = 'login_client_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+                this.timeout = 10000;
+                this.retryAttempts = 3;
+                this.jwtUtils = new JWTUtils();
+                this.popupManager = new PopupManager();
+                this.currentUploadedFile = null;
+                this.init();
+            }
+
+            async init() {
+                console.log('[LOGIN] Initializing Login Manager');
+
+                try {
+                    await this.loadConfig();
+                    this.setupEventListeners();
+                    this.setupConnectionStatus();
+                    this.checkExistingSession();
+                } catch (error) {
+                    console.error('[LOGIN] Failed to initialize:', error);
+                    this.showNotification('Failed to load configuration', 'error');
+                }
+            }
+
+            async loadConfig() {
+                try {
+                    const response = await fetch('/config.json');
+                    const config = await response.json();
+                    this.apiUrl = config.api_base_url || `${window.location.protocol}//${window.location.host}/api`;
+                    console.log('[LOGIN] API URL:', this.apiUrl);
+                } catch (error) {
+                    console.error('[LOGIN] Config load failed:', error);
+                    this.apiUrl = `${window.location.protocol}//${window.location.host}/api`;
+                }
+            }
+
+            setupConnectionStatus() {
+                this.updateConnectionStatus('connecting', 'Initializing...');
+
+                this.testConnection().then(() => {
+                    this.updateConnectionStatus('connected', 'Connected');
+                }).catch(() => {
+                    this.updateConnectionStatus('error', 'Connection failed');
+                });
+            }
+
+            async testConnection() {
+                try {
+                    const response = await fetch(`${this.apiUrl}/health`, {
+                        method: 'GET',
+                        headers: { 'Accept': 'application/json' }
+                    });
+                    return response.ok;
+                } catch (error) {
+                    throw new Error('Connection test failed');
+                }
+            }
+
+            updateConnectionStatus(status, text) {
+                const statusEl = document.getElementById('api-status');
+                const textEl = document.getElementById('api-status-text');
+
+                if (statusEl) {
+                    statusEl.className = `connection-status ${status}`;
+                }
+                if (textEl) {
+                    textEl.textContent = text;
+                }
+            }
+
+            async checkExistingSession() {
+                const token = localStorage.getItem('session_token');
+                if (token) {
+                    try {
+                        if (!this.jwtUtils.isTokenExpired(token)) {
+                            const isValid = await this.validateSession(token);
+                            if (isValid) {
+                                console.log('[LOGIN] Valid session found, redirecting...');
+                                this.redirectToDashboard();
+                                return;
+                            }
+                        }
+                    } catch (error) {
+                        console.log('[LOGIN] Session validation failed:', error);
+                        localStorage.removeItem('session_token');
+                    }
+                }
+            }
+
+            async validateSession(token) {
+                try {
+                    const response = await fetch(`${this.apiUrl}/validate-session`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ session_token: token })
+                    });
+
+                    if (response.ok) {
+                        const result = await response.json();
+                        return result.success;
+                    }
+                    return false;
+                } catch (error) {
+                    console.error('[LOGIN] Session validation error:', error);
+                    return false;
+                }
+            }
+
+            setupEventListeners() {
+                // Login form submission
+                const loginForm = document.getElementById('login-form');
+                if (loginForm) {
+                    loginForm.addEventListener('submit', (e) => {
+                        e.preventDefault();
+                        this.handleLogin(e);
+                    });
+                }
+
+                // Password toggle
+                this.setupPasswordToggle();
+
+                // File upload
+                this.setupFileUpload();
+
+                // Forgot password
+                this.setupForgotPassword();
+
+                // Popup event listeners
+                this.setupPopupListeners();
+            }
+
+            setupPopupListeners() {
+                // Success popup
+                document.getElementById('continue-btn')?.addEventListener('click', () => {
+                    this.redirectToDashboard();
+                });
+
+                document.getElementById('close-success-btn')?.addEventListener('click', () => {
+                    this.popupManager.hidePopup('success-popup');
+                });
+
+                // Error popup
+                document.getElementById('retry-btn')?.addEventListener('click', () => {
+                    this.popupManager.hidePopup('error-popup');
+                });
+
+                document.getElementById('close-error-btn')?.addEventListener('click', () => {
+                    this.popupManager.hidePopup('error-popup');
+                });
+
+                // Forgot password popup
+                document.getElementById('send-reset-btn')?.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    this.handlePasswordReset();
+                });
+
+                document.getElementById('try-default-btn')?.addEventListener('click', () => {
+                    this.fillDefaultCredentials();
+                });
+
+                document.getElementById('close-forgot-btn')?.addEventListener('click', () => {
+                    this.popupManager.hidePopup('forgot-password-popup');
+                });
+
+                // Close popups when clicking overlay
+                document.querySelectorAll('.popup-overlay').forEach(popup => {
+                    popup.addEventListener('click', (e) => {
+                        if (e.target === popup) {
+                            this.popupManager.hidePopup(popup.id);
+                        }
+                    });
+                });
+
+                // ESC key to close popups
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        this.popupManager.hideAllPopups();
+                    }
+                });
+            }
+
+            setupPasswordToggle() {
+                const passwordToggle = document.getElementById('password-toggle');
+                const passwordInput = document.getElementById('password');
+
+                if (passwordToggle && passwordInput) {
+                    passwordToggle.addEventListener('click', () => {
+                        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                        passwordInput.setAttribute('type', type);
+
+                        passwordToggle.className = type === 'password' ? 
+                            'icon icon-eye-slash absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 cursor-pointer' :
+                            'icon icon-eye absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 cursor-pointer';
+                    });
+                }
+            }
+
+            setupFileUpload() {
+                const fileSectionToggle = document.getElementById('file-section-toggle');
+                const fileUploadArea = document.getElementById('file-upload-area');
+                const expandIcon = document.getElementById('expand-icon');
+
+                if (fileSectionToggle && fileUploadArea) {
+                    fileSectionToggle.addEventListener('click', () => {
+                        const isHidden = fileUploadArea.classList.contains('hidden');
+                        if (isHidden) {
+                            fileUploadArea.classList.remove('hidden');
+                            expandIcon?.classList.add('rotated');
+                        } else {
+                            fileUploadArea.classList.add('hidden');
+                            expandIcon?.classList.remove('rotated');
+                        }
+                    });
+                }
+
+                const fileDropZone = document.getElementById('file-drop-zone');
+                const fileInput = document.getElementById('file-upload');
+
+                if (fileDropZone && fileInput) {
+                    fileDropZone.addEventListener('click', () => fileInput.click());
+
+                    fileDropZone.addEventListener('dragover', (e) => {
+                        e.preventDefault();
+                        fileDropZone.classList.remove('border-neutral-300');
+                        fileDropZone.classList.add('border-blue-400', 'bg-blue-50');
+                        const uploadIcon = document.getElementById('upload-icon');
+                        if (uploadIcon) {
+                            uploadIcon.classList.remove('text-neutral-400');
+                            uploadIcon.classList.add('text-blue-500');
+                        }
+                    });
+
+                    fileDropZone.addEventListener('dragleave', () => {
+                        fileDropZone.classList.remove('border-blue-400', 'bg-blue-50');
+                        fileDropZone.classList.add('border-neutral-300');
+                        const uploadIcon = document.getElementById('upload-icon');
+                        if (uploadIcon) {
+                            uploadIcon.classList.remove('text-blue-500');
+                            uploadIcon.classList.add('text-neutral-400');
+                        }
+                    });
+
+                    fileDropZone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        fileDropZone.classList.remove('border-blue-400', 'bg-blue-50');
+                        fileDropZone.classList.add('border-neutral-300');
+                        const uploadIcon = document.getElementById('upload-icon');
+                        if (uploadIcon) {
+                            uploadIcon.classList.remove('text-blue-500');
+                            uploadIcon.classList.add('text-neutral-400');
+                        }
+                        const files = e.dataTransfer.files;
+                        if (files.length > 0) {
+                            this.handleFileUpload(files[0]);
+                        }
+                    });
+
+                    fileInput.addEventListener('change', (e) => {
+                        if (e.target.files.length > 0) {
+                            this.handleFileUpload(e.target.files[0]);
+                        }
+                    });
+                }
+            }
+
+            setupForgotPassword() {
+                const forgotPasswordBtn = document.getElementById('forgot-password-btn');
+                if (forgotPasswordBtn) {
+                    forgotPasswordBtn.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        this.popupManager.showForgotPasswordPopup();
+                    });
+                }
+            }
+
+            async handlePasswordReset() {
+                const email = document.getElementById('reset-email')?.value;
+                const sendBtn = document.getElementById('send-reset-btn');
+
+                if (!email) {
+                    this.showNotification('Please enter your email address', 'error');
+                    return;
+                }
+
+                if (sendBtn) {
+                    sendBtn.disabled = true;
+                    sendBtn.textContent = 'Sending...';
+                }
+
+                try {
+                    // Simulate sending reset email
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+
+                    this.showNotification('Password reset instructions have been sent to your email', 'success');
+                    this.popupManager.hidePopup('forgot-password-popup');
+                } catch (error) {
+                    this.showNotification('Failed to send reset instructions', 'error');
+                } finally {
+                    if (sendBtn) {
+                        sendBtn.disabled = false;
+                        sendBtn.textContent = 'Send Reset Instructions';
+                    }
+                }
+            }
+
+            fillDefaultCredentials() {
+                document.getElementById('username').value = 'admin';
+                document.getElementById('password').value = 'admin';
+                this.popupManager.hidePopup('forgot-password-popup');
+                this.showNotification('Default credentials filled', 'success');
+            }
+
+            async handleLogin(event) {
+                event.preventDefault();
+
+                // Check lockout status
+                if (this.checkLockoutStatus()) {
+                    return;
+                }
+
+                const username = document.getElementById('username')?.value;
+                const password = document.getElementById('password')?.value;
+                const rememberMe = document.getElementById('remember-me')?.checked || false;
+
+                if (!username || !password) {
+                    this.showNotification('Please enter both username and password', 'error');
+                    return;
+                }
+
+                // Get file upload info
+                const fileInput = document.getElementById('file-upload');
+                const uploadedFile = fileInput?.files[0];
+                let fileData = null;
+
+                if (uploadedFile) {
+                    fileData = {
+                        name: uploadedFile.name,
+                        size: uploadedFile.size,
+                        type: uploadedFile.type,
+                        lastModified: uploadedFile.lastModified
+                    };
+                }
+
+                const loginData = {
+                    username: username,
+                    password: password,
+                    remember_me: rememberMe,
+                    timestamp: Date.now(),
+                    user_agent: navigator.userAgent,
+                    screen_resolution: `${screen.width}x${screen.height}`,
+                    timezone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+                    file_upload: fileData
+                };
+
+                this.setLoading(true);
+
+                try {
+                    const response = await this.sendLoginRequest(loginData);
+                    this.handleLoginResponse(response);
+                } catch (error) {
+                    console.error('[LOGIN] Login request failed:', error);
+                    this.handleLoginError(error);
+                }
+            }
+
+            async sendLoginRequest(loginData) {
+                const controller = new AbortController();
+                const timeoutId = setTimeout(() => controller.abort(), this.timeout);
+
+                try {
+                    const response = await fetch(`${this.apiUrl}/login`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json',
+                            'X-Client-Id': this.clientId
+                        },
+                        body: JSON.stringify(loginData),
+                        signal: controller.signal
+                    });
+
+                    clearTimeout(timeoutId);
+
+                    const result = await response.json();
+
+                    // Check if server returned success in response data
+                    if (response.ok && result.session_token) {
+                        return {
+                            success: true,
+                            message: result.message || 'Login successful',
+                            session_token: result.session_token,
+                            user: result.user,
+                            data: result
+                        };
+                    } else {
+                        return {
+                            success: false,
+                            message: result.message || `HTTP ${response.status}: ${response.statusText}`,
+                            attempts_remaining: result.attempts_remaining || 4,
+                            total_attempts: result.total_attempts || 5,
+                            is_banned: result.is_banned || false,
+                            lockout_remaining_seconds: result.lockout_remaining_seconds || 0
+                        };
+                    }
+                } catch (error) {
+                    clearTimeout(timeoutId);
+                    throw error;
+                }
+            }
+
+            handleLoginResponse(response) {
+                this.setLoading(false);
+
+                if (response.success) {
+                    // Store session token
+                    if (response.session_token) {
+                        localStorage.setItem('session_token', response.session_token);
+
+                        // Create JWT if needed
+                        const userInfo = response.user || { username: response.data?.username || 'unknown' };
+                        const jwtToken = this.createJWTFromSession(response.session_token, userInfo);
+                        localStorage.setItem('jwt_token', jwtToken);
+                    }
+
+                    // Clear failed attempts
+                    localStorage.removeItem('failed_login_attempts');
+                    localStorage.removeItem('lockout_until');
+
+                    this.popupManager.showSuccessPopup({
+                        message: response.message || 'Login successful! Welcome back.'
+                    });
+
+                    // Auto-redirect after 3 seconds
+                    setTimeout(() => {
+                        this.redirectToDashboard();
+                    }, 3000);
+                } else {
+                    this.handleFailedLogin(response);
+                }
+            }
+
+            handleFailedLogin(response) {
+                // Update failed attempts counter
+                const currentAttempts = parseInt(localStorage.getItem('failed_login_attempts') || '0') + 1;
+                localStorage.setItem('failed_login_attempts', currentAttempts.toString());
+
+                // Check for lockout
+                if (response.is_banned || response.lockout_remaining_seconds > 0) {
+                    const lockoutUntil = Date.now() + (response.lockout_remaining_seconds * 1000);
+                    localStorage.setItem('lockout_until', lockoutUntil.toString());
+                }
+
+                this.popupManager.showErrorPopup({
+                    message: 'Login Failed',
+                    detailedMessage: response.message || 'Invalid username or password. Please verify your credentials and try again.',
+                    attemptsRemaining: response.attempts_remaining || 0,
+                    totalAttempts: response.total_attempts || 5,
+                    isBanned: response.is_banned || false,
+                    lockoutSeconds: response.lockout_remaining_seconds || 0
+                });
+            }
+
+            handleLoginError(error) {
+                this.setLoading(false);
+
+                this.popupManager.showErrorPopup({
+                    message: 'Connection Error',
+                    detailedMessage: 'Failed to connect to login service. Please check your connection and try again.',
+                    attemptsRemaining: 5,
+                    totalAttempts: 5,
+                    isBanned: false,
+                    lockoutSeconds: 0
+                });
+            }
+
+            checkLockoutStatus() {
+                const lockoutUntil = localStorage.getItem('lockout_until');
+                if (lockoutUntil && Date.now() < parseInt(lockoutUntil)) {
+                    const remainingSeconds = Math.ceil((parseInt(lockoutUntil) - Date.now()) / 1000);
+
+                    this.popupManager.showErrorPopup({
+                        message: 'Account Locked',
+                        detailedMessage: `Account is temporarily locked. Please wait ${remainingSeconds} seconds.`,
+                        attemptsRemaining: 0,
+                        totalAttempts: 5,
+                        isBanned: true,
+                        lockoutSeconds: remainingSeconds
+                    });
+                    return true;
+                } else if (lockoutUntil) {
+                    localStorage.removeItem('lockout_until');
+                    localStorage.removeItem('failed_login_attempts');
+                }
+                return false;
+            }
+
+            createJWTFromSession(sessionToken, userInfo) {
+                const now = Math.floor(Date.now() / 1000);
+                const payload = {
+                    username: userInfo.username || 'unknown',
+                    role: userInfo.role || 'user',
+                    sessionId: sessionToken,
+                    iat: now,
+                    exp: now + (24 * 60 * 60), // 24 hours
+                    iss: 'ur-webif-api',
+                    aud: 'ur-webif-client'
+                };
+
+                // Simple JWT creation (header.payload.signature)
+                const header = btoa(JSON.stringify({ alg: 'HS256', typ: 'JWT' }));
+                const encodedPayload = btoa(JSON.stringify(payload));
+                const signature = btoa(header + '.' + encodedPayload + 'ur-webif-secret');
+
+                return `${header}.${encodedPayload}.${signature}`;
+            }
+
+            redirectToDashboard() {
+                window.location.href = 'components/source.html';
+            }
+
+            async handleFileUpload(file) {
+                // Check if it's a .uacc file
+                if (!file.name.toLowerCase().endsWith('.uacc')) {
+                    this.showValidationResult('Invalid file type. Please upload .uacc files only.', 'error');
+                    return;
+                }
+
+                if (file.size > 10 * 1024 * 1024) { // 10MB limit
+                    this.showValidationResult('File size too large. Maximum size is 10MB.', 'error');
+                    return;
+                }
+
+                const fileInfo = document.getElementById('file-info');
+                if (fileInfo) {
+                    fileInfo.innerHTML = `
+                        <div class="flex items-center justify-between bg-neutral-50 p-3 rounded-md">
+                            <div class="flex items-center">
+                                <span class="mr-2">📄</span>
+                                <span>${file.name} (${this.formatFileSize(file.size)})</span>
+                            </div>
+                            <button type="button" class="text-red-500 hover:text-red-700" onclick="loginManager.removeFile()">
+                                ✗
+                            </button>
+                        </div>
+                    `;
+                    fileInfo.classList.remove('hidden');
+                }
+
+                // Show uploading status
+                this.showValidationResult('Uploading and validating authentication file...', 'validating');
+
+                try {
+                    // Read file content
+                    const fileContent = await this.readFileAsText(file);
+
+                    // Send file to backend for upload and authentication
+                    const response = await fetch(`${this.apiUrl}/file-auth`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            filename: file.name,
+                            file_content: fileContent,
+                            file_size: file.size,
+                            is_base64: false
+                        })
+                    });
+
+                    const result = await response.json();
+
+                    if (result.success && result.data) {
+                        // File authentication successful
+                        this.showValidationResult(
+                            `Authentication successful! User: ${result.data.user.username}`,
+                            'success'
+                        );
+
+                        // Store session token
+                        if (result.session_token) {
+                            localStorage.setItem('session_token', result.session_token);
+                            localStorage.setItem('jwt_token', result.session_token);
+                        }
+
+                        this.showNotification(`File authentication successful for ${result.data.user.username}`, 'success');
+
+                        // Show success popup
+                        this.popupManager.showSuccessPopup({
+                            message: `Welcome back, ${result.data.user.username}! File authentication successful.`
+                        });
+
+                        // Auto-redirect after 2 seconds
+                        setTimeout(() => {
+                            this.redirectToDashboard();
+                        }, 2000);
+
+                    } else {
+                        // File authentication failed
+                        this.showValidationResult(
+                            result.message || 'Authentication file is invalid or expired.',
+                            'error'
+                        );
+
+                        this.popupManager.showErrorPopup({
+                            message: 'File Authentication Failed',
+                            detailedMessage: result.message || 'The authentication file could not be verified. Please check the file and try again.',
+                            attemptsRemaining: 5,
+                            totalAttempts: 5,
+                            isBanned: false,
+                            lockoutSeconds: 0
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('File authentication error:', error);
+                    this.showValidationResult('Error during file authentication. Please try again.', 'error');
+
+                    this.popupManager.showErrorPopup({
+                        message: 'Upload Error',
+                        detailedMessage: 'Failed to upload and authenticate the file. Please check your connection and try again.',
+                        attemptsRemaining: 5,
+                        totalAttempts: 5,
+                        isBanned: false,
+                        lockoutSeconds: 0
+                    });
+                }
+            }
+
+            async readFileAsText(file) {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => resolve(e.target.result);
+                    reader.onerror = (e) => reject(e);
+                    reader.readAsText(file);
+                });
+            }
+
+            removeFile() {
+                this.currentUploadedFile = null;
+                const fileInfo = document.getElementById('file-info');
+                const validationResult = document.getElementById('validation-result');
+                const fileInput = document.getElementById('file-upload');
+
+                if (fileInfo) {
+                    fileInfo.classList.add('hidden');
+                    fileInfo.innerHTML = '';
+                }
+
+                if (validationResult) {
+                    validationResult.classList.add('hidden');
+                    validationResult.innerHTML = '';
+                }
+
+                if (fileInput) {
+                    fileInput.value = '';
+                }
+
+                console.log('[LOGIN] File removed from upload area');
+            }
+
+            showValidationResult(message, type) {
+                const validationResult = document.getElementById('validation-result');
+                if (!validationResult) return;
+
+                let bgColor, textColor, icon;
+
+                switch(type) {
+                    case 'success':
+                        bgColor = 'bg-green-50 border-green-200';
+                        textColor = 'text-green-800';
+                        icon = '✓';
+                        break;
+                    case 'error':
+                        bgColor = 'bg-red-50 border-red-200';
+                        textColor = 'text-red-800';
+                        icon = '✗';
+                        break;
+                    case 'warning':
+                        bgColor = 'bg-yellow-50 border-yellow-200';
+                        textColor = 'text-yellow-800';
+                        icon = '⚠';
+                        break;
+                    case 'validating':
+                        bgColor = 'bg-blue-50 border-blue-200';
+                        textColor = 'text-blue-800';
+                        icon = '⟳';
+                        break;
+                    default:
+                        bgColor = 'bg-neutral-50 border-neutral-200';
+                        textColor = 'text-neutral-800';
+                        icon = 'ℹ';
+                }
+
+                validationResult.innerHTML = `
+                    <div class="border rounded-md p-3 ${bgColor}">
+                        <div class="flex items-start">
+                            <span class="mr-2">${icon}</span>
+                            <span class="text-sm ${textColor}">${message}</span>
+                        </div>
+                    </div>
+                `;
+
+                validationResult.classList.remove('hidden');
+
+                // Auto-hide validation result after 5 seconds for non-error messages
+                if (type !== 'error' && type !== 'validating') {
+                    setTimeout(() => {
+                        validationResult.classList.add('hidden');
+                    }, 5000);
+                }
+            }
+
+            setLoading(loading) {
+                const button = document.getElementById('login-button');
+                const text = document.getElementById('login-text');
+                const spinner = document.getElementById('login-spinner');
+
+                if (button && text && spinner) {
+                    if (loading) {
+                        button.disabled = true;
+                        text.textContent = 'Signing in...';
+                        spinner.classList.remove('hidden');
+                    } else {
+                        button.disabled = false;
+                        text.textContent = 'Sign in';
+                        spinner.classList.add('hidden');
+                    }
+                }
+            }
+
+            showNotification(message, type = 'success') {
+                const notification = document.getElementById('notification');
+                if (notification) {
+                    notification.textContent = message;
+                    notification.className = `notification ${type}`;
+                    notification.classList.add('show');
+
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                    }, 3000);
+                }
+            }
+
+            formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+        }
+
+        // Initialize login manager when DOM is ready
+        let loginManager;
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                loginManager = new LoginManager();
+                window.loginManager = loginManager;
+            });
+        } else {
+            loginManager = new LoginManager();
+            window.loginManager = loginManager;
+        }
+    </script>
+</body>
+</html>

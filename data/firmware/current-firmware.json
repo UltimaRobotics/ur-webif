@@ -1,0 +1,17 @@
+
+{
+  "current_version": "v2.4.7",
+  "build_number": "Build 20250115",
+  "device_model": "RT-AX86U",
+  "hardware_revision": "Hardware Rev. 1.2",
+  "build_date": "Jan 15, 2025",
+  "build_time": "14:32 UTC",
+  "uptime": "7d 14h 10m",
+  "uptime_description": "Since last reboot",
+  "release_notes_link": "View v2.4.7 Release Notes",
+  "digitally_signed": true,
+  "verification_status": "Digitally Signed & Verified",
+  "status": "Active",
+  "verified": true,
+  "last_updated": "2025-01-15T14:32:00Z"
+}

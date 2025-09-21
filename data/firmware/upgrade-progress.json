@@ -1,0 +1,64 @@
+{
+  "current_stage": "writing_flash",
+  "estimated_completion": "2025-01-18T14:35:00Z",
+  "last_updated": "1758187553541",
+  "new_firmware": {
+    "build_date": "Feb 10, 2025",
+    "release_notes": [
+      "Added support for WiFi 6 protocols",
+      "Improved power management for 30% longer battery life",
+      "Enhanced OTA update mechanism"
+    ],
+    "version": "v2.5.0"
+  },
+  "progress_percentage": 100,
+  "stages": [
+    {
+      "description": "1.2 MB downloaded successfully",
+      "icon": "check",
+      "id": "download",
+      "name": "Downloading firmware",
+      "status": "complete"
+    },
+    {
+      "description": "Checksum verification passed",
+      "icon": "check",
+      "id": "verify",
+      "name": "Verifying firmware integrity",
+      "status": "complete"
+    },
+    {
+      "description": "Writing to sectors 0x10000-0x3FFFF (67% complete)",
+      "icon": "gear",
+      "id": "write_flash",
+      "name": "Writing flash memory",
+      "status": "in_progress"
+    },
+    {
+      "description": "Pending completion of flash write",
+      "icon": "arrows-rotate",
+      "id": "reboot",
+      "name": "Rebooting device",
+      "status": "pending"
+    }
+  ],
+  "started_at": "2025-01-18T14:32:15Z",
+  "status": "in_progress",
+  "tftp_percentage": -1,
+  "tftp_status": "Download failed: Receive timeout or network error",
+  "upgrade_id": "upgrade_1757175833428",
+  "upgrade_log": [
+    "[14:32:15] Starting firmware upgrade process...",
+    "[14:32:16] Connecting to device RT-AX86U",
+    "[14:32:17] Device info: RT-AX86U, 4MB Flash",
+    "[14:32:18] Downloading firmware v2.5.0 from server...",
+    "[14:32:45] Download complete: 1,247,832 bytes",
+    "[14:32:46] Verifying firmware checksum...",
+    "[14:32:47] Checksum verified: SHA256 match",
+    "[14:32:48] Entering bootloader mode...",
+    "[14:32:49] Erasing flash sectors 0x10000-0x3FFFF...",
+    "[14:32:52] Flash erase complete",
+    "[14:32:53] Writing firmware to flash...",
+    "[14:33:15] Writing sector 0x25000... 68% complete"
+  ]
+}

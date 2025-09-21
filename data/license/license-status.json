@@ -1,0 +1,34 @@
+{
+  "enabled_features": [
+    "5G Modem Support",
+    "Advanced VPN",
+    "Enterprise Firewall",
+    "Mesh Networking",
+    "Load Balancing",
+    "Traffic Analytics",
+    "API Access",
+    "Priority Support"
+  ],
+  "last_updated": 1757170398,
+  "license_info": {
+    "activation_status": "Active",
+    "expiry_date": "1788706398",
+    "health_score": 98,
+    "license_id": "LIC-ssss",
+    "license_type": "Standard License",
+    "remaining_days": 365,
+    "start_date": "1757170398"
+  },
+  "usage_stats": {
+    "api_calls_today": 1247,
+    "bandwidth_used_gb": 2.3,
+    "storage_used_mb": 156,
+    "users_active": 5
+  },
+  "validity_info": {
+    "is_active": true,
+    "is_expired": false,
+    "next_validation": "2025-01-20",
+    "validation_interval_days": 7
+  }
+}

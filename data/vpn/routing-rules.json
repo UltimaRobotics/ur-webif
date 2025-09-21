@@ -1,0 +1,54 @@
+{
+  "routing_rules": [
+    {
+      "created_date": "2024-01-15",
+      "destination": "0.0.0.0/0",
+      "enabled": true,
+      "gateway": "VPN Server",
+      "id": "rule_1",
+      "last_modified": "2024-01-15",
+      "name": "Default Route",
+      "priority": 1,
+      "type": "tunnel_all",
+      "vpn_profile": "profile_1"
+    },
+    {
+      "apply_to_existing": false,
+      "created_date": "2024-01-15",
+      "description": "",
+      "destination": "10.14.0.1",
+      "enabled": true,
+      "gateway": "VPN Server",
+      "id": "rule_2",
+      "last_modified": "2025-09-05T19:54:39Z",
+      "log_traffic": false,
+      "name": "Local Network bridge",
+      "priority": 2,
+      "protocol": "both",
+      "source_type": "IP Address",
+      "source_value": "10.14.0.1",
+      "type": "tunnel_all",
+      "vpn_instance": "US East Coast (OpenVPN)",
+      "vpn_profile": "US East Coast (OpenVPN)"
+    },
+    {
+      "apply_to_existing": false,
+      "created_date": "2025-09-05T20:01:11Z",
+      "description": "",
+      "destination": "10.14.0.15",
+      "enabled": true,
+      "gateway": "VPN Server",
+      "id": "rule_1757102471813",
+      "last_modified": "2025-09-05T20:01:11Z",
+      "log_traffic": false,
+      "name": "Fehmi Yousfi",
+      "priority": 1,
+      "protocol": "udp",
+      "source_type": "IP Address",
+      "source_value": "10.14.0.15",
+      "type": "tunnel_all",
+      "vpn_instance": "US East Coast (OpenVPN)",
+      "vpn_profile": "US East Coast (OpenVPN)"
+    }
+  ]
+}

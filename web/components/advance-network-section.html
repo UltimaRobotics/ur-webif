@@ -1,0 +1,2503 @@
+<!-- Advanced Network Configuration Section - Complete with Embedded JavaScript -->
+<section class="advanced-network-container">
+    <!-- Main Section Card -->
+    <div class="main-section-card bg-white rounded-xl shadow-sm border border-neutral-200">
+
+        <!-- Enhanced Section Header -->
+        <header class="section-header border-b border-neutral-200 p-6">
+            <div class="header-content flex items-center justify-between">
+                <div class="header-info flex items-center space-x-4">
+                    <div class="icon-container w-12 h-12 bg-gradient-to-br from-blue-50 to-indigo-50 rounded-xl flex items-center justify-center">
+                        <i class="fa-solid fa-network-wired text-blue-600 text-xl"></i>
+                    </div>
+                    <div class="title-content">
+                        <h1 class="section-title text-2xl font-semibold text-neutral-900 mb-1">Advanced Network Configuration</h1>
+                        <p class="section-subtitle text-neutral-600 text-sm">Configure VLANs, NAT rules, firewall policies, static routes, and network bridges</p>
+                    </div>
+                </div>
+                <div class="header-actions flex items-center space-x-3">
+                    <!-- Refresh Button -->
+                    <button id="refresh-data-btn" class="action-btn px-4 py-2 bg-neutral-100 hover:bg-neutral-200 text-neutral-700 rounded-lg flex items-center space-x-2 transition-all duration-200">
+                        <i class="fa-solid fa-arrows-rotate text-sm"></i>
+                        <span class="text-sm font-medium">Refresh</span>
+                    </button>
+                    <!-- Collapse Toggle -->
+                    <button id="main-toggle-btn" class="collapse-btn w-10 h-10 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="main-content">
+                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200" id="main-chevron"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Status Bar -->
+            <div class="status-bar mt-4 p-3 bg-neutral-50 rounded-lg">
+                <div class="status-content flex items-center justify-between">
+                    <div class="status-info flex items-center space-x-6">
+                        <div class="status-item flex items-center space-x-2">
+                            <div class="status-indicator w-2 h-2 bg-green-500 rounded-full"></div>
+                            <span class="text-sm text-neutral-600">Network Status: <span class="font-medium text-green-600" id="network-status">Operational</span></span>
+                        </div>
+                        <div class="status-item flex items-center space-x-2">
+                            <i class="fa-solid fa-clock text-neutral-400 text-xs"></i>
+                            <span class="text-sm text-neutral-600">Last Updated: <span id="last-updated-time">Never</span></span>
+                        </div>
+                    </div>
+                    <div class="loading-indicator hidden" id="main-loading">
+                        <i class="fa-solid fa-spinner fa-spin text-neutral-400"></i>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content Container -->
+        <div class="main-content" id="main-content">
+            <div class="content-wrapper p-6 space-y-8">
+
+                <!-- VLAN Configuration Section -->
+                <div class="config-section" id="vlan-section" data-section="vlans">
+                    <div class="section-card bg-white rounded-lg border border-neutral-200 shadow-sm">
+                        <!-- Section Header -->
+                        <div class="section-header border-b border-neutral-200 p-4">
+                            <div class="header-row flex items-center justify-between">
+                                <div class="header-left flex items-center space-x-3">
+                                    <div class="section-icon w-8 h-8 bg-purple-50 rounded-lg flex items-center justify-center">
+                                        <i class="fa-solid fa-sitemap text-purple-600 text-sm"></i>
+                                    </div>
+                                    <div class="header-text">
+                                        <h2 class="section-name text-lg font-semibold text-neutral-900">VLAN Configuration</h2>
+                                        <p class="section-desc text-sm text-neutral-500">Manage virtual LAN segments and port assignments</p>
+                                    </div>
+                                    <div class="item-count ml-4">
+                                        <span class="count-badge bg-purple-100 text-purple-700 text-xs px-2 py-1 rounded-full font-medium" id="vlan-count">0 VLANs</span>
+                                    </div>
+                                </div>
+                                <div class="header-right flex items-center space-x-3">
+                                    <button class="add-btn px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center space-x-2 transition-all duration-200" id="add-vlan-btn">
+                                        <i class="fa-solid fa-plus text-sm"></i>
+                                        <span class="text-sm font-medium">Add VLAN</span>
+                                    </button>
+                                    <button class="section-toggle-btn w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="vlan-content">
+                                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Section Content -->
+                        <div class="section-content" id="vlan-content">
+                            <div class="content-area p-6">
+                                <div class="data-table-container">
+                                    <div class="table-wrapper overflow-x-auto">
+                                        <table class="data-table w-full">
+                                            <thead>
+                                                <tr class="table-header bg-neutral-50 border-b border-neutral-200">
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">VLAN ID</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Name</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Assigned Ports</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Tagged</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Priority</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Status</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="vlan-table-body">
+                                                <!-- VLAN data will be populated by JavaScript -->
+                                                <tr class="empty-state">
+                                                    <td colspan="7" class="py-8 text-center text-neutral-500">
+                                                        <div class="empty-content">
+                                                            <i class="fa-solid fa-sitemap text-neutral-300 text-2xl mb-3"></i>
+                                                            <p class="text-sm">No VLANs configured</p>
+                                                            <p class="text-xs text-neutral-400 mt-1">Add a VLAN to get started</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NAT Rules Section -->
+                <div class="config-section" id="nat-section" data-section="nat-rules">
+                    <div class="section-card bg-white rounded-lg border border-neutral-200 shadow-sm">
+                        <div class="section-header border-b border-neutral-200 p-4">
+                            <div class="header-row flex items-center justify-between">
+                                <div class="header-left flex items-center space-x-3">
+                                    <div class="section-icon w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center">
+                                        <i class="fa-solid fa-route text-green-600 text-sm"></i>
+                                    </div>
+                                    <div class="header-text">
+                                        <h2 class="section-name text-lg font-semibold text-neutral-900">NAT Rules</h2>
+                                        <p class="section-desc text-sm text-neutral-500">Configure network address translation rules</p>
+                                    </div>
+                                    <div class="item-count ml-4">
+                                        <span class="count-badge bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium" id="nat-count">0 Rules</span>
+                                    </div>
+                                </div>
+                                <div class="header-right flex items-center space-x-3">
+                                    <button class="add-btn px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg flex items-center space-x-2 transition-all duration-200" id="add-nat-rule-btn">
+                                        <i class="fa-solid fa-plus text-sm"></i>
+                                        <span class="text-sm font-medium">Add NAT Rule</span>
+                                    </button>
+                                    <button class="section-toggle-btn w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="nat-content">
+                                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-content" id="nat-content">
+                            <div class="content-area p-6">
+                                <div class="data-table-container">
+                                    <div class="table-wrapper overflow-x-auto">
+                                        <table class="data-table w-full">
+                                            <thead>
+                                                <tr class="table-header bg-neutral-50 border-b border-neutral-200">
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Rule ID</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Type</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Source</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Destination</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Protocol</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Ports</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="nat-table-body">
+                                                <tr class="empty-state">
+                                                    <td colspan="7" class="py-8 text-center text-neutral-500">
+                                                        <div class="empty-content">
+                                                            <i class="fa-solid fa-route text-neutral-300 text-2xl mb-3"></i>
+                                                            <p class="text-sm">No NAT rules configured</p>
+                                                            <p class="text-xs text-neutral-400 mt-1">Add a NAT rule to get started</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Firewall Rules Section -->
+                <div class="config-section" id="firewall-section" data-section="firewall-rules">
+                    <div class="section-card bg-white rounded-lg border border-neutral-200 shadow-sm">
+                        <div class="section-header border-b border-neutral-200 p-4">
+                            <div class="header-row flex items-center justify-between">
+                                <div class="header-left flex items-center space-x-3">
+                                    <div class="section-icon w-8 h-8 bg-red-50 rounded-lg flex items-center justify-center">
+                                        <i class="fa-solid fa-shield-halved text-red-600 text-sm"></i>
+                                    </div>
+                                    <div class="header-text">
+                                        <h2 class="section-name text-lg font-semibold text-neutral-900">Firewall Rules</h2>
+                                        <p class="section-desc text-sm text-neutral-500">Manage network security and access control</p>
+                                    </div>
+                                    <div class="item-count ml-4">
+                                        <span class="count-badge bg-red-100 text-red-700 text-xs px-2 py-1 rounded-full font-medium" id="firewall-count">0 Rules</span>
+                                    </div>
+                                </div>
+                                <div class="header-right flex items-center space-x-3">
+                                    <button class="add-btn px-4 py-2 bg-red-600 hover:bg-red-700 text-white rounded-lg flex items-center space-x-2 transition-all duration-200" id="add-firewall-rule-btn">
+                                        <i class="fa-solid fa-plus text-sm"></i>
+                                        <span class="text-sm font-medium">Add Rule</span>
+                                    </button>
+                                    <button class="section-toggle-btn w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="firewall-content">
+                                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-content" id="firewall-content">
+                            <div class="content-area p-6">
+                                <div class="data-table-container">
+                                    <div class="table-wrapper overflow-x-auto">
+                                        <table class="data-table w-full">
+                                            <thead>
+                                                <tr class="table-header bg-neutral-50 border-b border-neutral-200">
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Rule ID</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Name</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Direction</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Source</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Destination</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Protocol</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Action</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Logging</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="firewall-table-body">
+                                                <tr class="empty-state">
+                                                    <td colspan="9" class="py-8 text-center text-neutral-500">
+                                                        <div class="empty-content">
+                                                            <i class="fa-solid fa-shield-halved text-neutral-300 text-2xl mb-3"></i>
+                                                            <p class="text-sm">No firewall rules configured</p>
+                                                            <p class="text-xs text-neutral-400 mt-1">Add a firewall rule to get started</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Static Routes Section -->
+                <div class="config-section" id="routing-section" data-section="static-routes">
+                    <div class="section-card bg-white rounded-lg border border-neutral-200 shadow-sm">
+                        <div class="section-header border-b border-neutral-200 p-4">
+                            <div class="header-row flex items-center justify-between">
+                                <div class="header-left flex items-center space-x-3">
+                                    <div class="section-icon w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center">
+                                        <i class="fa-solid fa-map-signs text-blue-600 text-sm"></i>
+                                    </div>
+                                    <div class="header-text">
+                                        <h2 class="section-name text-lg font-semibold text-neutral-900">Static Routes</h2>
+                                        <p class="section-desc text-sm text-neutral-500">Configure custom network routing paths</p>
+                                    </div>
+                                    <div class="item-count ml-4">
+                                        <span class="count-badge bg-blue-100 text-blue-700 text-xs px-2 py-1 rounded-full font-medium" id="routes-count">0 Routes</span>
+                                    </div>
+                                </div>
+                                <div class="header-right flex items-center space-x-3">
+                                    <button class="add-btn px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg flex items-center space-x-2 transition-all duration-200" id="add-static-route-btn">
+                                        <i class="fa-solid fa-plus text-sm"></i>
+                                        <span class="text-sm font-medium">Add Route</span>
+                                    </button>
+                                    <button class="section-toggle-btn w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="routing-content">
+                                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-content" id="routing-content">
+                            <div class="content-area p-6">
+                                <div class="data-table-container">
+                                    <div class="table-wrapper overflow-x-auto">
+                                        <table class="data-table w-full">
+                                            <thead>
+                                                <tr class="table-header bg-neutral-50 border-b border-neutral-200">
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Name</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Destination Network</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Subnet Mask</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Gateway</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Interface</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Metric</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Status</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="routing-table-body">
+                                                <tr class="empty-state">
+                                                    <td colspan="8" class="py-8 text-center text-neutral-500">
+                                                        <div class="empty-content">
+                                                            <i class="fa-solid fa-map-signs text-neutral-300 text-2xl mb-3"></i>
+                                                            <p class="text-sm">No static routes configured</p>
+                                                            <p class="text-xs text-neutral-400 mt-1">Add a static route to get started</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Network Bridges Section -->
+                <div class="config-section" id="bridge-section" data-section="bridges">
+                    <div class="section-card bg-white rounded-lg border border-neutral-200 shadow-sm">
+                        <div class="section-header border-b border-neutral-200 p-4">
+                            <div class="header-row flex items-center justify-between">
+                                <div class="header-left flex items-center space-x-3">
+                                    <div class="section-icon w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center">
+                                        <i class="fa-solid fa-bridge text-orange-600 text-sm"></i>
+                                    </div>
+                                    <div class="header-text">
+                                        <h2 class="section-name text-lg font-semibold text-neutral-900">Network Bridges</h2>
+                                        <p class="section-desc text-sm text-neutral-500">Manage bridge interfaces and member connections</p>
+                                    </div>
+                                    <div class="item-count ml-4">
+                                        <span class="count-badge bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium" id="bridges-count">0 Bridges</span>
+                                    </div>
+                                </div>
+                                <div class="header-right flex items-center space-x-3">
+                                    <button class="add-btn px-4 py-2 bg-orange-600 hover:bg-orange-700 text-white rounded-lg flex items-center space-x-2 transition-all duration-200" id="create-bridge-btn">
+                                        <i class="fa-solid fa-plus text-sm"></i>
+                                        <span class="text-sm font-medium">Create Bridge</span>
+                                    </button>
+                                    <button class="section-toggle-btn w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center transition-all duration-200" data-target="bridge-content">
+                                        <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="section-content" id="bridge-content">
+                            <div class="content-area p-6">
+                                <div class="data-table-container">
+                                    <div class="table-wrapper overflow-x-auto">
+                                        <table class="data-table w-full">
+                                            <thead>
+                                                <tr class="table-header bg-neutral-50 border-b border-neutral-200">
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Bridge Name</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">IP Address</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Member Interfaces</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">STP</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Priority</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Status</th>
+                                                    <th class="table-cell py-3 px-4 text-left text-sm font-medium text-neutral-600">Actions</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="bridges-table-body">
+                                                <tr class="empty-state">
+                                                    <td colspan="7" class="py-8 text-center text-neutral-500">
+                                                        <div class="empty-content">
+                                                            <i class="fa-solid fa-bridge text-neutral-300 text-2xl mb-3"></i>
+                                                            <p class="text-sm">No network bridges configured</p>
+                                                            <p class="text-xs text-neutral-400 mt-1">Create a bridge to get started</p>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Apply Configuration Section -->
+                <div class="apply-section">
+                    <div class="apply-card bg-gradient-to-r from-blue-50 to-indigo-50 rounded-lg border border-blue-200 p-6">
+                        <div class="apply-content flex items-center justify-between">
+                            <div class="apply-info">
+                                <h3 class="text-lg font-semibold text-neutral-900 mb-1">Apply Network Configuration</h3>
+                                <p class="text-sm text-neutral-600">Save and activate all pending network configuration changes</p>
+                            </div>
+                            <div class="apply-actions flex items-center space-x-3">
+                                <button id="save-config-btn" class="px-4 py-2 bg-white border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-all duration-200">
+                                    <i class="fa-solid fa-floppy-disk text-sm mr-2"></i>
+                                    Save
+                                </button>
+                                <button id="apply-config-btn" class="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-all duration-200">
+                                    <i class="fa-solid fa-check text-sm mr-2"></i>
+                                    Apply Changes
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popup Overlays -->
+    <div id="popup-overlay" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+        <div id="popup-container" class="bg-white rounded-lg shadow-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto"></div>
+    </div>
+</section>
+
+<style>
+/* Enhanced Styles for Advanced Network Section */
+.advanced-network-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+.main-section-card {
+    transition: all 0.3s ease;
+}
+
+.section-header {
+    background: linear-gradient(135deg, #fafafa 0%, #f8f9fa 100%);
+}
+
+.icon-container {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.section-card {
+    transition: all 0.2s ease;
+    border: 1px solid #e5e7eb;
+}
+
+.section-card:hover {
+    shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    border-color: #d1d5db;
+}
+
+.data-table {
+    border-collapse: separate;
+    border-spacing: 0;
+}
+
+.data-table th,
+.data-table td {
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.data-table tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.data-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.empty-state {
+    background: #fafbfc;
+}
+
+.empty-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.action-btn,
+.add-btn,
+.reset-btn,
+.apply-btn {
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn:hover,
+.add-btn:hover,
+.reset-btn:hover,
+.apply-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.count-badge {
+    font-weight: 500;
+    letter-spacing: 0.025em;
+}
+
+.status-indicator {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.section-content {
+    transition: all 0.3s ease;
+    overflow: hidden;
+}
+
+.section-content.collapsed {
+    max-height: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.loading-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .header-info {
+        align-self: stretch;
+    }
+
+    .header-actions {
+        align-self: stretch;
+        justify-content: flex-end;
+    }
+
+    .header-row {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .header-right {
+        align-self: stretch;
+        justify-content: flex-end;
+    }
+
+    .apply-content {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .apply-actions {
+        align-self: stretch;
+        justify-content: stretch;
+    }
+
+    .apply-actions button {
+        flex: 1;
+    }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .main-section-card {
+        background-color: #1f2937;
+        border-color: #374151;
+    }
+
+    .section-header {
+        background: linear-gradient(135deg, #1f2937 0%, #111827 100%);
+        border-color: #374151;
+    }
+
+    .section-title,
+    .section-name,
+    .apply-title {
+        color: #f9fafb;
+    }
+
+    .section-subtitle,
+    .section-desc,
+    .apply-desc {
+        color: #d1d5db;
+    }
+}
+
+/* Popup specific styles */
+.advanced-network-popup .popup-close,
+.advanced-network-popup .popup-cancel,
+.advanced-network-popup .popup-submit {
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.advanced-network-popup label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: #374151;
+}
+
+.advanced-network-popup input[type="text"],
+.advanced-network-popup input[type="number"],
+.advanced-network-popup select,
+.advanced-network-popup textarea {
+    border: 1px solid #d1d5db;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.9375rem;
+    width: 100%;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.advanced-network-popup input:focus,
+.advanced-network-popup select:focus,
+.advanced-network-popup textarea:focus {
+    outline: none;
+    box-shadow: 0 0 0 2px #8b5cf6;
+    border-color: transparent;
+}
+
+.advanced-network-popup .form-hint {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.advanced-network-popup .advanced-options-section {
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.advanced-network-popup .advanced-options-section label {
+    font-weight: normal;
+    color: #4b5563;
+}
+
+.advanced-network-popup .advanced-options-section input[type="checkbox"] {
+    margin-right: 0.75rem;
+    color: #8b5cf6;
+    accent-color: #8b5cf6;
+}
+
+/* Apply section styling adjustment */
+.apply-card {
+    background: linear-gradient(to right, #eff6ff, #e0e7ff);
+    border: 1px solid #dbeafe;
+}
+
+.apply-card h3 {
+    color: #1d4ed8;
+}
+</style>
+
+<script>
+(function() {
+    'use strict';
+
+    console.log('[ADVANCED-NETWORK] Initializing AdvancedNetworkSection...');
+
+    // Configuration
+    const config = {
+        autoRefreshInterval: 30000,
+        enableAutoRefresh: true,
+        retryAttempts: 3,
+        retryDelay: 1000
+    };
+
+    // API endpoints
+    const endpoints = {
+        vlans: '/api/advanced-network/vlans',
+        natRules: '/api/advanced-network/nat-rules',
+        firewallRules: '/api/advanced-network/firewall-rules',
+        staticRoutes: '/api/advanced-network/static-routes',
+        bridges: '/api/advanced-network/bridges'
+    };
+
+    // State management
+    let state = {
+        vlans: [],
+        natRules: [],
+        firewallRules: [],
+        staticRoutes: [],
+        bridges: [],
+        loading: false,
+        lastUpdated: null,
+        editingItem: null
+    };
+
+    // Request state management
+    const requestState = {
+        pendingRequests: new Map(),
+        retryAttempts: new Map()
+    };
+
+    // Auto-refresh timer
+    let autoRefreshTimer = null;
+
+    /**
+     * Initialize the section
+     */
+    async function init() {
+        try {
+            console.log('[ADVANCED-NETWORK] Initializing section...');
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', () => setupEventHandlers());
+            } else {
+                setupEventHandlers();
+            }
+
+            await loadAllData();
+            startAutoRefresh();
+
+            console.log('[ADVANCED-NETWORK] Section initialized successfully');
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to initialize:', error);
+        }
+    }
+
+    /**
+     * Setup event handlers
+     */
+    function setupEventHandlers() {
+        setupAddButtons();
+        setupTableActions();
+        setupPopupHandlers();
+        setupSectionToggles();
+        setupRefreshButton();
+        setupApplyButtons();
+    }
+
+    function setupAddButtons() {
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('#add-vlan-btn, .add-vlan-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Add VLAN button clicked');
+                showVlanPopup();
+            }
+
+            if (e.target.matches('#add-nat-rule-btn, .add-nat-rule-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Add NAT rule button clicked');
+                showNatRulePopup();
+            }
+
+            if (e.target.matches('#add-firewall-rule-btn, .add-firewall-rule-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Add firewall rule button clicked');
+                showFirewallRulePopup();
+            }
+
+            if (e.target.matches('#add-static-route-btn, .add-static-route-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Add static route button clicked');
+                showStaticRoutePopup();
+            }
+
+            if (e.target.matches('#create-bridge-btn, .create-bridge-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Create bridge button clicked');
+                showBridgePopup();
+            }
+        });
+    }
+
+    function setupTableActions() {
+        document.addEventListener('click', async (e) => {
+            // Handle edit button clicks
+            if (e.target.classList.contains('fa-edit') || e.target.closest('.edit-btn')) {
+                e.preventDefault();
+                const button = e.target.closest('.edit-btn') || e.target;
+                const itemId = button.dataset.id || button.getAttribute('data-id');
+                const sectionType = button.dataset.section || button.getAttribute('data-section');
+
+                if (itemId && sectionType) {
+                    console.log('[ADVANCED-NETWORK] Edit clicked for:', { itemId, sectionType });
+                    await handleEdit(itemId, sectionType);
+                }
+                return;
+            }
+
+            // Handle delete button clicks
+            if (e.target.classList.contains('fa-trash') || e.target.closest('.delete-btn')) {
+                e.preventDefault();
+                const button = e.target.closest('.delete-btn') || e.target;
+                const itemId = button.dataset.id || button.getAttribute('data-id');
+                const sectionType = button.dataset.section || button.getAttribute('data-section');
+
+                if (itemId && sectionType) {
+                    console.log('[ADVANCED-NETWORK] Delete clicked for:', { itemId, sectionType });
+                    await handleDelete(itemId, sectionType);
+                }
+                return;
+            }
+
+            // Handle toggle button clicks
+            if (e.target.classList.contains('fa-power-off') || e.target.closest('.toggle-btn')) {
+                e.preventDefault();
+                const button = e.target.closest('.toggle-btn') || e.target;
+                const itemId = button.dataset.id || button.getAttribute('data-id');
+                const sectionType = button.dataset.section || button.getAttribute('data-section');
+
+                if (itemId && sectionType) {
+                    console.log('[ADVANCED-NETWORK] Toggle clicked for:', { itemId, sectionType });
+                    await handleToggle(itemId, sectionType);
+                }
+                return;
+            }
+        });
+    }
+
+    function setupPopupHandlers() {
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('popup-close') || 
+                e.target.classList.contains('popup-cancel') ||
+                e.target.closest('.popup-close') ||
+                e.target.closest('.popup-cancel')) {
+                closeAllPopups();
+            }
+        });
+
+        document.addEventListener('click', async (e) => {
+            if (e.target.classList.contains('popup-submit') || 
+                e.target.closest('.popup-submit')) {
+                await handlePopupSubmit(e.target);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeAllPopups();
+            }
+        });
+
+        // Close popup when clicking overlay
+        document.addEventListener('click', (e) => {
+            if (e.target.id === 'popup-overlay') {
+                closeAllPopups();
+            }
+        });
+    }
+
+    function setupSectionToggles() {
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('.section-toggle-btn') || e.target.closest('.section-toggle-btn')) {
+                const button = e.target.closest('.section-toggle-btn');
+                const targetId = button.getAttribute('data-target');
+                const content = document.getElementById(targetId);
+                const icon = button.querySelector('i');
+
+                if (content && icon) {
+                    if (content.style.display === 'none') {
+                        content.style.display = 'block';
+                        icon.style.transform = 'rotate(0deg)';
+                    } else {
+                        content.style.display = 'none';
+                        icon.style.transform = 'rotate(-90deg)';
+                    }
+                }
+            }
+        });
+    }
+
+    function setupRefreshButton() {
+        document.addEventListener('click', async (e) => {
+            if (e.target.matches('#refresh-data-btn') || e.target.closest('#refresh-data-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Refresh button clicked');
+                await loadAllData();
+            }
+        });
+    }
+
+    function setupApplyButtons() {
+        document.addEventListener('click', async (e) => {
+            if (e.target.matches('#save-config-btn') || e.target.closest('#save-config-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Save config button clicked');
+                await saveConfiguration();
+            }
+
+            if (e.target.matches('#apply-config-btn') || e.target.closest('#apply-config-btn')) {
+                e.preventDefault();
+                console.log('[ADVANCED-NETWORK] Apply config button clicked');
+                await applyConfiguration();
+            }
+        });
+    }
+
+    /**
+     * Auto-refresh functionality
+     */
+    function startAutoRefresh() {
+        if (config.enableAutoRefresh && !autoRefreshTimer) {
+            autoRefreshTimer = setInterval(async () => {
+                console.log('[ADVANCED-NETWORK] Auto-refreshing data...');
+                await loadAllDataSilently();
+            }, config.autoRefreshInterval);
+            console.log('[ADVANCED-NETWORK] Auto-refresh started');
+        }
+    }
+
+    function stopAutoRefresh() {
+        if (autoRefreshTimer) {
+            clearInterval(autoRefreshTimer);
+            autoRefreshTimer = null;
+            console.log('[ADVANCED-NETWORK] Auto-refresh stopped');
+        }
+    }
+
+    /**
+     * Data loading methods
+     */
+    async function loadAllData() {
+        if (state.loading) return;
+
+        state.loading = true;
+        setLoadingState(true);
+        console.log('[ADVANCED-NETWORK] Loading all data...');
+
+        try {
+            const loadPromises = [
+                loadVlans(),
+                loadNatRules(),
+                loadFirewallRules(),
+                loadStaticRoutes(),
+                loadBridges()
+            ];
+
+            await Promise.allSettled(loadPromises);
+            state.lastUpdated = new Date();
+            updateLastUpdatedTime();
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load data:', error);
+        } finally {
+            state.loading = false;
+            setLoadingState(false);
+        }
+    }
+
+    async function loadAllDataSilently() {
+        if (state.loading) return;
+
+        state.loading = true;
+        console.log('[ADVANCED-NETWORK] Silently refreshing data...');
+
+        try {
+            const loadPromises = [
+                loadVlans(),
+                loadNatRules(),
+                loadFirewallRules(),
+                loadStaticRoutes(),
+                loadBridges()
+            ];
+
+            await Promise.allSettled(loadPromises);
+            state.lastUpdated = new Date();
+            updateLastUpdatedTime();
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to refresh data:', error);
+        } finally {
+            state.loading = false;
+        }
+    }
+
+    async function loadVlans() {
+        try {
+            const response = await makeRequest('GET', endpoints.vlans);
+            if (response && response.success) {
+                state.vlans = response.vlans || [];
+                renderVlans();
+                updateVlanCount();
+                console.log('[ADVANCED-NETWORK] VLANs loaded:', state.vlans.length);
+            } else {
+                throw new Error(response?.message || 'Failed to load VLANs');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load VLANs:', error);
+            state.vlans = [];
+            renderVlans();
+            updateVlanCount();
+        }
+    }
+
+    async function loadNatRules() {
+        try {
+            const response = await makeRequest('GET', endpoints.natRules);
+            if (response && response.success) {
+                state.natRules = response.nat_rules || [];
+                renderNatRules();
+                updateNatCount();
+                console.log('[ADVANCED-NETWORK] NAT rules loaded:', state.natRules.length);
+            } else {
+                throw new Error(response?.message || 'Failed to load NAT rules');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load NAT rules:', error);
+            state.natRules = [];
+            renderNatRules();
+            updateNatCount();
+        }
+    }
+
+    async function loadFirewallRules() {
+        try {
+            const response = await makeRequest('GET', endpoints.firewallRules);
+            if (response && response.success) {
+                state.firewallRules = response.firewall_rules || [];
+                renderFirewallRules();
+                updateFirewallCount();
+                console.log('[ADVANCED-NETWORK] Firewall rules loaded:', state.firewallRules.length);
+            } else {
+                throw new Error(response?.message || 'Failed to load firewall rules');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load firewall rules:', error);
+            state.firewallRules = [];
+            renderFirewallRules();
+            updateFirewallCount();
+        }
+    }
+
+    async function loadStaticRoutes() {
+        try {
+            const response = await makeRequest('GET', endpoints.staticRoutes);
+            if (response && response.success) {
+                state.staticRoutes = response.static_routes || [];
+                renderStaticRoutes();
+                updateRoutesCount();
+                console.log('[ADVANCED-NETWORK] Static routes loaded:', state.staticRoutes.length);
+            } else {
+                throw new Error(response?.message || 'Failed to load static routes');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load static routes:', error);
+            state.staticRoutes = [];
+            renderStaticRoutes();
+            updateRoutesCount();
+        }
+    }
+
+    async function loadBridges() {
+        try {
+            const response = await makeRequest('GET', endpoints.bridges);
+            if (response && response.success) {
+                state.bridges = response.bridges || [];
+                renderBridges();
+                updateBridgesCount();
+                console.log('[ADVANCED-NETWORK] Bridges loaded:', state.bridges.length);
+            } else {
+                throw new Error(response?.message || 'Failed to load bridges');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to load bridges:', error);
+            state.bridges = [];
+            renderBridges();
+            updateBridgesCount();
+        }
+    }
+
+    /**
+     * Enhanced HTTP request method
+     */
+    async function makeRequest(method, endpoint, data = null, options = {}) {
+        const requestId = `${method}-${endpoint}-${Date.now()}`;
+        const maxRetries = options.maxRetries || config.retryAttempts;
+
+        if (requestState.pendingRequests.has(endpoint)) {
+            console.log('[ADVANCED-NETWORK] Request already pending for:', endpoint);
+            return requestState.pendingRequests.get(endpoint);
+        }
+
+        const requestPromise = executeRequestWithRetry(method, endpoint, data, maxRetries, requestId);
+        requestState.pendingRequests.set(endpoint, requestPromise);
+
+        try {
+            const result = await requestPromise;
+            return result;
+        } finally {
+            requestState.pendingRequests.delete(endpoint);
+            requestState.retryAttempts.delete(requestId);
+        }
+    }
+
+    async function executeRequestWithRetry(method, endpoint, data, maxRetries, requestId) {
+        let lastError;
+
+        for (let attempt = 1; attempt <= maxRetries; attempt++) {
+            try {
+                console.log(`[ADVANCED-NETWORK] Making ${method} request to: ${endpoint} (attempt ${attempt}/${maxRetries})`);
+
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+
+                if (data && (method === 'POST' || method === 'PUT')) {
+                    const processedData = processFormData(data);
+                    options.body = JSON.stringify(processedData);
+                    console.log(`[ADVANCED-NETWORK] Request body:`, processedData);
+                }
+
+                const response = await fetch(endpoint, options);
+                console.log(`[ADVANCED-NETWORK] Response status: ${response.status}`);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP ${response.status}: ${errorText}`);
+                }
+
+                const responseData = await response.json();
+                console.log(`[ADVANCED-NETWORK] Response data:`, responseData);
+
+                requestState.retryAttempts.delete(requestId);
+                return responseData;
+
+            } catch (error) {
+                lastError = error;
+                const errorMessage = error.message || error.toString() || 'Unknown error';
+                console.error(`[ADVANCED-NETWORK] Request failed (attempt ${attempt}/${maxRetries}):`, errorMessage);
+
+                if (attempt < maxRetries) {
+                    const delay = config.retryDelay * attempt;
+                    console.log(`[ADVANCED-NETWORK] Retrying in ${delay}ms...`);
+                    await sleep(delay);
+                } else {
+                    console.error(`[ADVANCED-NETWORK] All retry attempts failed for ${endpoint}:`, errorMessage);
+                }
+            }
+        }
+
+        // All retries failed
+        console.error(`Request failed after ${maxRetries} attempts: ${lastError.message}`);
+        throw lastError;
+    }
+
+    /**
+     * Process form data before sending
+     */
+    function processFormData(data) {
+        const processed = { ...data };
+
+        // Convert string arrays to actual arrays
+        if (processed.assigned_ports && typeof processed.assigned_ports === 'string') {
+            processed.assigned_ports = processed.assigned_ports.split(',').map(port => port.trim()).filter(port => port);
+        }
+
+        // Process bridge member interfaces
+        if (processed.custom_interfaces && typeof processed.custom_interfaces === 'string') {
+            processed.member_interfaces = processed.custom_interfaces.split(',').map(iface => iface.trim()).filter(iface => iface);
+            delete processed.custom_interfaces;
+        } else {
+            const interfaces = [];
+            Object.keys(processed).forEach(key => {
+                if (key.startsWith('interface_') && processed[key]) {
+                    interfaces.push(key.replace('interface_', ''));
+                    delete processed[key];
+                }
+            });
+            if (interfaces.length > 0) {
+                processed.member_interfaces = interfaces;
+            }
+        }
+
+        // Convert boolean strings to actual booleans
+        ['enabled', 'logging', 'persistent', 'stp_enabled', 'auto_start', 'multicast_snooping'].forEach(field => {
+            if (processed[field] !== undefined) {
+                processed[field] = processed[field] === 'on' || processed[field] === true || processed[field] === 'true';
+            }
+        });
+
+        // Convert numeric strings to numbers
+        ['vlan_id', 'priority', 'metric', 'hello_time', 'max_age', 'forward_delay', 'aging_time', 'hash_max', 'table_id'].forEach(field => {
+            if (processed[field] && processed[field] !== '') {
+                const num = parseInt(processed[field], 10);
+                if (!isNaN(num)) {
+                    processed[field] = num;
+                }
+            }
+        });
+
+        return processed;
+    }
+
+    /**
+     * Popup management
+     */
+    function showVlanPopup(vlan = null) {
+        const isEdit = vlan !== null;
+        state.editingItem = vlan;
+
+        const popupHtml = `
+            <div class="advanced-network-popup">
+                <div class="popup-header p-6 border-b border-neutral-200">
+                    <h2 class="text-xl font-semibold text-neutral-900">${isEdit ? 'Edit VLAN' : 'Add New VLAN'}</h2>
+                    <button class="popup-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+                        <i class="fa-solid fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="popup-body p-6">
+                    <form id="vlan-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="vlan_id">VLAN ID *</label>
+                                <input type="number" id="vlan_id" name="vlan_id" min="1" max="4094" value="${vlan?.vlan_id || ''}" required>
+                                <div class="form-hint">Valid range: 1-4094</div>
+                            </div>
+                            <div>
+                                <label for="name">Name *</label>
+                                <input type="text" id="name" name="name" value="${vlan?.name || ''}" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="2">${vlan?.description || ''}</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="assigned_ports">Assigned Ports</label>
+                                <input type="text" id="assigned_ports" name="assigned_ports" value="${vlan?.assigned_ports?.join(', ') || ''}" placeholder="e.g., Port1, Port2, Port3">
+                                <div class="form-hint">Comma-separated list of ports</div>
+                            </div>
+                            <div>
+                                <label for="tagged">Tagged Mode</label>
+                                <select id="tagged" name="tagged">
+                                    <option value="tagged" ${vlan?.tagged === 'tagged' ? 'selected' : ''}>Tagged</option>
+                                    <option value="untagged" ${vlan?.tagged === 'untagged' ? 'selected' : ''}>Untagged</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="priority">Priority</label>
+                                <input type="number" id="priority" name="priority" min="0" max="7" value="${vlan?.priority || '0'}">
+                                <div class="form-hint">Priority level: 0-7</div>
+                            </div>
+                            <div>
+                                <label for="enabled">Enabled</label>
+                                <input type="checkbox" id="enabled" name="enabled" ${vlan?.enabled ? 'checked' : ''}>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="popup-footer p-6 border-t border-neutral-200 flex justify-end space-x-3">
+                    <button type="button" class="popup-cancel px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200">Cancel</button>
+                    <button type="button" class="popup-submit px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700" data-type="vlan">${isEdit ? 'Update VLAN' : 'Create VLAN'}</button>
+                </div>
+            </div>
+        `;
+
+        showPopup(popupHtml);
+    }
+
+    function showNatRulePopup(rule = null) {
+        const isEdit = rule !== null;
+        state.editingItem = rule;
+
+        const popupHtml = `
+            <div class="advanced-network-popup">
+                <div class="popup-header p-6 border-b border-neutral-200">
+                    <h2 class="text-xl font-semibold text-neutral-900">${isEdit ? 'Edit NAT Rule' : 'Add New NAT Rule'}</h2>
+                    <button class="popup-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+                        <i class="fa-solid fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="popup-body p-6">
+                    <form id="nat-rule-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="rule_id">Rule ID *</label>
+                                <input type="text" id="rule_id" name="rule_id" value="${rule?.rule_id || ''}" required>
+                            </div>
+                            <div>
+                                <label for="type">NAT Type *</label>
+                                <select id="type" name="type" required>
+                                    <option value="SNAT" ${rule?.type === 'SNAT' ? 'selected' : ''}>SNAT (Source NAT)</option>
+                                    <option value="DNAT" ${rule?.type === 'DNAT' ? 'selected' : ''}>DNAT (Destination NAT)</option>
+                                    <option value="Masquerade" ${rule?.type === 'Masquerade' ? 'selected' : ''}>Masquerade</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="2">${rule?.description || ''}</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="source">Source *</label>
+                                <input type="text" id="source" name="source" value="${rule?.source || ''}" placeholder="e.g., 192.168.1.0/24" required>
+                            </div>
+                            <div>
+                                <label for="destination">Destination *</label>
+                                <input type="text" id="destination" name="destination" value="${rule?.destination || ''}" placeholder="e.g., 0.0.0.0/0" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="protocol">Protocol *</label>
+                                <select id="protocol" name="protocol" required>
+                                    <option value="TCP" ${rule?.protocol === 'TCP' ? 'selected' : ''}>TCP</option>
+                                    <option value="UDP" ${rule?.protocol === 'UDP' ? 'selected' : ''}>UDP</option>
+                                    <option value="ICMP" ${rule?.protocol === 'ICMP' ? 'selected' : ''}>ICMP</option>
+                                    <option value="Any" ${rule?.protocol === 'Any' ? 'selected' : ''}>Any</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="source_ports">Source Ports</label>
+                                <input type="text" id="source_ports" name="source_ports" value="${rule?.source_ports || ''}" placeholder="e.g., 80,443 or 1000-2000">
+                            </div>
+                            <div>
+                                <label for="destination_ports">Destination Ports</label>
+                                <input type="text" id="destination_ports" name="destination_ports" value="${rule?.destination_ports || ''}" placeholder="e.g., 80,443 or 1000-2000">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="input_interface">Input Interface</label>
+                                <input type="text" id="input_interface" name="input_interface" value="${rule?.input_interface || ''}" placeholder="e.g., eth0">
+                            </div>
+                            <div>
+                                <label for="output_interface">Output Interface</label>
+                                <input type="text" id="output_interface" name="output_interface" value="${rule?.output_interface || ''}" placeholder="e.g., eth1">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="translation_address">Translation Address</label>
+                                <input type="text" id="translation_address" name="translation_address" value="${rule?.translation_address || ''}" placeholder="e.g., 10.0.0.100">
+                            </div>
+                            <div>
+                                <label for="translation_port">Translation Port</label>
+                                <input type="text" id="translation_port" name="translation_port" value="${rule?.translation_port || ''}" placeholder="e.g., 8080">
+                            </div>
+                            <div>
+                                <label for="priority">Priority</label>
+                                <input type="number" id="priority" name="priority" min="1" max="1000" value="${rule?.priority || '100'}">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="enabled">Enabled</label>
+                            <input type="checkbox" id="enabled" name="enabled" ${rule?.enabled ? 'checked' : ''}>
+                        </div>
+                    </form>
+                </div>
+                <div class="popup-footer p-6 border-t border-neutral-200 flex justify-end space-x-3">
+                    <button type="button" class="popup-cancel px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200">Cancel</button>
+                    <button type="button" class="popup-submit px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700" data-type="nat">${isEdit ? 'Update Rule' : 'Create Rule'}</button>
+                </div>
+            </div>
+        `;
+
+        showPopup(popupHtml);
+    }
+
+    function showFirewallRulePopup(rule = null) {
+        const isEdit = rule !== null;
+        state.editingItem = rule;
+
+        const popupHtml = `
+            <div class="advanced-network-popup">
+                <div class="popup-header p-6 border-b border-neutral-200">
+                    <h2 class="text-xl font-semibold text-neutral-900">${isEdit ? 'Edit Firewall Rule' : 'Add New Firewall Rule'}</h2>
+                    <button class="popup-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+                        <i class="fa-solid fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="popup-body p-6">
+                    <form id="firewall-rule-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="rule_id">Rule ID *</label>
+                                <input type="text" id="rule_id" name="rule_id" value="${rule?.rule_id || ''}" required>
+                            </div>
+                            <div>
+                                <label for="name">Rule Name *</label>
+                                <input type="text" id="name" name="name" value="${rule?.name || ''}" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="2">${rule?.description || ''}</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div>
+                                <label for="direction">Direction *</label>
+                                <select id="direction" name="direction" required>
+                                    <option value="INPUT" ${rule?.direction === 'INPUT' ? 'selected' : ''}>INPUT</option>
+                                    <option value="OUTPUT" ${rule?.direction === 'OUTPUT' ? 'selected' : ''}>OUTPUT</option>
+                                    <option value="FORWARD" ${rule?.direction === 'FORWARD' ? 'selected' : ''}>FORWARD</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="action">Action *</label>
+                                <select id="action" name="action" required>
+                                    <option value="ACCEPT" ${rule?.action === 'ACCEPT' ? 'selected' : ''}>ACCEPT</option>
+                                    <option value="DROP" ${rule?.action === 'DROP' ? 'selected' : ''}>DROP</option>
+                                    <option value="REJECT" ${rule?.action === 'REJECT' ? 'selected' : ''}>REJECT</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label for="protocol">Protocol *</label>
+                                <select id="protocol" name="protocol" required>
+                                    <option value="TCP" ${rule?.protocol === 'TCP' ? 'selected' : ''}>TCP</option>
+                                    <option value="UDP" ${rule?.protocol === 'UDP' ? 'selected' : ''}>UDP</option>
+                                    <option value="ICMP" ${rule?.protocol === 'ICMP' ? 'selected' : ''}>ICMP</option>
+                                    <option value="Any" ${rule?.protocol === 'Any' ? 'selected' : ''}>Any</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="source">Source *</label>
+                                <input type="text" id="source" name="source" value="${rule?.source || ''}" placeholder="e.g., 192.168.1.0/24 or 0.0.0.0/0" required>
+                            </div>
+                            <div>
+                                <label for="destination">Destination *</label>
+                                <input type="text" id="destination" name="destination" value="${rule?.destination || ''}" placeholder="e.g., 192.168.1.100 or 0.0.0.0/0" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="source_ports">Source Ports</label>
+                                <input type="text" id="source_ports" name="source_ports" value="${rule?.source_ports || ''}" placeholder="e.g., 80,443 or 1000-2000">
+                            </div>
+                            <div>
+                                <label for="destination_ports">Destination Ports</label>
+                                <input type="text" id="destination_ports" name="destination_ports" value="${rule?.destination_ports || ''}" placeholder="e.g., 22,80,443">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="input_interface">Input Interface</label>
+                                <input type="text" id="input_interface" name="input_interface" value="${rule?.input_interface || ''}" placeholder="e.g., eth0">
+                            </div>
+                            <div>
+                                <label for="output_interface">Output Interface</label>
+                                <input type="text" id="output_interface" name="output_interface" value="${rule?.output_interface || ''}" placeholder="e.g., eth1">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="priority">Priority</label>
+                                <input type="number" id="priority" name="priority" min="1" max="1000" value="${rule?.priority || '100'}">
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <label for="logging" class="flex items-center">
+                                    <input type="checkbox" id="logging" name="logging" ${rule?.logging ? 'checked' : ''}>
+                                    <span class="ml-2">Enable Logging</span>
+                                </label>
+                                <label for="enabled" class="flex items-center">
+                                    <input type="checkbox" id="enabled" name="enabled" ${rule?.enabled ? 'checked' : ''}>
+                                    <span class="ml-2">Enabled</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="popup-footer p-6 border-t border-neutral-200 flex justify-end space-x-3">
+                    <button type="button" class="popup-cancel px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200">Cancel</button>
+                    <button type="button" class="popup-submit px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700" data-type="firewall">${isEdit ? 'Update Rule' : 'Create Rule'}</button>
+                </div>
+            </div>
+        `;
+
+        showPopup(popupHtml);
+    }
+
+    function showStaticRoutePopup(route = null) {
+        const isEdit = route !== null;
+        state.editingItem = route;
+
+        const popupHtml = `
+            <div class="advanced-network-popup">
+                <div class="popup-header p-6 border-b border-neutral-200">
+                    <h2 class="text-xl font-semibold text-neutral-900">${isEdit ? 'Edit Static Route' : 'Add New Static Route'}</h2>
+                    <button class="popup-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+                        <i class="fa-solid fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="popup-body p-6">
+                    <form id="static-route-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name">Route Name *</label>
+                                <input type="text" id="name" name="name" value="${route?.name || ''}" required>
+                            </div>
+                            <div>
+                                <label for="route_type">Route Type</label>
+                                <select id="route_type" name="route_type">
+                                    <option value="static" ${route?.route_type === 'static' ? 'selected' : ''}>Static</option>
+                                    <option value="dynamic" ${route?.route_type === 'dynamic' ? 'selected' : ''}>Dynamic</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="2">${route?.description || ''}</textarea>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="destination_network">Destination Network *</label>
+                                <input type="text" id="destination_network" name="destination_network" value="${route?.destination_network || ''}" placeholder="e.g., 192.168.1.0" required>
+                            </div>
+                            <div>
+                                <label for="subnet_mask">Subnet Mask *</label>
+                                <input type="text" id="subnet_mask" name="subnet_mask" value="${route?.subnet_mask || ''}" placeholder="e.g., /24 or 255.255.255.0" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="gateway">Gateway *</label>
+                                <input type="text" id="gateway" name="gateway" value="${route?.gateway || ''}" placeholder="e.g., 192.168.1.1" required>
+                            </div>
+                            <div>
+                                <label for="interface">Interface *</label>
+                                <input type="text" id="interface" name="interface" value="${route?.interface || ''}" placeholder="e.g., eth0" required>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="metric">Metric</label>
+                                <input type="number" id="metric" name="metric" min="1" max="9999" value="${route?.metric || '100'}">
+                                <div class="form-hint">Lower values have higher priority</div>
+                            </div>
+                            <div>
+                                <label for="administrative_distance">Administrative Distance</label>
+                                <input type="number" id="administrative_distance" name="administrative_distance" min="1" max="255" value="${route?.administrative_distance || '1'}">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center space-x-4">
+                            <label for="persistent" class="flex items-center">
+                                <input type="checkbox" id="persistent" name="persistent" ${route?.persistent ? 'checked' : ''}>
+                                <span class="ml-2">Persistent</span>
+                            </label>
+                            <label for="enabled" class="flex items-center">
+                                <input type="checkbox" id="enabled" name="enabled" ${route?.enabled ? 'checked' : ''}>
+                                <span class="ml-2">Enabled</span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+                <div class="popup-footer p-6 border-t border-neutral-200 flex justify-end space-x-3">
+                    <button type="button" class="popup-cancel px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200">Cancel</button>
+                    <button type="button" class="popup-submit px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700" data-type="route">${isEdit ? 'Update Route' : 'Create Route'}</button>
+                </div>
+            </div>
+        `;
+
+        showPopup(popupHtml);
+    }
+
+    function showBridgePopup(bridge = null) {
+        const isEdit = bridge !== null;
+        state.editingItem = bridge;
+
+        const popupHtml = `
+            <div class="advanced-network-popup">
+                <div class="popup-header p-6 border-b border-neutral-200">
+                    <h2 class="text-xl font-semibold text-neutral-900">${isEdit ? 'Edit Bridge' : 'Create New Bridge'}</h2>
+                    <button class="popup-close absolute top-4 right-4 text-neutral-400 hover:text-neutral-600">
+                        <i class="fa-solid fa-times text-lg"></i>
+                    </button>
+                </div>
+                <div class="popup-body p-6">
+                    <form id="bridge-form" class="space-y-4">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="name">Bridge Name *</label>
+                                <input type="text" id="name" name="name" value="${bridge?.name || ''}" placeholder="e.g., br0" required>
+                            </div>
+                            <div>
+                                <label for="ip_address">IP Address</label>
+                                <input type="text" id="ip_address" name="ip_address" value="${bridge?.ip_address || ''}" placeholder="e.g., 192.168.1.1/24">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="description">Description</label>
+                            <textarea id="description" name="description" rows="2">${bridge?.description || ''}</textarea>
+                        </div>
+
+                        <div>
+                            <label>Member Interfaces</label>
+                            <div class="grid grid-cols-2 md:grid-cols-3 gap-2 p-3 border border-neutral-200 rounded-lg">
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_eth0" ${bridge?.member_interfaces?.includes('eth0') ? 'checked' : ''}>
+                                    <span class="ml-2">eth0</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_eth1" ${bridge?.member_interfaces?.includes('eth1') ? 'checked' : ''}>
+                                    <span class="ml-2">eth1</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_eth2" ${bridge?.member_interfaces?.includes('eth2') ? 'checked' : ''}>
+                                    <span class="ml-2">eth2</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_eth3" ${bridge?.member_interfaces?.includes('eth3') ? 'checked' : ''}>
+                                    <span class="ml-2">eth3</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_wlan0" ${bridge?.member_interfaces?.includes('wlan0') ? 'checked' : ''}>
+                                    <span class="ml-2">wlan0</span>
+                                </label>
+                                <label class="flex items-center">
+                                    <input type="checkbox" name="interface_wlan1" ${bridge?.member_interfaces?.includes('wlan1') ? 'checked' : ''}>
+                                    <span class="ml-2">wlan1</span>
+                                </label>
+                            </div>
+                            <div class="mt-2">
+                                <input type="text" id="custom_interfaces" name="custom_interfaces" placeholder="Custom interfaces (comma-separated)">
+                                <div class="form-hint">Additional interfaces not listed above</div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="priority">Priority</label>
+                                <input type="number" id="priority" name="priority" min="0" max="65535" value="${bridge?.priority || '32768'}">
+                                <div class="form-hint">STP bridge priority (default: 32768)</div>
+                            </div>
+                            <div>
+                                <label for="stp_enabled" class="flex items-center">
+                                    <input type="checkbox" id="stp_enabled" name="stp_enabled" ${bridge?.stp_enabled ? 'checked' : ''}>
+                                    <span class="ml-2">Enable STP (Spanning Tree Protocol)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="advanced-options-section">
+                            <h4 class="font-medium text-neutral-700 mb-3">Advanced Options</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label for="hello_time">Hello Time (seconds)</label>
+                                    <input type="number" id="hello_time" name="hello_time" min="1" max="10" value="${bridge?.hello_time || '2'}">
+                                </div>
+                                <div>
+                                    <label for="max_age">Max Age (seconds)</label>
+                                    <input type="number" id="max_age" name="max_age" min="6" max="40" value="${bridge?.max_age || '20'}">
+                                </div>
+                                <div>
+                                    <label for="forward_delay">Forward Delay (seconds)</label>
+                                    <input type="number" id="forward_delay" name="forward_delay" min="4" max="30" value="${bridge?.forward_delay || '15'}">
+                                </div>
+                                <div>
+                                    <label for="aging_time">Aging Time (seconds)</label>
+                                    <input type="number" id="aging_time" name="aging_time" min="10" max="1000000" value="${bridge?.aging_time || '300'}">
+                                </div>
+                            </div>
+
+                            <div class="mt-4 flex items-center space-x-4">
+                                <label for="multicast_snooping" class="flex items-center">
+                                    <input type="checkbox" id="multicast_snooping" name="multicast_snooping" ${bridge?.multicast_snooping ? 'checked' : ''}>
+                                    <span class="ml-2">Multicast Snooping</span>
+                                </label>
+                                <label for="auto_start" class="flex items-center">
+                                    <input type="checkbox" id="auto_start" name="auto_start" ${bridge?.auto_start ? 'checked' : ''}>
+                                    <span class="ml-2">Auto Start</span>
+                                </label>
+                                <label for="enabled" class="flex items-center">
+                                    <input type="checkbox" id="enabled" name="enabled" ${bridge?.enabled ? 'checked' : ''}>
+                                    <span class="ml-2">Enabled</span>
+                                </label>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="popup-footer p-6 border-t border-neutral-200 flex justify-end space-x-3">
+                    <button type="button" class="popup-cancel px-4 py-2 bg-neutral-100 text-neutral-700 rounded-lg hover:bg-neutral-200">Cancel</button>
+                    <button type="button" class="popup-submit px-4 py-2 bg-orange-600 text-white rounded-lg hover:bg-orange-700" data-type="bridge">${isEdit ? 'Update Bridge' : 'Create Bridge'}</button>
+                </div>
+            </div>
+        `;
+
+        showPopup(popupHtml);
+    }
+
+    function showPopup(html) {
+        const overlay = document.getElementById('popup-overlay');
+        const container = document.getElementById('popup-container');
+
+        if (overlay && container) {
+            container.innerHTML = html;
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+    }
+
+    function closeAllPopups() {
+        const overlay = document.getElementById('popup-overlay');
+        if (overlay) {
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+        state.editingItem = null;
+    }
+
+    /**
+     * Handle popup form submission
+     */
+    async function handlePopupSubmit(target) {
+        const type = target.getAttribute('data-type');
+        const form = document.querySelector(`#${type === 'route' ? 'static-route' : type === 'nat' ? 'nat-rule' : type === 'firewall' ? 'firewall-rule' : type}-form`);
+
+        if (!form) return;
+
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+
+        // Validation
+        if (!validateFormData(type, data)) {
+            return;
+        }
+
+        const isEdit = state.editingItem !== null;
+
+        try {
+            let endpoint;
+            let method;
+
+            if (isEdit) {
+                method = 'PUT';
+                const id = state.editingItem.id;
+
+                switch (type) {
+                    case 'vlan':
+                        endpoint = `${endpoints.vlans}/${id}`;
+                        break;
+                    case 'nat':
+                        endpoint = `${endpoints.natRules}/${id}`;
+                        break;
+                    case 'firewall':
+                        endpoint = `${endpoints.firewallRules}/${id}`;
+                        break;
+                    case 'route':
+                        endpoint = `${endpoints.staticRoutes}/${id}`;
+                        break;
+                    case 'bridge':
+                        endpoint = `${endpoints.bridges}/${id}`;
+                        break;
+                }
+            } else {
+                method = 'POST';
+
+                switch (type) {
+                    case 'vlan':
+                        endpoint = endpoints.vlans;
+                        break;
+                    case 'nat':
+                        endpoint = endpoints.natRules;
+                        break;
+                    case 'firewall':
+                        endpoint = endpoints.firewallRules;
+                        break;
+                    case 'route':
+                        endpoint = endpoints.staticRoutes;
+                        break;
+                    case 'bridge':
+                        endpoint = endpoints.bridges;
+                        break;
+                }
+            }
+
+            const response = await makeRequest(method, endpoint, data);
+
+            if (response && response.success) {
+                closeAllPopups();
+                showSuccessMessage(`${type.charAt(0).toUpperCase() + type.slice(1)} ${isEdit ? 'updated' : 'created'} successfully`);
+
+                // Reload specific data
+                switch (type) {
+                    case 'vlan':
+                        await loadVlans();
+                        break;
+                    case 'nat':
+                        await loadNatRules();
+                        break;
+                    case 'firewall':
+                        await loadFirewallRules();
+                        break;
+                    case 'route':
+                        await loadStaticRoutes();
+                        break;
+                    case 'bridge':
+                        await loadBridges();
+                        break;
+                }
+            } else {
+                throw new Error(response?.message || `Failed to ${isEdit ? 'update' : 'create'} ${type}`);
+            }
+        } catch (error) {
+            console.error(`[ADVANCED-NETWORK] Failed to ${isEdit ? 'update' : 'create'} ${type}:`, error);
+            showErrorMessage(`Failed to ${isEdit ? 'update' : 'create'} ${type}: ${error.message}`);
+        }
+    }
+
+    /**
+     * Form validation
+     */
+    function validateFormData(type, data) {
+        switch (type) {
+            case 'vlan':
+                if (!data.vlan_id || !data.name) {
+                    showErrorMessage('VLAN ID and Name are required');
+                    return false;
+                }
+                const vlanId = parseInt(data.vlan_id);
+                if (vlanId < 1 || vlanId > 4094) {
+                    showErrorMessage('VLAN ID must be between 1 and 4094');
+                    return false;
+                }
+                break;
+
+            case 'nat':
+                if (!data.rule_id || !data.type || !data.source || !data.destination || !data.protocol) {
+                    return false;
+                }
+                break;
+
+            case 'firewall':
+                if (!data.rule_id || !data.name || !data.direction || !data.action || !data.protocol || !data.source || !data.destination) {
+                    return false;
+                }
+                break;
+
+            case 'route':
+                if (!data.name || !data.destination_network || !data.subnet_mask || !data.gateway || !data.interface) {
+                    return false;
+                }
+                break;
+
+            case 'bridge':
+                if (!data.name) {
+                    return false;
+                }
+                break;
+        }
+
+        return true;
+    }
+
+    /**
+     * Handle table actions
+     */
+    async function handleEdit(itemId, sectionType) {
+        console.log('[ADVANCED-NETWORK] Handling edit for:', { itemId, sectionType });
+
+        let item = null;
+
+        switch (sectionType) {
+            case 'vlans':
+                item = state.vlans.find(v => v.id === itemId);
+                if (item) {
+                    console.log('[ADVANCED-NETWORK] Found VLAN for edit:', item);
+                    showVlanPopup(item);
+                } else {
+                    console.warn('[ADVANCED-NETWORK] VLAN not found:', itemId);
+                }
+                break;
+            case 'nat-rules':
+                item = state.natRules.find(r => r.id === itemId);
+                if (item) {
+                    console.log('[ADVANCED-NETWORK] Found NAT rule for edit:', item);
+                    showNatRulePopup(item);
+                } else {
+                    console.warn('[ADVANCED-NETWORK] NAT rule not found:', itemId);
+                }
+                break;
+            case 'firewall-rules':
+                item = state.firewallRules.find(r => r.id === itemId);
+                if (item) {
+                    console.log('[ADVANCED-NETWORK] Found firewall rule for edit:', item);
+                    showFirewallRulePopup(item);
+                } else {
+                    console.warn('[ADVANCED-NETWORK] Firewall rule not found:', itemId);
+                }
+                break;
+            case 'static-routes':
+                item = state.staticRoutes.find(r => r.id === itemId);
+                if (item) {
+                    console.log('[ADVANCED-NETWORK] Found static route for edit:', item);
+                    showStaticRoutePopup(item);
+                } else {
+                    console.warn('[ADVANCED-NETWORK] Static route not found:', itemId);
+                }
+                break;
+            case 'bridges':
+                item = state.bridges.find(b => b.id === itemId);
+                if (item) {
+                    console.log('[ADVANCED-NETWORK] Found bridge for edit:', item);
+                    showBridgePopup(item);
+                } else {
+                    console.warn('[ADVANCED-NETWORK] Bridge not found:', itemId);
+                }
+                break;
+            default:
+                console.error('[ADVANCED-NETWORK] Unknown section type for edit:', sectionType);
+        }
+    }
+
+    async function handleDelete(itemId, sectionType) {
+        console.log('[ADVANCED-NETWORK] Handling delete for:', { itemId, sectionType });
+
+        if (!confirm('Are you sure you want to delete this item?')) {
+            return;
+        }
+
+        try {
+            let endpoint;
+
+            switch (sectionType) {
+                case 'vlans':
+                    endpoint = `${endpoints.vlans}/${itemId}`;
+                    break;
+                case 'nat-rules':
+                    endpoint = `${endpoints.natRules}/${itemId}`;
+                    break;
+                case 'firewall-rules':
+                    endpoint = `${endpoints.firewallRules}/${itemId}`;
+                    break;
+                case 'static-routes':
+                    endpoint = `${endpoints.staticRoutes}/${itemId}`;
+                    break;
+                case 'bridges':
+                    endpoint = `${endpoints.bridges}/${itemId}`;
+                    break;
+                default:
+                    throw new Error(`Unknown section type: ${sectionType}`);
+            }
+
+            console.log('[ADVANCED-NETWORK] Making DELETE request to:', endpoint);
+            const response = await makeRequest('DELETE', endpoint);
+
+            if (response && response.success) {
+
+                // Update state and re-render with new data from server
+                await reloadSectionData(sectionType, response);
+            } else {
+                throw new Error(response?.message || 'Failed to delete item');
+            }
+        } catch (error) {
+            const errorMessage = error.message || error.toString() || 'Unknown error';
+            console.error('[ADVANCED-NETWORK] Failed to delete item:', errorMessage);
+        }
+    }
+
+    async function handleToggle(itemId, sectionType) {
+        console.log('[ADVANCED-NETWORK] Handling toggle for:', { itemId, sectionType });
+
+        try {
+            let endpoint;
+
+            switch (sectionType) {
+                case 'vlans':
+                    endpoint = `${endpoints.vlans}/${itemId}/toggle`;
+                    break;
+                case 'nat-rules':
+                    endpoint = `${endpoints.natRules}/${itemId}/toggle`;
+                    break;
+                case 'firewall-rules':
+                    endpoint = `${endpoints.firewallRules}/${itemId}/toggle`;
+                    break;
+                case 'static-routes':
+                    endpoint = `${endpoints.staticRoutes}/${itemId}/toggle`;
+                    break;
+                case 'bridges':
+                    endpoint = `${endpoints.bridges}/${itemId}/toggle`;
+                    break;
+                default:
+                    throw new Error(`Unknown section type: ${sectionType}`);
+            }
+
+            console.log('[ADVANCED-NETWORK] Making POST request to:', endpoint);
+            const response = await makeRequest('POST', endpoint);
+
+            if (response && response.success) {
+
+                // Update state and re-render with new data from server
+                await reloadSectionData(sectionType, response);
+            } else {
+                throw new Error(response?.message || 'Failed to toggle item');
+            }
+        } catch (error) {
+            const errorMessage = error.message || error.toString() || 'Unknown error';
+            console.error('[ADVANCED-NETWORK] Failed to toggle item:', errorMessage);
+        }
+    }
+
+    /**
+     * Reload section data after CRUD operations
+     */
+    async function reloadSectionData(sectionType, response) {
+        console.log('[ADVANCED-NETWORK] Reloading section data for:', sectionType);
+
+        try {
+            switch (sectionType) {
+                case 'vlans':
+                    if (response.vlans) {
+                        state.vlans = response.vlans;
+                        renderVlans();
+                        updateVlanCount();
+                    } else {
+                        await loadVlans();
+                    }
+                    break;
+                case 'nat-rules':
+                    if (response.nat_rules) {
+                        state.natRules = response.nat_rules;
+                        renderNatRules();
+                        updateNatCount();
+                    } else {
+                        await loadNatRules();
+                    }
+                    break;
+                case 'firewall-rules':
+                    if (response.firewall_rules) {
+                        state.firewallRules = response.firewall_rules;
+                        renderFirewallRules();
+                        updateFirewallCount();
+                    } else {
+                        await loadFirewallRules();
+                    }
+                    break;
+                case 'static-routes':
+                    if (response.static_routes) {
+                        state.staticRoutes = response.static_routes;
+                        renderStaticRoutes();
+                        updateRoutesCount();
+                    } else {
+                        await loadStaticRoutes();
+                    }
+                    break;
+                case 'bridges':
+                    if (response.bridges) {
+                        state.bridges = response.bridges;
+                        renderBridges();
+                        updateBridgesCount();
+                    } else {
+                        await loadBridges();
+                    }
+                    break;
+            }
+
+            // Update last updated time
+            state.lastUpdated = new Date();
+            updateLastUpdatedTime();
+
+            console.log('[ADVANCED-NETWORK] Section data reloaded successfully for:', sectionType);
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to reload section data:', error);
+            // Fall back to full reload
+            await loadAllData();
+        }
+    }
+
+    /**
+     * Save and apply configuration
+     */
+    async function saveConfiguration() {
+        try {
+            const response = await makeRequest('POST', '/api/advanced-network/save');
+
+            if (response && response.success) {
+            } else {
+                throw new Error(response?.message || 'Failed to save configuration');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to save configuration:', error);
+        }
+    }
+
+    async function applyConfiguration() {
+        try {
+            const response = await makeRequest('POST', '/api/advanced-network/apply');
+
+            if (response && response.success) {
+                await loadAllData(); // Refresh all data after applying
+            } else {
+                throw new Error(response?.message || 'Failed to apply configuration');
+            }
+        } catch (error) {
+            console.error('[ADVANCED-NETWORK] Failed to apply configuration:', error);
+        }
+    }
+
+    /**
+     * Render methods
+     */
+    function renderVlans() {
+        const tbody = document.querySelector('#vlan-table-body');
+        if (!tbody) return;
+
+        clearTableBody(tbody);
+
+        if (state.vlans.length === 0) {
+            renderEmptyState(tbody, 7, 'fa-sitemap', 'No VLANs configured', 'Add a VLAN to get started');
+            return;
+        }
+
+        state.vlans.forEach(vlan => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-neutral-100 hover:bg-neutral-50';
+            row.dataset.id = vlan.id;
+            row.dataset.section = 'vlans';
+
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm">${sanitizeText(vlan.vlan_id)}</td>
+                <td class="py-3 px-4">${sanitizeText(vlan.name)}</td>
+                <td class="py-3 px-4">
+                    <div class="flex flex-wrap gap-1">
+                        ${Array.isArray(vlan.assigned_ports) ? vlan.assigned_ports.map(port => 
+                            `<span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(port)}</span>`
+                        ).join('') : ''}
+                    </div>
+                </td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(vlan.tagged)}</span>
+                </td>
+                <td class="py-3 px-4">${sanitizeText(vlan.priority)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-${vlan.enabled ? 'green' : 'red'}-100 text-${vlan.enabled ? 'green' : 'red'}-800 text-xs px-2 py-1 rounded">${vlan.enabled ? 'Active' : 'Inactive'}</span>
+                </td>
+                <td class="py-3 px-4">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn text-neutral-600 hover:text-neutral-800" data-id="${vlan.id}" data-section="vlans" title="Edit VLAN">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-neutral-600 hover:text-neutral-800" data-id="${vlan.id}" data-section="vlans" title="Delete VLAN">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="toggle-btn text-neutral-600 hover:text-neutral-800" data-id="${vlan.id}" data-section="vlans" title="${vlan.enabled ? 'Disable' : 'Enable'} VLAN">
+                            <i class="fa-solid fa-power-off ${vlan.enabled ? 'text-green-600' : 'text-red-600'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderNatRules() {
+        const tbody = document.querySelector('#nat-table-body');
+        if (!tbody) return;
+
+        clearTableBody(tbody);
+
+        if (state.natRules.length === 0) {
+            renderEmptyState(tbody, 7, 'fa-route', 'No NAT rules configured', 'Add a NAT rule to get started');
+            return;
+        }
+
+        state.natRules.forEach(rule => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-neutral-100 hover:bg-neutral-50';
+            row.dataset.id = rule.id;
+            row.dataset.section = 'nat-rules';
+
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.rule_id)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(rule.type)}</span>
+                </td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.source)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.destination)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(rule.protocol)}</span>
+                </td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.destination_ports || 'Any')}</td>
+                <td class="py-3 px-4">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="nat-rules" title="Edit NAT Rule">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="nat-rules" title="Delete NAT Rule">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="toggle-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="nat-rules" title="${rule.enabled ? 'Disable' : 'Enable'} Rule">
+                            <i class="fa-solid fa-power-off ${rule.enabled ? 'text-green-600' : 'text-red-600'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderFirewallRules() {
+        const tbody = document.querySelector('#firewall-table-body');
+        if (!tbody) return;
+
+        clearTableBody(tbody);
+
+        if (state.firewallRules.length === 0) {
+            renderEmptyState(tbody, 9, 'fa-shield-halved', 'No firewall rules configured', 'Add a firewall rule to get started');
+            return;
+        }
+
+        state.firewallRules.forEach(rule => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-neutral-100 hover:bg-neutral-50';
+            row.dataset.id = rule.id;
+            row.dataset.section = 'firewall-rules';
+
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.rule_id)}</td>
+                <td class="py-3 px-4">${sanitizeText(rule.name)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(rule.direction)}</span>
+                </td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.source)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(rule.destination)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(rule.protocol)}</span>
+                </td>
+                <td class="py-3 px-4">
+                    <span class="bg-${rule.action === 'ACCEPT' ? 'green' : 'red'}-100 text-${rule.action === 'ACCEPT' ? 'green' : 'red'}-800 text-xs px-2 py-1 rounded">${sanitizeText(rule.action)}</span>
+                </td>
+                <td class="py-3 px-4">
+                    <i class="fa-solid ${rule.logging ? 'fa-check' : 'fa-times'} text-neutral-600"></i>
+                </td>
+                <td class="py-3 px-4">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="firewall-rules" title="Edit Firewall Rule">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="firewall-rules" title="Delete Firewall Rule">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="toggle-btn text-neutral-600 hover:text-neutral-800" data-id="${rule.id}" data-section="firewall-rules" title="${rule.enabled ? 'Disable' : 'Enable'} Rule">
+                            <i class="fa-solid fa-power-off ${rule.enabled ? 'text-green-600' : 'text-red-600'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderStaticRoutes() {
+        const tbody = document.querySelector('#routing-table-body');
+        if (!tbody) return;
+
+        clearTableBody(tbody);
+
+        if (state.staticRoutes.length === 0) {
+            renderEmptyState(tbody, 8, 'fa-map-signs', 'No static routes configured', 'Add a static route to get started');
+            return;
+        }
+
+        state.staticRoutes.forEach(route => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-neutral-100 hover:bg-neutral-50';
+            row.dataset.id = route.id;
+            row.dataset.section = 'static-routes';
+
+            row.innerHTML = `
+                <td class="py-3 px-4">${sanitizeText(route.name)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(route.destination_network)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(route.subnet_mask)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(route.gateway)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(route.interface)}</span>
+                </td>
+                <td class="py-3 px-4">${sanitizeText(route.metric)}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-${route.enabled ? 'green' : 'red'}-100 text-${route.enabled ? 'green' : 'red'}-800 text-xs px-2 py-1 rounded">${route.enabled ? 'Active' : 'Inactive'}</span>
+                </td>
+                <td class="py-3 px-4">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn text-neutral-600 hover:text-neutral-800" data-id="${route.id}" data-section="static-routes" title="Edit Static Route">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-neutral-600 hover:text-neutral-800" data-id="${route.id}" data-section="static-routes" title="Delete Static Route">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="toggle-btn text-neutral-600 hover:text-neutral-800" data-id="${route.id}" data-section="static-routes" title="${route.enabled ? 'Disable' : 'Enable'} Route">
+                            <i class="fa-solid fa-power-off ${route.enabled ? 'text-green-600' : 'text-red-600'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    function renderBridges() {
+        const tbody = document.querySelector('#bridges-table-body');
+        if (!tbody) return;
+
+        clearTableBody(tbody);
+
+        if (state.bridges.length === 0) {
+            renderEmptyState(tbody, 7, 'fa-bridge', 'No network bridges configured', 'Create a bridge to get started');
+            return;
+        }
+
+        state.bridges.forEach(bridge => {
+            const row = document.createElement('tr');
+            row.className = 'border-b border-neutral-100 hover:bg-neutral-50';
+            row.dataset.id = bridge.id;
+            row.dataset.section = 'bridges';
+
+            row.innerHTML = `
+                <td class="py-3 px-4 text-sm">${sanitizeText(bridge.name)}</td>
+                <td class="py-3 px-4 text-sm">${sanitizeText(bridge.ip_address || 'N/A')}</td>
+                <td class="py-3 px-4">
+                    <div class="flex flex-wrap gap-1">
+                        ${Array.isArray(bridge.member_interfaces) && bridge.member_interfaces.length > 0 ? 
+                            bridge.member_interfaces.map(iface => 
+                                `<span class="bg-neutral-100 text-neutral-800 text-xs px-2 py-1 rounded">${sanitizeText(iface)}</span>`
+                            ).join('') : 
+                            '<span class="text-neutral-500 text-xs">No interfaces</span>'
+                        }
+                    </div>
+                </td>
+                <td class="py-3 px-4">
+                    <span class="bg-${bridge.stp_enabled ? 'green' : 'red'}-100 text-${bridge.stp_enabled ? 'green' : 'red'}-800 text-xs px-2 py-1 rounded">
+                        ${bridge.stp_enabled ? 'Enabled' : 'Disabled'}
+                    </span>
+                </td>
+                <td class="py-3 px-4">${sanitizeText(bridge.priority || 'Default')}</td>
+                <td class="py-3 px-4">
+                    <span class="bg-${bridge.enabled ? 'green' : 'red'}-100 text-${bridge.enabled ? 'green' : 'red'}-800 text-xs px-2 py-1 rounded">
+                        ${bridge.enabled ? 'Up' : 'Down'}
+                    </span>
+                </td>
+                <td class="py-3 px-4">
+                    <div class="flex items-center space-x-2">
+                        <button class="edit-btn text-neutral-600 hover:text-neutral-800" data-id="${bridge.id}" data-section="bridges" title="Edit Bridge">
+                            <i class="fa-solid fa-edit"></i>
+                        </button>
+                        <button class="delete-btn text-neutral-600 hover:text-neutral-800" data-id="${bridge.id}" data-section="bridges" title="Delete Bridge">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                        <button class="toggle-btn text-neutral-600 hover:text-neutral-800" data-id="${bridge.id}" data-section="bridges" title="${bridge.enabled ? 'Disable' : 'Enable'} Bridge">
+                            <i class="fa-solid fa-power-off ${bridge.enabled ? 'text-green-600' : 'text-red-600'}"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+            tbody.appendChild(row);
+        });
+    }
+
+    /**
+     * Helper functions
+     */
+    function clearTableBody(tbody) {
+        while (tbody.firstChild) {
+            tbody.removeChild(tbody.firstChild);
+        }
+    }
+
+    function renderEmptyState(tbody, colspan, icon, message, hint) {
+        const row = document.createElement('tr');
+        row.className = 'empty-state';
+        row.innerHTML = `
+            <td colspan="${colspan}" class="py-8 text-center text-neutral-500">
+                <div class="empty-content">
+                    <i class="fa-solid ${icon} text-neutral-300 text-2xl mb-3"></i>
+                    <p class="text-sm">${message}</p>
+                    <p class="text-xs text-neutral-400 mt-1">${hint}</p>
+                </div>
+            </td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    function updateVlanCount() {
+        const countEl = document.getElementById('vlan-count');
+        if (countEl) {
+            countEl.textContent = `${state.vlans.length} VLANs`;
+        }
+    }
+
+    function updateNatCount() {
+        const countEl = document.getElementById('nat-count');
+        if (countEl) {
+            countEl.textContent = `${state.natRules.length} Rules`;
+        }
+    }
+
+    function updateFirewallCount() {
+        const countEl = document.getElementById('firewall-count');
+        if (countEl) {
+            countEl.textContent = `${state.firewallRules.length} Rules`;
+        }
+    }
+
+    function updateRoutesCount() {
+        const countEl = document.getElementById('routes-count');
+        if (countEl) {
+            countEl.textContent = `${state.staticRoutes.length} Routes`;
+        }
+    }
+
+    function updateBridgesCount() {
+        const countEl = document.getElementById('bridges-count');
+        if (countEl) {
+            countEl.textContent = `${state.bridges.length} Bridges`;
+        }
+    }
+
+    function updateLastUpdatedTime() {
+        const timeEl = document.getElementById('last-updated-time');
+        if (timeEl && state.lastUpdated) {
+            timeEl.textContent = state.lastUpdated.toLocaleTimeString();
+        }
+    }
+
+    function setLoadingState(loading) {
+        const loadingEl = document.getElementById('main-loading');
+        if (loadingEl) {
+            if (loading) {
+                loadingEl.classList.remove('hidden');
+            } else {
+                loadingEl.classList.add('hidden');
+            }
+        }
+    }
+
+    function sanitizeText(text) {
+        if (typeof text !== 'string') return String(text || '');
+        return text
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#x27;')
+            .replace(/\//g, '&#x2F;');
+    }
+
+    function sleep(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+
+    /**
+     * UI feedback methods (notifications disabled)
+     */
+    function showSuccessMessage(message) {
+        // Toast notifications disabled
+        console.log('[SUCCESS]', message);
+    }
+
+    function showErrorMessage(message) {
+        // Toast notifications disabled
+        console.error('[ERROR]', message);
+    }
+
+    function showNotification(message, type = 'info') {
+        // Toast notifications disabled
+        console.log(`[${type.toUpperCase()}]`, message);
+    }
+
+    function showValidationErrors(errors) {
+        // Toast notifications disabled - log errors to console instead
+        console.error('Validation Errors:', errors);
+        errors.forEach(error => {
+            console.error('- ' + error);
+        });
+    }
+
+    // Initialize when DOM is ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+
+})();
+</script>

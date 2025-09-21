@@ -1,0 +1,302 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firmware Upgrade Progress</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Firmware Upgrade Progress Popup -->
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  
+  <!-- Firmware popup container -->
+  <div id="firmware-popup-container" 
+       class="bg-white w-[100vw] h-[100vh] shadow-lg overflow-y-auto">
+
+    <div id="popup-header" class="bg-neutral-50 px-6 py-4 border-b border-neutral-200 rounded-t-lg">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-neutral-600 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-download text-white"></i>
+          </div>
+          <div>
+            <h2 class="text-xl text-neutral-800">Firmware Upgrade in Progress</h2>
+          </div>
+        </div>
+        <div class="flex items-center space-x-2">
+          <div class="animate-spin w-5 h-5 border-2 border-neutral-600 border-t-transparent rounded-full"></div>
+          <span class="text-sm text-neutral-600">Upgrading...</span>
+          <button id="firmware-popup-close" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center ml-4">
+            <i class="fa-solid fa-xmark text-neutral-500"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="warning-banner" class="bg-yellow-50 border-l-4 border-yellow-400 p-4 mx-6 mt-4 rounded">
+      <div class="flex items-center">
+        <i class="fa-solid fa-triangle-exclamation text-yellow-400 mr-3"></i>
+        <div>
+          <p class="text-neutral-800 font-medium">Critical Warning</p>
+          <p class="text-neutral-700 text-sm">Do not power off or disconnect the device during the upgrade process. This may permanently damage your device.</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="firmware-info" class="px-6 py-4 border-b border-neutral-100">
+      <h3 class="text-lg text-neutral-800 mb-3">New Firmware Information</h3>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="bg-neutral-50 p-3 rounded">
+          <p class="text-sm text-neutral-600">Current Version</p>
+          <p class="text-lg text-neutral-800">v2.4.7</p>
+          <p class="text-xs text-neutral-500">Released: Jan 15, 2025</p>
+        </div>
+        <div class="bg-blue-50 p-3 rounded border border-blue-200">
+          <p class="text-sm text-neutral-600">New Version</p>
+          <p class="text-lg text-neutral-800">v2.5.0</p>
+          <p class="text-xs text-blue-600">Released: Feb 10, 2025</p>
+        </div>
+      </div>
+      <div class="bg-white border border-neutral-200 rounded p-4">
+        <h4 class="text-neutral-800 mb-2">Release Notes - Version 2.5.0</h4>
+        <div class="space-y-2 text-sm text-neutral-700">
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-plus text-green-600 mt-1"></i>
+            <span>Added support for WiFi 6 protocols</span>
+          </div>
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-plus text-green-600 mt-1"></i>
+            <span>Improved power management for 30% longer battery life</span>
+          </div>
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-wrench text-blue-600 mt-1"></i>
+            <span>Fixed memory leak in Bluetooth stack</span>
+          </div>
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-shield text-red-600 mt-1"></i>
+            <span>Security patches for CVE-2025-0123 and CVE-2025-0124</span>
+          </div>
+          <div class="flex items-start space-x-2">
+            <i class="fa-solid fa-plus text-green-600 mt-1"></i>
+            <span>Enhanced OTA update mechanism</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="progress-section" class="px-6 py-6">
+      <div class="mb-6">
+        <div class="flex items-center justify-between mb-2">
+          <h3 class="text-lg text-neutral-800">Upgrade Progress</h3>
+          <span id="progress-percentage" class="text-2xl text-neutral-600">67%</span>
+        </div>
+        <div class="w-full bg-neutral-200 rounded-full h-3 mb-2">
+          <div id="progress-bar" class="bg-gradient-to-r from-neutral-500 to-neutral-600 h-3 rounded-full transition-all duration-300 ease-in-out" style="width: 67%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-neutral-600">
+          <span>0%</span>
+          <span>100%</span>
+        </div>
+      </div>
+
+      <div id="status-details" class="space-y-4">
+        <div class="bg-neutral-50 p-4 rounded-lg">
+          <div class="flex items-center justify-between mb-3">
+            <h4 class="text-neutral-800">Current Status</h4>
+            <div class="flex items-center space-x-2">
+              <div class="animate-pulse w-2 h-2 bg-neutral-600 rounded-full"></div>
+              <span class="text-sm text-neutral-600">In Progress</span>
+            </div>
+          </div>
+          <p id="current-status" class="text-lg text-neutral-800 mb-2">Writing flash memory...</p>
+          <p id="status-details-text" class="text-sm text-neutral-600">Writing new firmware to flash sectors 0x10000-0x3FFFF</p>
+        </div>
+      </div>
+    </div>
+
+    <div id="upgrade-stages" class="px-6 py-4 border-t border-neutral-100">
+      <h3 class="text-lg text-neutral-800 mb-4">Upgrade Stages</h3>
+      <div class="space-y-3">
+        <div class="flex items-center space-x-3">
+          <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-check text-white text-xs"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-neutral-800">Downloading firmware</p>
+            <p class="text-sm text-neutral-600">1.2 MB downloaded successfully</p>
+          </div>
+          <span class="text-sm text-green-600">Complete</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-6 h-6 bg-green-500 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-check text-white text-xs"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-neutral-800">Verifying firmware integrity</p>
+            <p class="text-sm text-neutral-600">Checksum verification passed</p>
+          </div>
+          <span class="text-sm text-green-600">Complete</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center animate-spin">
+            <i class="fa-solid fa-gear text-white text-xs"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-neutral-800">Writing flash memory</p>
+            <p class="text-sm text-neutral-600">Writing to sectors 0x10000-0x3FFFF (67% complete)</p>
+          </div>
+          <span class="text-sm text-blue-600">In Progress</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-6 h-6 bg-neutral-300 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-arrows-rotate text-neutral-500 text-xs"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-neutral-500">Rebooting device</p>
+            <p class="text-sm text-neutral-400">Pending completion of flash write</p>
+          </div>
+          <span class="text-sm text-neutral-500">Pending</span>
+        </div>
+        
+        <div class="flex items-center space-x-3">
+          <div class="w-6 h-6 bg-neutral-300 rounded-full flex items-center justify-center">
+            <i class="fa-solid fa-check-double text-neutral-500 text-xs"></i>
+          </div>
+          <div class="flex-1">
+            <p class="text-neutral-500">Verifying upgrade</p>
+            <p class="text-sm text-neutral-400">Final verification after reboot</p>
+          </div>
+          <span class="text-sm text-neutral-500">Pending</span>
+        </div>
+      </div>
+    </div>
+
+    <div id="upgrade-log" class="px-6 py-4 border-t border-neutral-100">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg text-neutral-800">Upgrade Log</h3>
+        <button id="export-log-btn" class="text-neutral-600 text-sm hover:text-neutral-800">
+          <i class="fa-solid fa-download mr-1"></i>
+          Export Log
+        </button>
+      </div>
+      <div class="bg-black text-green-400 p-4 rounded text-xs max-h-40 overflow-y-auto font-mono">
+        <div>[14:32:15] Starting firmware upgrade process...</div>
+        <div>[14:32:16] Connecting to device RT-AX86U</div>
+        <div>[14:32:17] Device info: RT-AX86U, 4MB Flash</div>
+        <div>[14:32:18] Downloading firmware v2.5.0 from server...</div>
+        <div>[14:32:45] Download complete: 1,247,832 bytes</div>
+        <div>[14:32:46] Verifying firmware checksum...</div>
+        <div>[14:32:47] Checksum verified: SHA256 match</div>
+        <div>[14:32:48] Entering bootloader mode...</div>
+        <div>[14:32:49] Erasing flash sectors 0x10000-0x3FFFF...</div>
+        <div>[14:32:52] Flash erase complete</div>
+        <div>[14:32:53] Writing firmware to flash...</div>
+        <div class="text-yellow-400">[14:33:15] Writing sector 0x25000... 67% complete</div>
+      </div>
+    </div>
+
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Register firmware upgrade popup handlers
+    registerFirmwareUpgradePopupHandlers();
+});
+
+function registerFirmwareUpgradePopupHandlers() {
+    // Close popup handlers
+    const closeBtn = document.getElementById('firmware-popup-close');
+    const exportLogBtn = document.getElementById('export-log-btn');
+    
+    if (closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            hideFirmwareUpgradePopup();
+            sendEvent('button_click', 'firmware-popup-close', { action: 'close_firmware_popup' });
+        });
+    }
+    
+    // Export log button
+    if (exportLogBtn) {
+        exportLogBtn.addEventListener('click', function() {
+            sendEvent('button_click', 'export-log-btn', { action: 'export_upgrade_log' });
+        });
+    }
+}
+
+function showUpgradePopup() {
+    // Start progress simulation when popup is shown
+    simulateProgress();
+    sendEvent('popup_show', 'firmware-upgrade-popup', { action: 'show_firmware_popup' });
+}
+
+function hideFirmwareUpgradePopup() {
+    // Send message to parent window to close popup
+    window.parent.postMessage({type: 'close-firmware-popup'}, '*');
+}
+
+function simulateProgress() {
+    let progress = 67;
+    const progressBar = document.getElementById('progress-bar');
+    const progressPercentage = document.getElementById('progress-percentage');
+    
+    const interval = setInterval(() => {
+        progress += Math.random() * 2;
+        if (progress >= 100) {
+            progress = 100;
+            clearInterval(interval);
+            setTimeout(() => {
+                completeUpgrade();
+            }, 1000);
+        }
+        
+        if (progressBar && progressPercentage) {
+            progressBar.style.width = progress + '%';
+            progressPercentage.textContent = Math.round(progress) + '%';
+        }
+    }, 2000);
+}
+
+function completeUpgrade() {
+    const currentStatus = document.getElementById('current-status');
+    const statusDetails = document.getElementById('status-details-text');
+    
+    if (currentStatus) currentStatus.textContent = 'Upgrade completed successfully!';
+    if (statusDetails) statusDetails.textContent = 'Device has been upgraded to version 2.5.0';
+    
+    setTimeout(() => {
+        hideFirmwareUpgradePopup();
+        alert('Firmware upgrade completed successfully!');
+        sendEvent('upgrade_complete', 'firmware-upgrade-popup', { action: 'firmware_upgrade_completed' });
+    }, 2000);
+}
+
+// Listen for messages from parent window
+window.addEventListener('message', function(event) {
+    if (event.data.type === 'close-firmware-popup') {
+        // Popup is being closed, perform any cleanup if needed
+    }
+});
+
+// Global event sending function (stub for compatibility)
+function sendEvent(eventType, elementId, data) {
+    if (typeof window.parent.sendEvent === 'function') {
+        window.parent.sendEvent(eventType, elementId, data);
+    } else {
+        console.log('Event:', eventType, elementId, data);
+    }
+}
+</script>
+
+</body>
+</html>

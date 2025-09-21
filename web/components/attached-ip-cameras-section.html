@@ -1,0 +1,342 @@
+
+<!-- Attached IP Cameras Section -->
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="flex items-center justify-between">
+        <div>
+            <h1 class="text-2xl text-neutral-900 flex items-center">
+                <i class="fa-solid fa-video mr-3 text-neutral-600"></i>
+                Attached IP Devices
+            </h1>
+            <p class="text-neutral-600 mt-1">Configure and manage IP cameras and streaming devices</p>
+        </div>
+        <div class="flex items-center space-x-2">
+            <span class="inline-flex items-center px-3 py-1 rounded-full text-sm bg-green-100 text-green-800">
+                <i class="fa-solid fa-circle text-xs mr-2"></i>
+                3 Devices Online
+            </span>
+        </div>
+    </div>
+
+    <!-- Main Configuration Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        
+        <!-- Device Configuration Section -->
+        <div class="bg-white rounded-lg border border-neutral-200 p-6">
+            <div class="flex items-center mb-6">
+                <div class="w-8 h-8 bg-neutral-100 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fa-solid fa-desktop text-neutral-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg text-neutral-900">Device Configuration</h2>
+                    <p class="text-sm text-neutral-500">Set up your device identity and camera settings</p>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">Device Name</label>
+                    <div class="relative">
+                        <input type="text" class="w-full border border-neutral-300 rounded-lg px-4 py-3 pr-12 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="Camera-Device-001" value="">
+                        <button id="generate-device-name" class="absolute right-3 top-1/2 transform -translate-y-1/2 text-neutral-400 hover:text-neutral-600">
+                            <i class="fa-solid fa-magic-wand-sparkles"></i>
+                        </button>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-1">Auto-generated if left empty. Click the wand to generate a new name.</p>
+                </div>
+                
+                <div>
+                    <div class="flex items-center justify-between mb-4">
+                        <div>
+                            <label class="block text-sm text-neutral-700">Camera Status</label>
+                            <p class="text-xs text-neutral-500">Enable or disable camera functionality</p>
+                        </div>
+                        <div class="relative inline-flex items-center">
+                            <input id="camera-toggle" type="checkbox" class="sr-only" checked="">
+                            <div class="w-12 h-6 bg-neutral-600 rounded-full shadow-inner relative cursor-pointer">
+                                <div class="absolute right-1 top-1 w-4 h-4 bg-white rounded-full shadow transform transition-transform duration-200"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                        <div class="flex items-center">
+                            <i class="fa-solid fa-circle-check text-neutral-600 mr-2"></i>
+                            <span class="text-sm text-neutral-800">Camera Enabled</span>
+                        </div>
+                        <p class="text-xs text-neutral-600 mt-1">Device is ready to stream video content</p>
+                    </div>
+                </div>
+                
+                <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                    <h3 class="text-sm text-neutral-700 mb-3">Device Information</h3>
+                    <div class="grid grid-cols-2 gap-4 text-xs">
+                        <div>
+                            <span class="text-neutral-500">Status:</span>
+                            <span class="ml-2 text-neutral-600">Online</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-500">Type:</span>
+                            <span class="ml-2">IP Camera</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-500">Firmware:</span>
+                            <span class="ml-2">v2.4.1</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-500">Uptime:</span>
+                            <span class="ml-2">2d 14h 32m</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Network Configuration Section -->
+        <div class="bg-white rounded-lg border border-neutral-200 p-6">
+            <div class="flex items-center mb-6">
+                <div class="w-8 h-8 bg-neutral-100 rounded-lg flex items-center justify-center mr-3">
+                    <i class="fa-solid fa-network-wired text-neutral-600"></i>
+                </div>
+                <div>
+                    <h2 class="text-lg text-neutral-900">Network Configuration</h2>
+                    <p class="text-sm text-neutral-500">Configure IP address and port settings</p>
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">IP Address</label>
+                    <div class="flex gap-2">
+                        <input id="ip-address-input" type="text" class="flex-1 border border-neutral-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="192.168.1.100" value="">
+                        <button id="discover-devices" class="bg-neutral-600 text-white px-4 py-3 rounded-lg hover:bg-neutral-700 flex items-center">
+                            <i class="fa-solid fa-search mr-2"></i>
+                            Discover
+                        </button>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-1">Enter manually or use auto-discovery to find available devices</p>
+                </div>
+                
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">RTSP Port</label>
+                        <input id="rtsp-port" type="number" class="w-full border border-neutral-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" value="554">
+                        <p class="text-xs text-neutral-500 mt-1">Default: 554</p>
+                    </div>
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">HTTP Port</label>
+                        <input id="http-port" type="number" class="w-full border border-neutral-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" value="80">
+                        <p class="text-xs text-neutral-500 mt-1">Default: 80</p>
+                    </div>
+                </div>
+                
+                <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                    <div class="flex items-center mb-2">
+                        <i class="fa-solid fa-wifi text-neutral-600 mr-2"></i>
+                        <span class="text-sm text-neutral-800">Network Status</span>
+                    </div>
+                    <div class="grid grid-cols-2 gap-3 text-xs">
+                        <div>
+                            <span class="text-neutral-600">Connection:</span>
+                            <span class="ml-2 text-neutral-800">Ethernet</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-600">Speed:</span>
+                            <span class="ml-2 text-neutral-800">1000 Mbps</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-600">Latency:</span>
+                            <span class="ml-2 text-neutral-800">2ms</span>
+                        </div>
+                        <div>
+                            <span class="text-neutral-600">Signal:</span>
+                            <span class="ml-2 text-neutral-800">Excellent</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stream Configuration Section -->
+    <div class="bg-white rounded-lg border border-neutral-200 p-6">
+        <div class="flex items-center mb-6">
+            <div class="w-8 h-8 bg-neutral-100 rounded-lg flex items-center justify-center mr-3">
+                <i class="fa-solid fa-video text-neutral-600"></i>
+            </div>
+            <div>
+                <h2 class="text-lg text-neutral-900">Stream Configuration</h2>
+                <p class="text-sm text-neutral-500">Configure RTSP and HTTP streaming URLs</p>
+            </div>
+        </div>
+        
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <div class="lg:col-span-3 space-y-6">
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">RTSP Stream URL</label>
+                    <div class="relative">
+                        <input id="rtsp-url" type="text" class="w-full border border-neutral-300 rounded-lg px-4 py-3 pr-24 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 bg-neutral-50" value="rtsp://192.168.1.100:554/stream1" readonly="">
+                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                            <button id="copy-rtsp-url" class="text-neutral-600 hover:text-neutral-800">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                            <button id="regenerate-rtsp-url" class="text-neutral-600 hover:text-neutral-800">
+                                <i class="fa-solid fa-magic-wand-sparkles"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-1">Auto-generated based on IP and port settings</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">HTTP Stream URL</label>
+                    <div class="relative">
+                        <input id="http-url" type="text" class="w-full border border-neutral-300 rounded-lg px-4 py-3 pr-24 focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 bg-neutral-50" value="http://192.168.1.100:80/mjpeg/1" readonly="">
+                        <div class="absolute right-2 top-1/2 transform -translate-y-1/2 flex items-center space-x-2">
+                            <button id="copy-http-url" class="text-neutral-600 hover:text-neutral-800">
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                            <button id="regenerate-http-url" class="text-neutral-600 hover:text-neutral-800">
+                                <i class="fa-solid fa-magic-wand-sparkles"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <p class="text-xs text-neutral-500 mt-1">Alternative HTTP streaming endpoint</p>
+                </div>
+            </div>
+            
+            <div class="lg:col-span-1">
+                <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                    <h3 class="text-sm text-neutral-700 mb-4">Stream Status</h3>
+                    
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-neutral-600">RTSP Status:</span>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-neutral-600">HTTP Status:</span>
+                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded text-xs">Active</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-neutral-600">Viewers:</span>
+                            <span class="text-sm">3</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-xs text-neutral-600">Bandwidth:</span>
+                            <span class="text-sm">2.1 Mbps</span>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4 pt-4 border-t border-neutral-200">
+                        <button id="stop-stream" class="w-full bg-red-600 text-white py-2 rounded-lg hover:bg-red-700 text-sm">
+                            <i class="fa-solid fa-stop mr-2"></i>
+                            Stop Stream
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Device name generator
+        const generateDeviceNameBtn = document.getElementById('generate-device-name');
+        if (generateDeviceNameBtn) {
+            generateDeviceNameBtn.addEventListener('click', function() {
+                const deviceNameInput = document.querySelector('input[placeholder="Camera-Device-001"]');
+                const randomId = Math.floor(Math.random() * 1000).toString().padStart(3, '0');
+                deviceNameInput.value = `Camera-Device-${randomId}`;
+                sendEvent('button_click', 'generate-device-name', { action: 'generate-device-name', newName: deviceNameInput.value });
+            });
+        }
+
+        // Camera toggle
+        const cameraToggle = document.getElementById('camera-toggle');
+        if (cameraToggle) {
+            cameraToggle.addEventListener('change', function() {
+                sendEvent('toggle_change', 'camera-toggle', { action: 'toggle-camera', enabled: this.checked });
+            });
+        }
+
+        // Device discovery
+        const discoverBtn = document.getElementById('discover-devices');
+        if (discoverBtn) {
+            discoverBtn.addEventListener('click', function() {
+                sendEvent('button_click', 'discover-devices', { action: 'discover-ip-devices' });
+            });
+        }
+
+        // URL copy buttons
+        const copyRtspBtn = document.getElementById('copy-rtsp-url');
+        const copyHttpBtn = document.getElementById('copy-http-url');
+        
+        if (copyRtspBtn) {
+            copyRtspBtn.addEventListener('click', function() {
+                const rtspUrl = document.getElementById('rtsp-url').value;
+                navigator.clipboard.writeText(rtspUrl);
+                sendEvent('button_click', 'copy-rtsp-url', { action: 'copy-url', url: rtspUrl });
+            });
+        }
+
+        if (copyHttpBtn) {
+            copyHttpBtn.addEventListener('click', function() {
+                const httpUrl = document.getElementById('http-url').value;
+                navigator.clipboard.writeText(httpUrl);
+                sendEvent('button_click', 'copy-http-url', { action: 'copy-url', url: httpUrl });
+            });
+        }
+
+        // URL regenerate buttons
+        const regenerateRtspBtn = document.getElementById('regenerate-rtsp-url');
+        const regenerateHttpBtn = document.getElementById('regenerate-http-url');
+        
+        if (regenerateRtspBtn) {
+            regenerateRtspBtn.addEventListener('click', function() {
+                updateStreamUrls();
+                sendEvent('button_click', 'regenerate-rtsp-url', { action: 'regenerate-rtsp-url' });
+            });
+        }
+
+        if (regenerateHttpBtn) {
+            regenerateHttpBtn.addEventListener('click', function() {
+                updateStreamUrls();
+                sendEvent('button_click', 'regenerate-http-url', { action: 'regenerate-http-url' });
+            });
+        }
+
+        // Stop stream button
+        const stopStreamBtn = document.getElementById('stop-stream');
+        if (stopStreamBtn) {
+            stopStreamBtn.addEventListener('click', function() {
+                sendEvent('button_click', 'stop-stream', { action: 'stop-stream' });
+            });
+        }
+
+        // Port change listeners
+        const rtspPortInput = document.getElementById('rtsp-port');
+        const httpPortInput = document.getElementById('http-port');
+        const ipAddressInput = document.getElementById('ip-address-input');
+
+        [rtspPortInput, httpPortInput, ipAddressInput].forEach(input => {
+            if (input) {
+                input.addEventListener('change', function() {
+                    updateStreamUrls();
+                    sendEvent('input_change', input.id, { value: this.value });
+                });
+            }
+        });
+
+        // Function to update stream URLs based on IP and ports
+        function updateStreamUrls() {
+            const ip = document.getElementById('ip-address-input').value || '192.168.1.100';
+            const rtspPort = document.getElementById('rtsp-port').value || '554';
+            const httpPort = document.getElementById('http-port').value || '80';
+            
+            document.getElementById('rtsp-url').value = `rtsp://${ip}:${rtspPort}/stream1`;
+            document.getElementById('http-url').value = `http://${ip}:${httpPort}/mjpeg/1`;
+        }
+    });
+</script>

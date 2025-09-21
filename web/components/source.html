@@ -1,0 +1,2573 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Dashboard - UR Web Launcher</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"
+        ></script>
+
+        <!-- Core application scripts -->
+        <script src="../assets/js/utils/config.js?v=1756734800001"></script>
+        <script src="../assets/js/utils/icons.js?v=1756734800002"></script>
+        <script src="../assets/js/utils/popup-manager.js?v=1756734800003"></script>
+        <script src="../assets/js/utils/jwt-utils.js?v=1756734800004"></script>
+        <script src="../assets/js/utils/session-state-manager.js?v=1756734800005"></script>
+        <script src="../assets/js/utils/component-globals.js?v=1756734800006"></script>
+        <script src="../assets/js/core/http-request-manager.js?v=1756734800007"></script>
+        <script src="../assets/js/core/BaseSectionManager.js?v=1756734800008"></script>
+
+        <!-- Section manager scripts -->
+        <script src="../assets/js/sections/SystemSection.js?v=1756734800009"></script>
+        <script src="../assets/js/sections/CellularSection.js?v=1756734800010"></script>
+        <script src="../assets/js/sections/LicenseSection.js?v=1756734800011"></script>
+        <script src="../assets/js/sections/WirelessSection.js?v=1756734800012"></script>
+        <script src="../assets/js/sections/VpnSection.js?v=1756734800013"></script>
+        <script src="../assets/js/sections/AdvancedNetworkSection.js?v=1756734800016"></script>
+
+        <!-- Main application script -->
+        <script src="../assets/js/app.js?v=1756734800014"></script>
+
+        <!-- Session integration -->
+        <script src="../assets/js/utils/session-integration.js?v=1756734800015"></script>
+        <style>
+            * {
+                font-family: "Inter", sans-serif;
+            }
+            ::-webkit-scrollbar {
+                display: none;
+            }
+        </style>
+    </head>
+    <body class="h-full text-base-content">
+        <header
+            id="header"
+            class="fixed top-0 w-full bg-white border-b border-neutral-200 z-50"
+        >
+            <div class="flex items-center justify-between px-6 py-3">
+                <div class="flex items-center">
+                    <button
+                        id="sidebar-toggle"
+                        class="mr-4 bg-neutral-600 hover:bg-neutral-700 text-white p-2 rounded-lg transition-all duration-300"
+                    >
+                        <i class="fa-solid fa-bars"></i>
+                    </button>
+                    <div class="mr-4">
+                        <span
+                            class="text-black text-lg flex items-center cursor-pointer"
+                        >
+                            Ultima Robotics Link Management Platform
+                        </span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button
+                        id="settings-btn"
+                        class="text-neutral-600 hover:text-neutral-900"
+                    >
+                        <i class="fa-solid fa-cog"></i>
+                    </button>
+                    <button
+                        id="logout-btn"
+                        class="text-neutral-600 hover:text-red-600 transition-colors"
+                        title="Logout"
+                    >
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <div class="flex h-[800px] pt-16">
+            <!-- Sidebar -->
+            <div
+                id="sidebar"
+                class="w-64 bg-white border-r border-neutral-200 fixed h-full overflow-y-auto transition-transform duration-300 transform -translate-x-full"
+            >
+                <div class="p-4">
+                    <nav class="space-y-1">
+                        <div class="relative">
+                            <span
+                                id="nav-system-dashboard"
+                                class="block px-3 py-2 text-sm text-neutral-600 bg-neutral-50 border-l-2 border-neutral-600 rounded-r cursor-pointer hover:bg-neutral-100"
+                            >
+                                System Dashboard
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <!-- header (NOT clickable except the button) -->
+                            <div
+                                id="nav-network-header"
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg"
+                            >
+                                <div class="flex items-center">
+                                    <span>Network Management</span>
+                                </div>
+
+                                <!-- only this button toggles the list -->
+                                <button
+                                    id="nav-network-toggle"
+                                    type="button"
+                                    aria-expanded="true"
+                                    aria-controls="nav-network-list"
+                                    class="text-xs text-neutral-400 p-1 rounded hover:bg-neutral-100 focus:outline-none"
+                                >
+                                    <!-- add transform/transition classes to the svg so rotation animates -->
+                                    <svg
+                                        class="svg-inline--fa fa-chevron-up transform transition-transform duration-200"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        data-prefix="fas"
+                                        data-icon="chevron-up"
+                                        role="img"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512"
+                                    >
+                                        <path
+                                            fill="currentColor"
+                                            d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+                                        ></path>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <!-- list (visible by default). Add "hidden" here if you want it collapsed initially -->
+                            <div
+                                id="nav-network-list"
+                                class="ml-6 mt-1 space-y-1 hidden"
+                            >
+                                <span
+                                    class="block px-3 py-2 text-sm text-neutral-600 bg-neutral-50 border-l-2 border-neutral-600 rounded-r cursor-pointer hover:bg-neutral-100"
+                                >
+                                    Wired Configuration
+                                </span>
+                                <span
+                                    id="nav-wireless-config"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Wireless Configuration
+                                </span>
+                                <span
+                                    id="nav-cellular-config"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Cellular Configuration
+                                </span>
+                                <span
+                                    id="nav-vpn-config"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    VPN Configuration
+                                </span>
+                                <span
+                                    id="nav-advanced-network"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Advanced Network Options
+                                </span>
+                                <span
+                                    id="nav-network-benchmark"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Network Benchmark
+                                </span>
+                                <span
+                                    id="nav-network-priority"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Network Priority
+                                </span>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <div
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg"
+                            >
+                                <div class="flex items-center">
+                                    <span>Devices Management</span>
+                                </div>
+
+                                <button
+                                    id="devices-toggle"
+                                    type="button"
+                                    aria-expanded="true"
+                                    aria-controls="devices-list"
+                                    class="text-xs text-neutral-400 p-1 rounded hover:bg-neutral-100 focus:outline-none"
+                                >
+                                    <svg
+                                        class="svg-inline--fa fa-chevron-up transform transition-transform duration-200"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        data-prefix="fas"
+                                        data-icon="chevron-up"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512"
+                                    >
+                                        <path
+                                            fill="currentColor"
+                                            d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                id="devices-list"
+                                class="ml-6 mt-1 space-y-1 hidden"
+                            >
+                                <span
+                                    id="nav-mavlink-overview"
+                                    class="block px-3 py-2 text-sm text-neutral-600 bg-neutral-50 border-l-2 border-neutral-600 rounded-r cursor-pointer"
+                                >
+                                    Mavlink System Overview
+                                </span>
+                                <span
+                                    id="nav-attached-ip-devices"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Attached IP Devices
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Features -->
+                        <div class="relative">
+                            <div
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg"
+                            >
+                                <div class="flex items-center">
+                                    <span>Features</span>
+                                </div>
+
+                                <button
+                                    id="features-toggle"
+                                    type="button"
+                                    aria-expanded="true"
+                                    aria-controls="features-list"
+                                    class="text-xs text-neutral-400 p-1 rounded hover:bg-neutral-100 focus:outline-none"
+                                >
+                                    <svg
+                                        class="svg-inline--fa fa-chevron-up transform transition-transform duration-200"
+                                        aria-hidden="true"
+                                        focusable="false"
+                                        data-prefix="fas"
+                                        data-icon="chevron-up"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 512 512"
+                                    >
+                                        <path
+                                            fill="currentColor"
+                                            d="M233.4 105.4c12.5-12.5 32.8-12.5 45.3 0l192 192c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L256 173.3 86.6 342.6c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l192-192z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <div
+                                id="features-list"
+                                class="ml-6 mt-1 space-y-1 hidden"
+                            >
+                                <span
+                                    id="nav-mavlink-extension"
+                                    class="block px-3 py-2 text-sm text-neutral-500 hover:bg-neutral-100 rounded cursor-pointer"
+                                >
+                                    Mavlink Extension System
+                                </span>
+                            </div>
+                        </div>
+                        <div class="relative">
+                            <span
+                                id="nav-firmware-upgrade"
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg hover:bg-neutral-100 cursor-pointer"
+                            >
+                                <div class="flex items-center">
+                                    <span>Firmware Upgrade</span>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <span
+                                id="nav-license-management"
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg hover:bg-neutral-100 cursor-pointer"
+                            >
+                                <div class="flex items-center">
+                                    <span>License Management</span>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <span
+                                id="nav-backup-restore"
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg hover:bg-neutral-100 cursor-pointer"
+                            >
+                                <div class="flex items-center">
+                                    <span>Backup and Restore</span>
+                                </div>
+                            </span>
+                        </div>
+                        <div class="relative">
+                            <span
+                                id="nav-about-us"
+                                class="flex items-center justify-between px-3 py-2 text-neutral-700 rounded-lg hover:bg-neutral-100 cursor-pointer"
+                            >
+                                <div class="flex items-center">
+                                    <span>About Us</span>
+                                </div>
+                            </span>
+                        </div>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <main
+                id="main-content"
+                class="flex-1 ml-0 bg-neutral-50 p-8 transition-all duration-300"
+            >
+                <!-- Content will be loaded here -->
+            </main>
+        </div>
+
+        <!-- Settings Modal -->
+        <div
+            id="settings-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden"
+        >
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-neutral-800">
+                        Settings
+                    </h2>
+                    <button
+                        id="close-settings-modal"
+                        class="text-neutral-400 hover:text-neutral-600"
+                    >
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <!-- User Settings Section -->
+                    <div class="border border-neutral-200 rounded-lg">
+                        <button
+                            id="user-settings-toggle"
+                            class="w-full flex items-center justify-between p-4 text-left hover:bg-neutral-50 transition-colors"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i
+                                    class="fa-solid fa-user text-neutral-600"
+                                ></i>
+                                <span class="text-neutral-800 font-medium"
+                                    >User Settings</span
+                                >
+                            </div>
+                            <i
+                                class="fa-solid fa-chevron-down text-neutral-400 transform transition-transform"
+                                id="user-settings-chevron"
+                            ></i>
+                        </button>
+
+                        <div
+                            id="user-settings-content"
+                            class="hidden border-t border-neutral-200"
+                        >
+                            <div class="p-4 space-y-3">
+                                <button
+                                    id="change-password-btn"
+                                    class="w-full flex items-center space-x-3 p-2 text-left hover:bg-neutral-50 rounded transition-colors"
+                                >
+                                    <i
+                                        class="fa-solid fa-lock text-neutral-600"
+                                    ></i>
+                                    <span class="text-neutral-700"
+                                        >Change User Password</span
+                                    >
+                                </button>
+                                <button
+                                    id="generate-auth-btn"
+                                    class="w-full flex items-center space-x-3 p-2 text-left hover:bg-neutral-50 rounded transition-colors"
+                                >
+                                    <i
+                                        class="fa-solid fa-key text-neutral-600"
+                                    ></i>
+                                    <span class="text-neutral-700"
+                                        >Generate Auth Access</span
+                                    >
+                                </button>
+                                <button
+                                    id="auth-access-management-btn"
+                                    class="w-full flex items-center space-x-3 p-2 text-left hover:bg-neutral-50 rounded transition-colors"
+                                >
+                                    <i
+                                        class="fa-solid fa-file-shield text-neutral-600"
+                                    ></i>
+                                    <span class="text-neutral-700"
+                                        >Auth Access Management</span
+                                    >
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Cloud Connect Section -->
+                    <div class="border border-neutral-200 rounded-lg">
+                        <button
+                            class="w-full flex items-center justify-between p-4 text-left hover:bg-neutral-50 transition-colors"
+                        >
+                            <div class="flex items-center space-x-3">
+                                <i
+                                    class="fa-solid fa-cloud text-neutral-600"
+                                ></i>
+                                <span class="text-neutral-800 font-medium"
+                                    >Cloud Connect</span
+                                >
+                            </div>
+                            <span class="text-sm text-green-600 font-medium"
+                                >Connected</span
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Change Password Modal -->
+        <div
+            id="change-password-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 hidden"
+        >
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-neutral-800">
+                        Change Password
+                    </h2>
+                    <button
+                        id="close-change-password-modal"
+                        class="text-neutral-400 hover:text-neutral-600"
+                    >
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <form id="change-password-form" class="space-y-4">
+                    <div>
+                        <label
+                            for="current-password"
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >Current Password</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="current-password"
+                                class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-600"
+                                id="toggle-current-password"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            for="new-password"
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >New Password</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="new-password"
+                                class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-600"
+                                id="toggle-new-password"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label
+                            for="confirm-password"
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >Confirm New Password</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="password"
+                                id="confirm-password"
+                                class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                                required
+                            />
+                            <button
+                                type="button"
+                                class="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-600"
+                                id="toggle-confirm-password"
+                            >
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="flex space-x-3 pt-4">
+                        <button
+                            type="button"
+                            id="cancel-change-password"
+                            class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="submit"
+                            class="flex-1 px-4 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700 transition-colors"
+                        >
+                            Update Password
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Generate Auth Access Modal -->
+        <div
+            id="generate-auth-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 hidden"
+        >
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-neutral-800">
+                        Generate Auth Access
+                    </h2>
+                    <button
+                        id="close-generate-auth-modal"
+                        class="text-neutral-400 hover:text-neutral-600"
+                    >
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label
+                            for="access-token-name"
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >Token Name</label
+                        >
+                        <input
+                            type="text"
+                            id="access-token-name"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                            placeholder="e.g., Mobile App Access"
+                        />
+                    </div>
+
+                    <div>
+                        <label
+                            for="access-expiry"
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >Expiry</label
+                        >
+                        <select
+                            id="access-expiry"
+                            class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500"
+                        >
+                            <option value="7">7 days</option>
+                            <option value="30">30 days</option>
+                            <option value="90">90 days</option>
+                            <option value="365">1 year</option>
+                            <option value="never">Never expires</option>
+                        </select>
+                    </div>
+
+                    <div id="generated-token-section" class="hidden">
+                        <label
+                            class="block text-sm font-medium text-neutral-700 mb-2"
+                            >Generated Token</label
+                        >
+                        <div class="relative">
+                            <input
+                                type="text"
+                                id="generated-token"
+                                class="w-full px-3 py-2 border border-neutral-300 rounded-lg bg-neutral-50"
+                                readonly
+                            />
+                            <button
+                                type="button"
+                                id="copy-token"
+                                class="absolute right-3 top-2.5 text-neutral-400 hover:text-neutral-600"
+                            >
+                                <i class="fa-solid fa-copy"></i>
+                            </button>
+                        </div>
+                        <p class="text-xs text-neutral-500 mt-1">
+                            Make sure to copy your token now. You won't be able
+                            to see it again!
+                        </p>
+                    </div>
+
+                    <div class="flex space-x-3 pt-4">
+                        <button
+                            type="button"
+                            id="cancel-generate-auth"
+                            class="flex-1 px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            type="button"
+                            id="generate-token-btn"
+                            class="flex-1 px-4 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700 transition-colors"
+                        >
+                            Generate Token
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Auth Access Management Modal -->
+        <div
+            id="auth-access-management-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-60 hidden"
+        >
+            <div
+                class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-96 flex flex-col"
+            >
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-xl font-semibold text-neutral-800">
+                        Auth Access Management
+                    </h2>
+                    <button
+                        id="close-auth-access-management-modal"
+                        class="text-neutral-400 hover:text-neutral-600"
+                    >
+                        <i class="fa-solid fa-times text-xl"></i>
+                    </button>
+                </div>
+
+                <div class="flex-1 overflow-hidden flex flex-col">
+                    <!-- Loading State -->
+                    <div
+                        id="auth-files-loading"
+                        class="flex items-center justify-center py-8"
+                    >
+                        <div class="flex items-center space-x-3">
+                            <div
+                                class="animate-spin rounded-full h-6 w-6 border-b-2 border-neutral-600"
+                            ></div>
+                            <span class="text-neutral-600"
+                                >Loading auth files...</span
+                            >
+                        </div>
+                    </div>
+
+                    <!-- Auth Files List -->
+                    <div
+                        id="auth-files-content"
+                        class="hidden flex-1 overflow-hidden flex flex-col"
+                    >
+                        <div class="overflow-y-auto flex-1">
+                            <table class="w-full">
+                                <thead
+                                    class="sticky top-0 bg-white border-b border-neutral-200"
+                                >
+                                    <tr>
+                                        <th
+                                            class="text-left py-2 px-3 text-sm text-neutral-700"
+                                        >
+                                            File Name
+                                        </th>
+                                        <th
+                                            class="text-left py-2 px-3 text-sm text-neutral-700"
+                                        >
+                                            Size
+                                        </th>
+                                        <th
+                                            class="text-left py-2 px-3 text-sm text-neutral-700"
+                                        >
+                                            Created
+                                        </th>
+                                        <th
+                                            class="text-left py-2 px-3 text-sm text-neutral-700"
+                                        >
+                                            Status
+                                        </th>
+                                        <th
+                                            class="text-center py-2 px-3 text-sm text-neutral-700"
+                                        >
+                                            Actions
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="auth-files-table-body">
+                                    <!-- Auth files will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Empty State -->
+                    <div
+                        id="auth-files-empty"
+                        class="hidden flex items-center justify-center py-8"
+                    >
+                        <div class="text-center">
+                            <i
+                                class="fa-solid fa-file-shield text-4xl text-neutral-400 mb-3"
+                            ></i>
+                            <p class="text-neutral-600 mb-2">
+                                No auth access files found
+                            </p>
+                            <p class="text-sm text-neutral-500">
+                                Generate your first auth access file to get
+                                started
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Error State -->
+                    <div
+                        id="auth-files-error"
+                        class="hidden flex items-center justify-center py-8"
+                    >
+                        <div class="text-center text-red-600">
+                            <i
+                                class="fa-solid fa-exclamation-triangle text-4xl mb-3"
+                            ></i>
+                            <p class="mb-2">Failed to load auth access files</p>
+                            <button
+                                id="retry-load-auth-files"
+                                class="text-sm underline hover:no-underline"
+                            >
+                                Try again
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    class="flex justify-between items-center pt-4 border-t border-neutral-200"
+                >
+                    <span id="auth-files-count" class="text-sm text-neutral-600"
+                        >0 files</span
+                    >
+                    <div class="flex space-x-3">
+                        <button
+                            id="refresh-auth-files"
+                            class="px-4 py-2 text-neutral-600 hover:text-neutral-800 border border-neutral-300 rounded-lg hover:bg-neutral-50"
+                        >
+                            <i class="fa-solid fa-refresh mr-2"></i>Refresh
+                        </button>
+                        <button
+                            id="close-auth-management"
+                            class="px-4 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700"
+                        >
+                            Close
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- System Notification Modal -->
+        <div
+            id="system-notification-modal"
+            class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-70 hidden"
+        >
+            <div class="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+                <div class="flex items-center mb-4">
+                    <div id="notification-icon" class="mr-3">
+                        <!-- Icon will be inserted here based on type -->
+                    </div>
+                    <h2
+                        id="notification-title"
+                        class="text-xl font-semibold text-neutral-800"
+                    >
+                        Notification
+                    </h2>
+                </div>
+
+                <div id="notification-message" class="text-neutral-700 mb-6">
+                    <!-- Message content will be inserted here -->
+                </div>
+
+                <div class="flex justify-end">
+                    <button
+                        id="close-notification-modal"
+                        class="px-6 py-2 bg-neutral-600 text-white rounded-lg hover:bg-neutral-700 transition-colors"
+                    >
+                        OK
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", async function () {
+                // Check if user is logged in with backend validation
+                if (window.sessionStateManager) {
+                    console.log("[DASHBOARD] Checking session state...");
+                    const shouldRedirect =
+                        await window.sessionStateManager.checkAndRedirect();
+                    if (shouldRedirect) {
+                        console.log(
+                            "[DASHBOARD] Redirecting based on session state",
+                        );
+                        return; // Exit early if redirecting
+                    }
+                } else {
+                    console.error(
+                        "[DASHBOARD] Session state manager not available",
+                    );
+                    // Fallback: redirect to login if no session manager
+                    window.location.href = "../index.html";
+                    return;
+                }
+
+                console.log(
+                    "[DASHBOARD] Session validated, initializing dashboard...",
+                );
+
+                // Load landing section content
+                loadContent("landing-section.html");
+
+                // System Dashboard navigation handler
+                document
+                    .getElementById("nav-system-dashboard")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("landing-section.html");
+                        sendEvent("button_click", "nav-system-dashboard", {
+                            section: "system-dashboard",
+                        });
+                    });
+
+                // Cellular Configuration navigation handler
+                document
+                    .getElementById("nav-cellular-config")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("cellular-config-section.html");
+                        sendEvent("button_click", "nav-cellular-config", {
+                            section: "cellular-configuration",
+                        });
+                    });
+
+                // Firmware Upgrade navigation handler
+                const navFirmwareUpgrade = document.getElementById(
+                    "nav-firmware-upgrade",
+                );
+                if (navFirmwareUpgrade) {
+                    navFirmwareUpgrade.addEventListener("click", function () {
+                        loadContent("firmware-upgrade-section.html");
+                        updateActiveNavigation(this);
+                        sendEvent("button_click", "nav-firmware-upgrade", {
+                            section: "firmware-upgrade",
+                        });
+                    });
+                }
+
+                const navMavlinkOverview = document.getElementById(
+                    "nav-mavlink-overview",
+                );
+                if (navMavlinkOverview) {
+                    navMavlinkOverview.addEventListener("click", function () {
+                        loadContent("mavlink-system-overview-section.html");
+                        updateActiveNavigation(this);
+                        sendEvent("button_click", "nav-mavlink-overview", {
+                            section: "mavlink-system-overview",
+                        });
+                    });
+                }
+
+                // License Management navigation handler
+                document
+                    .getElementById("nav-license-management")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("license-section.html");
+                        sendEvent("button_click", "nav-license-management", {
+                            section: "license-management",
+                        });
+                    });
+
+                // Network Priority navigation handler (for main nav item)
+                const navNetworkPriority = document.getElementById(
+                    "nav-network-priority",
+                );
+                if (navNetworkPriority) {
+                    navNetworkPriority.addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("network-priority-section.html");
+                        sendEvent("button_click", "nav-network-priority", {
+                            section: "network-priority",
+                        });
+                    });
+                }
+
+                // Backup and Restore navigation handler
+                document
+                    .getElementById("nav-backup-restore")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("backup-restore-section.html");
+                        sendEvent("button_click", "nav-backup-restore", {
+                            section: "backup-restore",
+                        });
+                    });
+
+                // Mavlink Extension System navigation handler
+                document
+                    .getElementById("nav-mavlink-extension")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("mavlink-extension-section.html");
+                        sendEvent("button_click", "nav-mavlink-extension", {
+                            section: "mavlink-extension-system",
+                        });
+                    });
+
+                // Attached IP Devices navigation handler
+                document
+                    .getElementById("nav-attached-ip-devices")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("attached-ip-cameras-section.html");
+                        sendEvent("button_click", "nav-attached-ip-devices", {
+                            section: "attached-ip-devices",
+                        });
+                    });
+
+                // VPN Configuration navigation handler
+                document
+                    .getElementById("nav-vpn-config")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("vpn-configuration-section.html");
+                        sendEvent("button_click", "nav-vpn-config", {
+                            section: "vpn-configuration",
+                        });
+                    });
+
+                // Advanced Network Options navigation handler
+                document
+                    .getElementById("nav-advanced-network")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("advance-network-section.html");
+                        sendEvent("button_click", "nav-advanced-network", {
+                            section: "advanced-network-options",
+                        });
+                    });
+
+                // Network Benchmark navigation handler
+                document
+                    .getElementById("nav-network-benchmark")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("network-utility-section.html");
+                        sendEvent("button_click", "nav-network-benchmark", {
+                            section: "network-benchmark",
+                        });
+                    });
+
+                // About Us navigation handler
+                document
+                    .getElementById("nav-about-us")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("about-us-section.html");
+                        sendEvent("button_click", "nav-about-us", {
+                            section: "about-us",
+                        });
+                    });
+
+                // Wired Configuration navigation handler (add this first)
+                const wiredConfigElement = document.querySelector(
+                    "#nav-network-list span:first-child",
+                );
+                if (wiredConfigElement) {
+                    wiredConfigElement.addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("wired-config-section.html");
+                        sendEvent("button_click", "nav-wired-config", {
+                            section: "wired-configuration",
+                        });
+                    });
+                }
+
+                // Wireless Configuration navigation handler
+                document
+                    .getElementById("nav-wireless-config")
+                    .addEventListener("click", function () {
+                        updateActiveNavigation(this);
+                        loadContent("wireless-config-section.html");
+                        sendEvent("button_click", "nav-wireless-config", {
+                            section: "wireless-configuration",
+                        });
+                    });
+
+                // Navigation handling for other nav items
+                document.querySelectorAll(".nav-item").forEach((item) => {
+                    item.addEventListener("click", function () {
+                        const navId = this.getAttribute("id");
+                        updateActiveNavigation(this);
+                        sendEvent("button_click", navId, {
+                            section: navId.replace("nav-", ""),
+                        });
+                    });
+                });
+
+                // Header button event handlers
+                document
+                    .getElementById("settings-btn")
+                    .addEventListener("click", function () {
+                        // Reset settings modal to initial state
+                        resetSettingsModal();
+                        document
+                            .getElementById("settings-modal")
+                            .classList.remove("hidden");
+                        sendEvent("button_click", "settings-btn", {});
+                    });
+
+                // Logout button handler
+                document
+                    .getElementById("logout-btn")
+                    .addEventListener("click", function () {
+                        if (window.sessionStateManager) {
+                            window.sessionStateManager.logout();
+                        } else {
+                            // Fallback logout
+                            localStorage.clear();
+                            window.location.href = "../index.html";
+                        }
+                    });
+
+                // Send page load event
+                sendEvent("page_load", "dashboard-page", {
+                    url: window.location.href,
+                });
+            });
+
+            function updateActiveNavigation(activeElement) {
+                // Remove active state from all navigation items
+                document
+                    .querySelectorAll("#sidebar .cursor-pointer")
+                    .forEach((nav) => {
+                        nav.classList.remove(
+                            "bg-neutral-50",
+                            "text-neutral-600",
+                            "border-l-2",
+                            "border-neutral-600",
+                        );
+                        nav.classList.add("text-neutral-500");
+                    });
+
+                // Add active state to clicked element
+                activeElement.classList.remove("text-neutral-500");
+                activeElement.classList.add(
+                    "text-neutral-600",
+                    "bg-neutral-50",
+                    "border-l-2",
+                    "border-neutral-600",
+                );
+            }
+
+            // Function to load content into main-content
+            function loadContent(contentFile) {
+                console.log(
+                    "[CONTENT-LOADER] Loading content file:",
+                    contentFile,
+                );
+                fetch(contentFile)
+                    .then((response) => {
+                        console.log(
+                            "[CONTENT-LOADER] Response status:",
+                            response.status,
+                            response.statusText,
+                        );
+                        if (!response.ok) {
+                            throw new Error(
+                                `HTTP ${response.status}: ${response.statusText}`,
+                            );
+                        }
+                        return response.text();
+                    })
+                    .then((html) => {
+                        console.log(
+                            "[CONTENT-LOADER] Content loaded successfully, length:",
+                            html.length,
+                        );
+                        const mainContent =
+                            document.getElementById("main-content");
+                        if (mainContent) {
+                            mainContent.innerHTML = html;
+                            // Initialize loaded content scripts
+                            initializeContentScripts();
+                            console.log(
+                                "[CONTENT-LOADER] Content initialized successfully",
+                            );
+                        } else {
+                            console.error(
+                                "[CONTENT-LOADER] Main content element not found",
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        console.error(
+                            "[CONTENT-LOADER] Error loading content:",
+                            error,
+                        );
+                        const mainContent =
+                            document.getElementById("main-content");
+                        if (mainContent) {
+                            mainContent.innerHTML = `
+                            <div class="text-center p-8">
+                                <p class="text-neutral-600 mb-4">Error loading content: ${error.message}</p>
+                                <p class="text-sm text-neutral-500">File: ${contentFile}</p>
+                                <button onclick="loadContent('${contentFile}')" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                    Retry
+                                </button>
+                            </div>
+                        `;
+                        }
+                    });
+            }
+
+            // Initialize scripts for loaded content
+            function initializeContentScripts() {
+                // Re-run any content-specific initialization here
+                const mainContent = document.getElementById("main-content");
+                if (!mainContent) {
+                    console.error(
+                        "[CONTENT-INIT] Main content element not found",
+                    );
+                    return;
+                }
+
+                const loadedScripts = mainContent.querySelectorAll("script");
+                loadedScripts.forEach((script) => {
+                    try {
+                        // Only eval if the script content looks like JavaScript (not HTML)
+                        const scriptContent = script.textContent.trim();
+
+                        // Skip empty scripts, HTML content, comments, or script tags with src attributes
+                        if (
+                            !scriptContent ||
+                            scriptContent.startsWith("<") ||
+                            scriptContent.includes("<!DOCTYPE") ||
+                            scriptContent.startsWith("<!--") ||
+                            script.src ||
+                            scriptContent.length < 10
+                        ) {
+                            console.log(
+                                "[CONTENT-INIT] Skipping script:",
+                                scriptContent.substring(0, 50) + "...",
+                            );
+                            return;
+                        }
+
+                        // Additional validation - check if it contains typical JavaScript patterns
+                        const hasJSPatterns =
+                            /(?:function|class|const|let|var|document\.|window\.|console\.|if\s*\(|for\s*\(|while\s*\(|\{|\}|;)/i.test(
+                                scriptContent,
+                            );
+
+                        if (hasJSPatterns) {
+                            console.log(
+                                "[CONTENT-INIT] Executing script content:",
+                                scriptContent.substring(0, 100) + "...",
+                            );
+                            eval(scriptContent);
+                        } else {
+                            console.log(
+                                "[CONTENT-INIT] Script content does not appear to be JavaScript, skipping",
+                            );
+                        }
+                    } catch (error) {
+                        console.error(
+                            "[CONTENT-INIT] Script execution error:",
+                            error,
+                        );
+                    }
+                });
+
+                // Initialize license section if present
+                if (
+                    document.getElementById("license-status-overview") ||
+                    document.querySelector('[id*="license"]')
+                ) {
+                    console.log(
+                        "[CONTENT-INIT] License section detected, initializing...",
+                    );
+                    // Give time for scripts to load before checking for function
+                    setTimeout(() => {
+                        if (typeof initializeLicenseSection === "function") {
+                            initializeLicenseSection();
+                        } else if (
+                            typeof window.licenseManager !== "undefined"
+                        ) {
+                            console.log(
+                                "[CONTENT-INIT] License manager already initialized",
+                            );
+                        } else {
+                            console.warn(
+                                "[CONTENT-INIT] initializeLicenseSection function not found, license section may not be fully functional",
+                            );
+                        }
+                    }, 500);
+                }
+
+                // Initialize cellular section if present
+                if (
+                    document.getElementById("cellular-status-overview") ||
+                    document.querySelector('[id*="cellular"]')
+                ) {
+                    console.log(
+                        "[CONTENT-INIT] Cellular section detected, initializing...",
+                    );
+                    // Give time for scripts to load before checking for function
+                    setTimeout(() => {
+                        if (typeof initializeCellularSection === "function") {
+                            initializeCellularSection();
+                        } else if (
+                            typeof window.cellularSection !== "undefined"
+                        ) {
+                            console.log(
+                                "[CONTENT-INIT] Cellular section already initialized",
+                            );
+                        } else {
+                            console.warn(
+                                "[CONTENT-INIT] initializeCellularSection function not found, cellular section may not be fully functional",
+                            );
+                        }
+                    }, 500);
+                }
+            }
+
+            // Function to send events to backend
+            function sendEvent(eventType, elementId, data = {}) {
+                const eventData = {
+                    type: eventType,
+                    elementId: elementId,
+                    eventName: eventType + "_" + elementId,
+                    timestamp: new Date().toISOString(),
+                    data: data,
+                };
+
+                fetch("/api/event", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(eventData),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        console.log("Event response:", data);
+
+                        if (data.redirect) {
+                            window.location.href = data.redirectUrl;
+                        }
+
+                        // Handle custom actions
+                        if (data.action) {
+                            handleCustomAction(data);
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Event error:", error);
+                    });
+            }
+
+            function handleCustomAction(data) {
+                switch (data.action) {
+                    case "showNotification":
+                        alert(data.message);
+                        break;
+                    case "updateStats":
+                        console.log("Updating stats:", data);
+                        break;
+                    default:
+                        console.log("Unknown action:", data.action);
+                }
+            }
+        </script>
+        <script>
+            (function () {
+                // Set up one toggle button
+                function setupToggle(btn) {
+                    if (!btn) {
+                        console.warn(
+                            "[TOGGLE-SETUP] Button is null or undefined",
+                        );
+                        return;
+                    }
+
+                    const targetId = btn.getAttribute("aria-controls");
+                    if (!targetId) {
+                        console.warn(
+                            "[TOGGLE-SETUP] Button missing aria-controls attribute",
+                        );
+                        return;
+                    }
+
+                    const panel = document.getElementById(targetId);
+                    if (!panel) {
+                        console.warn(
+                            "[TOGGLE-SETUP] Panel not found for ID:",
+                            targetId,
+                        );
+                        return;
+                    }
+
+                    // Sync initial state from the DOM (hidden => collapsed)
+                    const initiallyOpen = !panel.classList.contains("hidden");
+                    btn.setAttribute("aria-expanded", String(initiallyOpen));
+
+                    // Rotate icon based on state
+                    function syncIcon(open) {
+                        try {
+                            // Re-query each time in case FA replaced <i> with <svg>
+                            const icon = btn.querySelector("svg, i");
+                            if (!icon) return;
+                            icon.classList.add(
+                                "transform",
+                                "transition-transform",
+                                "duration-200",
+                            );
+                            // When closed, rotate; when open, normal
+                            icon.classList.toggle("rotate-180", !open);
+                        } catch (error) {
+                            console.error(
+                                "[TOGGLE-SETUP] Error syncing icon:",
+                                error,
+                            );
+                        }
+                    }
+                    syncIcon(initiallyOpen);
+
+                    // Apply state to DOM
+                    function setOpen(open) {
+                        try {
+                            btn.setAttribute("aria-expanded", String(open));
+                            panel.classList.toggle("hidden", !open);
+                            syncIcon(open);
+                        } catch (error) {
+                            console.error(
+                                "[TOGGLE-SETUP] Error setting open state:",
+                                error,
+                            );
+                        }
+                    }
+
+                    // Click handler
+                    btn.addEventListener("click", (e) => {
+                        try {
+                            e.stopPropagation();
+                            const open =
+                                btn.getAttribute("aria-expanded") === "true";
+                            setOpen(!open);
+                        } catch (error) {
+                            console.error(
+                                "[TOGGLE-SETUP] Error in click handler:",
+                                error,
+                            );
+                        }
+                    });
+                }
+
+                // Initialize all buttons that control a panel
+                function init() {
+                    try {
+                        const toggleButtons =
+                            document.querySelectorAll("[aria-controls]");
+                        console.log(
+                            "[TOGGLE-INIT] Found",
+                            toggleButtons.length,
+                            "toggle buttons",
+                        );
+                        toggleButtons.forEach((btn, index) => {
+                            console.log(
+                                "[TOGGLE-INIT] Setting up button",
+                                index + 1,
+                                "of",
+                                toggleButtons.length,
+                            );
+                            setupToggle(btn);
+                        });
+                    } catch (error) {
+                        console.error(
+                            "[TOGGLE-INIT] Error initializing toggles:",
+                            error,
+                        );
+                    }
+                }
+
+                if (document.readyState === "loading") {
+                    document.addEventListener("DOMContentLoaded", init);
+                } else {
+                    init();
+                }
+            })();
+        </script>
+
+        <script>
+            // Dashboard initialization and session management
+            document.addEventListener("DOMContentLoaded", async function () {
+                console.log("[DASHBOARD] Dashboard loading...");
+
+                // Sidebar toggle functionality
+                const sidebar = document.getElementById("sidebar");
+                const sidebarToggle = document.getElementById("sidebar-toggle");
+                const mainContent = document.getElementById("main-content");
+                let sidebarExpanded = false;
+
+                if (sidebarToggle) {
+                    sidebarToggle.addEventListener("click", function () {
+                        sidebarExpanded = !sidebarExpanded;
+                        console.log(
+                            "[SIDEBAR] Toggle clicked, expanded:",
+                            sidebarExpanded,
+                        );
+
+                        if (sidebarExpanded) {
+                            // Expand sidebar
+                            sidebar.classList.remove("-translate-x-full");
+                            mainContent.classList.remove("ml-0");
+                            mainContent.classList.add("ml-64");
+                            const sidebarIcon =
+                                sidebarToggle.querySelector("i");
+                            if (sidebarIcon) {
+                                sidebarIcon.classList.remove("fa-bars");
+                                sidebarIcon.classList.add("fa-times");
+                            }
+                        } else {
+                            // Collapse sidebar
+                            sidebar.classList.add("-translate-x-full");
+                            mainContent.classList.remove("ml-64");
+                            mainContent.classList.add("ml-0");
+                            const sidebarIcon =
+                                sidebarToggle.querySelector("i");
+                            if (sidebarIcon) {
+                                sidebarIcon.classList.remove("fa-times");
+                                sidebarIcon.classList.add("fa-bars");
+                            }
+                        }
+                    });
+                    console.log("[SIDEBAR] Toggle event listener attached");
+                }
+
+                // Check if session manager is available
+                if (!window.sessionStateManager) {
+                    console.warn(
+                        "[DASHBOARD] Session manager not available, proceeding without session check",
+                    );
+                    return;
+                }
+
+                try {
+                    // Safely check if methods exist before calling them
+                    const isLoggedIn =
+                        typeof window.sessionStateManager.isLoggedIn ===
+                        "function"
+                            ? window.sessionStateManager.isLoggedIn()
+                            : window.sessionStateManager.isAuthenticated ||
+                              false;
+
+                    const sessionToken =
+                        typeof window.sessionStateManager.getSessionToken ===
+                        "function"
+                            ? window.sessionStateManager.getSessionToken()
+                            : window.sessionStateManager.sessionToken || null;
+
+                    console.log("[DASHBOARD] Session status:", {
+                        isLoggedIn: isLoggedIn,
+                        hasToken: !!sessionToken,
+                        tokenPrefix: sessionToken
+                            ? sessionToken.substring(0, 15) + "..."
+                            : "none",
+                    });
+
+                    // If no session at all, redirect to login
+                    if (!sessionToken) {
+                        console.log(
+                            "[DASHBOARD] No session token found, redirecting to login",
+                        );
+                        window.location.href = "../index.html";
+                        return;
+                    }
+
+                    // If we have a token but not marked as logged in, validate it
+                    if (sessionToken && !isLoggedIn) {
+                        console.log(
+                            "[DASHBOARD] Validating existing session...",
+                        );
+                        try {
+                            // Skip validation if we just logged in (prevents race condition)
+                            if (window.sessionStateManager.justLoggedIn) {
+                                console.log(
+                                    "[DASHBOARD] Just logged in, skipping immediate validation",
+                                );
+                            } else {
+                                // Check if validateSessionWithBackend method exists
+                                if (
+                                    typeof window.sessionStateManager
+                                        .validateSessionWithBackend ===
+                                    "function"
+                                ) {
+                                    const isValid =
+                                        await window.sessionStateManager.validateSessionWithBackend();
+                                    if (!isValid) {
+                                        console.log(
+                                            "[DASHBOARD] Session validation failed, redirecting to login",
+                                        );
+                                        window.location.href = "../index.html";
+                                        return;
+                                    }
+                                    console.log(
+                                        "[DASHBOARD] Session validated successfully",
+                                    );
+                                } else if (
+                                    typeof window.sessionStateManager
+                                        .validateSession === "function"
+                                ) {
+                                    // Fallback to validateSession method
+                                    const isValid =
+                                        await window.sessionStateManager.validateSession();
+                                    if (!isValid) {
+                                        console.log(
+                                            "[DASHBOARD] Session validation failed, redirecting to login",
+                                        );
+                                        window.location.href = "../index.html";
+                                        return;
+                                    }
+                                    console.log(
+                                        "[DASHBOARD] Session validated successfully",
+                                    );
+                                } else {
+                                    console.warn(
+                                        "[DASHBOARD] No session validation method available",
+                                    );
+                                }
+                            }
+                        } catch (error) {
+                            console.warn(
+                                "[DASHBOARD] Session validation error:",
+                                error,
+                            );
+                            // Continue loading dashboard even if validation fails (network issues)
+                        }
+                    }
+
+                    console.log("[DASHBOARD] Dashboard loaded successfully");
+                } catch (error) {
+                    console.error(
+                        "[DASHBOARD] Error during initialization:",
+                        error,
+                    );
+                    // Continue loading dashboard to avoid blocking the interface
+                }
+
+                // Setup logout button if available
+                const logoutBtn = document.getElementById("logout-btn");
+                if (logoutBtn && window.sessionStateManager) {
+                    logoutBtn.addEventListener("click", function (e) {
+                        e.preventDefault();
+                        console.log("[DASHBOARD] Logout requested");
+                        window.sessionStateManager.logout();
+                    });
+                }
+
+                // Settings Modal Event Handlers
+                document
+                    .getElementById("close-settings-modal")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("settings-modal")
+                            .classList.add("hidden");
+                    });
+
+                // User Settings Toggle
+                document
+                    .getElementById("user-settings-toggle")
+                    .addEventListener("click", function () {
+                        const content = document.getElementById(
+                            "user-settings-content",
+                        );
+                        const chevron = document.getElementById(
+                            "user-settings-chevron",
+                        );
+
+                        if (content.classList.contains("hidden")) {
+                            content.classList.remove("hidden");
+                            chevron.style.transform = "rotate(180deg)";
+                        } else {
+                            content.classList.add("hidden");
+                            chevron.style.transform = "rotate(0deg)";
+                        }
+                    });
+
+                // Change Password Modal
+                document
+                    .getElementById("change-password-btn")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("settings-modal")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("change-password-modal")
+                            .classList.remove("hidden");
+                    });
+
+                document
+                    .getElementById("close-change-password-modal")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("change-password-modal")
+                            .classList.add("hidden");
+                    });
+
+                document
+                    .getElementById("cancel-change-password")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("change-password-modal")
+                            .classList.add("hidden");
+                    });
+
+                // Generate Auth Access Modal
+                document
+                    .getElementById("generate-auth-btn")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("settings-modal")
+                            .classList.add("hidden");
+                        resetGenerateAuthModal();
+                        document
+                            .getElementById("generate-auth-modal")
+                            .classList.remove("hidden");
+                    });
+
+                // Auth Access Management Modal
+                document
+                    .getElementById("auth-access-management-btn")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("settings-modal")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("auth-access-management-modal")
+                            .classList.remove("hidden");
+                        loadAuthAccessFiles();
+                    });
+
+                document
+                    .getElementById("close-generate-auth-modal")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("generate-auth-modal")
+                            .classList.add("hidden");
+                    });
+
+                document
+                    .getElementById("cancel-generate-auth")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("generate-auth-modal")
+                            .classList.add("hidden");
+                    });
+
+                // Auth Access Management Modal close handlers
+                document
+                    .getElementById("close-auth-access-management-modal")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("auth-access-management-modal")
+                            .classList.add("hidden");
+                    });
+
+                document
+                    .getElementById("close-auth-management")
+                    .addEventListener("click", function () {
+                        document
+                            .getElementById("auth-access-management-modal")
+                            .classList.add("hidden");
+                    });
+
+                document
+                    .getElementById("refresh-auth-files")
+                    .addEventListener("click", function () {
+                        loadAuthAccessFiles();
+                    });
+
+                document
+                    .getElementById("retry-load-auth-files")
+                    .addEventListener("click", function () {
+                        loadAuthAccessFiles();
+                    });
+
+                // Password Visibility Toggles
+                function setupPasswordToggle(toggleBtnId, inputId) {
+                    document
+                        .getElementById(toggleBtnId)
+                        .addEventListener("click", function () {
+                            const input = document.getElementById(inputId);
+                            const icon = this.querySelector("i");
+
+                            if (input.type === "password") {
+                                input.type = "text";
+                                icon.classList.remove("fa-eye");
+                                icon.classList.add("fa-eye-slash");
+                            } else {
+                                input.type = "password";
+                                icon.classList.remove("fa-eye-slash");
+                                icon.classList.add("fa-eye");
+                            }
+                        });
+                }
+
+                setupPasswordToggle(
+                    "toggle-current-password",
+                    "current-password",
+                );
+                setupPasswordToggle("toggle-new-password", "new-password");
+                setupPasswordToggle(
+                    "toggle-confirm-password",
+                    "confirm-password",
+                );
+
+                // Change Password Form
+                document
+                    .getElementById("change-password-form")
+                    .addEventListener("submit", async function (e) {
+                        e.preventDefault();
+
+                        const currentPassword =
+                            document.getElementById("current-password").value;
+                        const newPassword =
+                            document.getElementById("new-password").value;
+                        const confirmPassword =
+                            document.getElementById("confirm-password").value;
+
+                        if (newPassword !== confirmPassword) {
+                            showSystemNotification(
+                                "error",
+                                "Password Error",
+                                "New passwords do not match!",
+                            );
+                            return;
+                        }
+
+                        // Get current username from session
+                        const username =
+                            window.sessionStateManager?.getUsername() ||
+                            "admin";
+                        const sessionToken =
+                            window.sessionStateManager?.getSessionToken();
+
+                        // Get submit button reference
+                        const submitButton = this.querySelector(
+                            'button[type="submit"]',
+                        );
+                        const originalText = submitButton.textContent;
+
+                        try {
+                            // Show loading state
+                            submitButton.textContent = "Changing Password...";
+                            submitButton.disabled = true;
+
+                            const response = await fetch(
+                                "/api/change-password",
+                                {
+                                    method: "POST",
+                                    headers: {
+                                        "Content-Type": "application/json",
+                                        Authorization: sessionToken
+                                            ? `Bearer ${sessionToken}`
+                                            : "",
+                                    },
+                                    body: JSON.stringify({
+                                        username: username,
+                                        current_password: currentPassword,
+                                        new_password: newPassword,
+                                        confirm_password: confirmPassword,
+                                    }),
+                                },
+                            );
+
+                            const result = await response.json();
+
+                            if (result.success) {
+                                // Clear form
+                                this.reset();
+
+                                // Close change password modal
+                                document
+                                    .getElementById("change-password-modal")
+                                    .classList.add("hidden");
+
+                                // Show success notification
+                                showSystemNotification(
+                                    "success",
+                                    "Password Changed",
+                                    "Password changed successfully! Please log in again.",
+                                    function () {
+                                        // Logout user to require re-authentication after clicking OK
+                                        if (window.sessionStateManager) {
+                                            window.sessionStateManager.logout();
+                                        } else {
+                                            localStorage.clear();
+                                            window.location.href =
+                                                "../index.html";
+                                        }
+                                    },
+                                );
+                            } else {
+                                showSystemNotification(
+                                    "error",
+                                    "Password Change Failed",
+                                    result.message ||
+                                        "An error occurred while changing the password.",
+                                );
+                            }
+                        } catch (error) {
+                            console.error("Password change error:", error);
+                            showSystemNotification(
+                                "error",
+                                "Network Error",
+                                "Password change failed: Network error. Please try again.",
+                            );
+                        } finally {
+                            // Always restore button state
+                            submitButton.textContent = originalText;
+                            submitButton.disabled = false;
+                        }
+                    });
+
+                // Generate Token
+                document
+                    .getElementById("generate-token-btn")
+                    .addEventListener("click", function () {
+                        const tokenName =
+                            document.getElementById("access-token-name").value;
+                        const expiry =
+                            document.getElementById("access-expiry").value;
+
+                        if (!tokenName.trim()) {
+                            showNotification(
+                                "error",
+                                "Please enter a token name",
+                            );
+                            return;
+                        }
+
+                        // Show loading state
+                        const generateTokenBtn =
+                            document.getElementById("generate-token-btn");
+                        const originalText = generateTokenBtn.textContent;
+                        generateTokenBtn.textContent = "Generating...";
+                        generateTokenBtn.disabled = true;
+
+                        // Generate auth access file
+                        generateAuthAccessFile(tokenName, expiry)
+                            .then((response) => {
+                                if (response.success) {
+                                    // Show generated token section with download
+                                    document.getElementById(
+                                        "generated-token",
+                                    ).value = response.data.download_token;
+                                    document
+                                        .getElementById(
+                                            "generated-token-section",
+                                        )
+                                        .classList.remove("hidden");
+
+                                    // Auto-download the file
+                                    downloadAuthAccessFile(
+                                        response.data.content_base64,
+                                        response.data.file_name,
+                                    );
+
+                                    generateTokenBtn.textContent =
+                                        "Generated & Downloaded";
+                                    showNotification(
+                                        "success",
+                                        "Auth access file generated and downloaded successfully",
+                                    );
+                                } else {
+                                    throw new Error(
+                                        response.message ||
+                                            "Failed to generate auth access file",
+                                    );
+                                }
+                            })
+                            .catch((error) => {
+                                console.error(
+                                    "Auth access generation error:",
+                                    error,
+                                );
+                                showNotification(
+                                    "error",
+                                    "Failed to generate auth access file: " +
+                                        error.message,
+                                );
+                                generateTokenBtn.textContent = originalText;
+                                generateTokenBtn.disabled = false;
+                            });
+                    });
+
+                // Copy Token
+                document
+                    .getElementById("copy-token")
+                    .addEventListener("click", function () {
+                        const tokenInput =
+                            document.getElementById("generated-token");
+                        tokenInput.select();
+                        tokenInput.setSelectionRange(0, 99999);
+                        document.execCommand("copy");
+
+                        const originalIcon = this.querySelector("i");
+                        originalIcon.classList.remove("fa-copy");
+                        originalIcon.classList.add("fa-check");
+
+                        setTimeout(() => {
+                            originalIcon.classList.remove("fa-check");
+                            originalIcon.classList.add("fa-copy");
+                        }, 2000);
+                    });
+
+                // System Notification Modal Event Handlers
+                document
+                    .getElementById("close-notification-modal")
+                    .addEventListener("click", function () {
+                        const modal = document.getElementById(
+                            "system-notification-modal",
+                        );
+                        modal.classList.add("hidden");
+
+                        // Execute callback if set
+                        if (window.notificationCallback) {
+                            window.notificationCallback();
+                            window.notificationCallback = null;
+                        }
+                    });
+
+                // Close modals when clicking outside
+                document
+                    .getElementById("settings-modal")
+                    .addEventListener("click", function (e) {
+                        if (e.target === this) {
+                            this.classList.add("hidden");
+                        }
+                    });
+
+                document
+                    .getElementById("change-password-modal")
+                    .addEventListener("click", function (e) {
+                        if (e.target === this) {
+                            this.classList.add("hidden");
+                        }
+                    });
+
+                document
+                    .getElementById("generate-auth-modal")
+                    .addEventListener("click", function (e) {
+                        if (e.target === this) {
+                            this.classList.add("hidden");
+                        }
+                    });
+
+                document
+                    .getElementById("system-notification-modal")
+                    .addEventListener("click", function (e) {
+                        if (e.target === this) {
+                            this.classList.add("hidden");
+                            if (window.notificationCallback) {
+                                window.notificationCallback();
+                                window.notificationCallback = null;
+                            }
+                        }
+                    });
+
+                document
+                    .getElementById("auth-access-management-modal")
+                    .addEventListener("click", function (e) {
+                        if (e.target === this) {
+                            this.classList.add("hidden");
+                        }
+                    });
+            });
+
+            // Function to show system notifications
+            function showSystemNotification(type, title, message, callback) {
+                const modal = document.getElementById(
+                    "system-notification-modal",
+                );
+                const iconContainer =
+                    document.getElementById("notification-icon");
+                const titleElement =
+                    document.getElementById("notification-title");
+                const messageElement = document.getElementById(
+                    "notification-message",
+                );
+
+                // Set callback for after modal closes
+                window.notificationCallback = callback || null;
+
+                // Set icon based on type
+                let iconHtml = "";
+                let titleColor = "text-neutral-800";
+
+                switch (type) {
+                    case "success":
+                        iconHtml =
+                            '<i class="fa-solid fa-check-circle text-green-600 text-2xl"></i>';
+                        titleColor = "text-green-800";
+                        break;
+                    case "error":
+                        iconHtml =
+                            '<i class="fa-solid fa-exclamation-circle text-red-600 text-2xl"></i>';
+                        titleColor = "text-red-800";
+                        break;
+                    case "warning":
+                        iconHtml =
+                            '<i class="fa-solid fa-exclamation-triangle text-yellow-600 text-2xl"></i>';
+                        titleColor = "text-yellow-800";
+                        break;
+                    case "info":
+                    default:
+                        iconHtml =
+                            '<i class="fa-solid fa-info-circle text-blue-600 text-2xl"></i>';
+                        titleColor = "text-blue-800";
+                        break;
+                }
+
+                iconContainer.innerHTML = iconHtml;
+                titleElement.textContent = title;
+                titleElement.className = `text-xl font-semibold ${titleColor}`;
+                messageElement.textContent = message;
+
+                modal.classList.remove("hidden");
+            }
+
+            // Function to reset settings modal to initial state
+            function resetSettingsModal() {
+                // Collapse user settings if expanded
+                const userSettingsContent = document.getElementById(
+                    "user-settings-content",
+                );
+                const userSettingsChevron = document.getElementById(
+                    "user-settings-chevron",
+                );
+                if (
+                    userSettingsContent &&
+                    !userSettingsContent.classList.contains("hidden")
+                ) {
+                    userSettingsContent.classList.add("hidden");
+                    userSettingsChevron.style.transform = "rotate(0deg)";
+                }
+
+                // Reset change password form
+                const passwordForm = document.getElementById(
+                    "change-password-form",
+                );
+                if (passwordForm) {
+                    passwordForm.reset();
+
+                    // Reset submit button state
+                    const submitButton = passwordForm.querySelector(
+                        'button[type="submit"]',
+                    );
+                    if (submitButton) {
+                        submitButton.textContent = "Update Password";
+                        submitButton.disabled = false;
+                    }
+                }
+
+                // Reset generate auth form
+                resetGenerateAuthModal();
+            }
+
+            // Helper function to reset the Generate Auth modal fields
+            function resetGenerateAuthModal() {
+                const tokenNameInput =
+                    document.getElementById("access-token-name");
+                if (tokenNameInput) tokenNameInput.value = "";
+
+                const expirySelect = document.getElementById("access-expiry");
+                if (expirySelect) expirySelect.selectedIndex = 0;
+
+                const generatedTokenSection = document.getElementById(
+                    "generated-token-section",
+                );
+                if (generatedTokenSection)
+                    generatedTokenSection.classList.add("hidden");
+
+                const generateTokenBtn =
+                    document.getElementById("generate-token-btn");
+                if (generateTokenBtn) {
+                    generateTokenBtn.style.display = "block";
+                    generateTokenBtn.textContent = "Generate Token";
+                    generateTokenBtn.disabled = false;
+                }
+
+                // Clear any displayed generated token
+                const generatedTokenInput =
+                    document.getElementById("generated-token");
+                if (generatedTokenInput) generatedTokenInput.value = "";
+            }
+
+            // Function to call the backend API to generate the auth access file
+            async function generateAuthAccessFile(name, expiry) {
+                const sessionToken =
+                    window.sessionStateManager?.getSessionToken();
+                if (!sessionToken) {
+                    throw new Error("Not authenticated");
+                }
+
+                const response = await fetch("/api/auth-access/generate", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${sessionToken}`,
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        expiry: expiry,
+                    }),
+                });
+
+                if (!response.ok) {
+                    const errorData = await response
+                        .json()
+                        .catch(() => ({ message: "Unknown error" }));
+                    throw new Error(
+                        errorData.message ||
+                            `HTTP error! status: ${response.status}`,
+                    );
+                }
+
+                return await response.json();
+            }
+
+            // Function to trigger file download
+            function downloadAuthAccessFile(contentBase64, fileName) {
+                const linkSource = `data:application/octet-stream;base64,${contentBase64}`;
+                const downloadLink = document.createElement("a");
+                downloadLink.href = linkSource;
+                downloadLink.download = fileName;
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+            }
+
+            // Utility function to show notifications (used in form handlers)
+            function showNotification(type, message) {
+                showSystemNotification(
+                    type,
+                    type.charAt(0).toUpperCase() + type.slice(1),
+                    message,
+                );
+            }
+
+            // Function to load auth access files
+            function loadAuthAccessFiles() {
+                const loadingElement =
+                    document.getElementById("auth-files-loading");
+                const contentElement =
+                    document.getElementById("auth-files-content");
+                const emptyElement =
+                    document.getElementById("auth-files-empty");
+                const errorElement =
+                    document.getElementById("auth-files-error");
+                const tableBody = document.getElementById(
+                    "auth-files-table-body",
+                );
+                const countElement =
+                    document.getElementById("auth-files-count");
+
+                // Show loading state
+                loadingElement.classList.remove("hidden");
+                contentElement.classList.add("hidden");
+                emptyElement.classList.add("hidden");
+                errorElement.classList.add("hidden");
+
+                fetch("/api/auth-access/list", {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        loadingElement.classList.add("hidden");
+
+                        if (data.success && data.data && data.data.files) {
+                            const files = data.data.files;
+
+                            if (files.length === 0) {
+                                emptyElement.classList.remove("hidden");
+                            } else {
+                                contentElement.classList.remove("hidden");
+
+                                // Clear existing rows
+                                tableBody.innerHTML = "";
+
+                                // Populate table
+                                files.forEach((file) => {
+                                    const row = createAuthFileRow(file);
+                                    tableBody.appendChild(row);
+                                });
+
+                                // Update count
+                                countElement.textContent = `${files.length} file${files.length !== 1 ? "s" : ""}`;
+                            }
+                        } else {
+                            throw new Error(
+                                data.message || "Failed to load auth files",
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error loading auth files:", error);
+                        loadingElement.classList.add("hidden");
+                        errorElement.classList.remove("hidden");
+                    });
+            }
+
+            function createAuthFileRow(file) {
+                const row = document.createElement("tr");
+                row.className =
+                    "border-b border-neutral-100 hover:bg-neutral-50";
+
+                const statusClass = file.revoked
+                    ? "text-red-600"
+                    : file.valid
+                      ? "text-green-600"
+                      : "text-yellow-600";
+                const statusText = file.revoked
+                    ? "Revoked"
+                    : file.valid
+                      ? "Valid"
+                      : "Invalid";
+
+                const createdDate = new Date(
+                    file.created * 1000,
+                ).toLocaleDateString();
+                const fileSize = formatFileSize(file.size);
+
+                row.innerHTML = `
+                <td class="py-2 px-3 text-sm text-neutral-800">${file.filename}</td>
+                <td class="py-2 px-3 text-sm text-neutral-600">${fileSize}</td>
+                <td class="py-2 px-3 text-sm text-neutral-600">${createdDate}</td>
+                <td class="py-2 px-3 text-sm ${statusClass}">${statusText}</td>
+                <td class="py-2 px-3 text-center">
+                    <div class="flex justify-center space-x-2">
+                        <button onclick="downloadAuthFile('${file.filename}')" 
+                                class="text-blue-600 hover:text-blue-800 text-sm px-2 py-1 border border-blue-300 rounded hover:bg-blue-50" 
+                                title="Download">
+                            <i class="fa-solid fa-download"></i>
+                        </button>
+                        ${
+                            !file.revoked
+                                ? `
+                        <button onclick="revokeAuthFile('${file.filename}')" 
+                                class="text-orange-600 hover:text-orange-800 text-sm px-2 py-1 border border-orange-300 rounded hover:bg-orange-50" 
+                                title="Revoke">
+                            <i class="fa-solid fa-ban"></i>
+                        </button>
+                        `
+                                : ""
+                        }
+                        <button onclick="deleteAuthFile('${file.filename}')" 
+                                class="text-red-600 hover:text-red-800 text-sm px-2 py-1 border border-red-300 rounded hover:bg-red-50" 
+                                title="Delete">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                </td>
+            `;
+
+                return row;
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return "0 Bytes";
+                const k = 1024;
+                const sizes = ["Bytes", "KB", "MB", "GB"];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return (
+                    parseFloat((bytes / Math.pow(k, i)).toFixed(2)) +
+                    " " +
+                    sizes[i]
+                );
+            }
+
+            function downloadAuthFile(filename) {
+                console.log("Downloading auth file:", filename);
+
+                // Create a temporary form to trigger download
+                fetch(
+                    `/api/auth-access/download?filename=${encodeURIComponent(filename)}`,
+                    {
+                        method: "GET",
+                        headers: {
+                            "Content-Type": "application/json",
+                            Authorization: window.sessionStateManager?.getSessionToken() ? `Bearer ${window.sessionStateManager.getSessionToken()}` : ""
+                        },
+                    },
+                )
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success && data.data) {
+                            // Create blob and download
+                            const blob = new Blob([data.data.content], {
+                                type: "application/octet-stream",
+                            });
+                            const url = window.URL.createObjectURL(blob);
+                            const a = document.createElement("a");
+                            a.style.display = "none";
+                            a.href = url;
+                            a.download = data.data.filename;
+                            document.body.appendChild(a);
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                            document.body.removeChild(a);
+                        } else {
+                            showNotification(
+                                "error",
+                                "Download Failed",
+                                data.message || "Failed to download file",
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error downloading file:", error);
+                        showNotification(
+                            "error",
+                            "Download Failed",
+                            "An error occurred while downloading the file",
+                        );
+                    });
+            }
+
+            function revokeAuthFile(filename) {
+                if (
+                    !confirm(
+                        `Are you sure you want to revoke "${filename}"? This action cannot be undone.`,
+                    )
+                ) {
+                    return;
+                }
+
+                console.log("Revoking auth file:", filename);
+
+                fetch("/api/auth-access/revoke", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ filename: filename }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            showNotification(
+                                "success",
+                                "File Revoked",
+                                `Auth access file "${filename}" has been revoked successfully`,
+                            );
+                            loadAuthAccessFiles(); // Reload the list
+                        } else {
+                            showNotification(
+                                "error",
+                                "Revoke Failed",
+                                data.message || "Failed to revoke file",
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error revoking file:", error);
+                        showNotification(
+                            "error",
+                            "Revoke Failed",
+                            "An error occurred while revoking the file",
+                        );
+                    });
+            }
+
+            function deleteAuthFile(filename) {
+                if (
+                    !confirm(
+                        `Are you sure you want to permanently delete "${filename}"? This action cannot be undone.`,
+                    )
+                ) {
+                    return;
+                }
+
+                console.log("Deleting auth file:", filename);
+
+                fetch(`/api/auth-access/delete?filename=${encodeURIComponent(filename)}`, {
+                    method: 'DELETE',
+                    headers: {
+                        'Authorization': window.sessionStateManager?.getSessionToken() ? `Bearer ${window.sessionStateManager.getSessionToken()}` : ''
+                    }
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data.success) {
+                            showNotification(
+                                "success",
+                                "File Deleted",
+                                `Auth access file "${filename}" has been deleted successfully`,
+                            );
+                            loadAuthAccessFiles(); // Reload the list
+                        } else {
+                            showNotification(
+                                "error",
+                                "Delete Failed",
+                                data.message || "Failed to delete file",
+                            );
+                        }
+                    })
+                    .catch((error) => {
+                        console.error("Error deleting file:", error);
+                        showNotification(
+                            "error",
+                            "Delete Failed",
+                            "An error occurred while deleting the file",
+                        );
+                    });
+            }
+
+            function showNotification(type, title, message) {
+                const modal = document.getElementById(
+                    "system-notification-modal",
+                );
+                const iconElement =
+                    document.getElementById("notification-icon");
+                const titleElement =
+                    document.getElementById("notification-title");
+                const messageElement = document.getElementById(
+                    "notification-message",
+                );
+
+                // Set icon based on type
+                let iconHtml = "";
+                switch (type) {
+                    case "success":
+                        iconHtml =
+                            '<i class="fa-solid fa-check-circle text-2xl text-green-600"></i>';
+                        break;
+                    case "error":
+                        iconHtml =
+                            '<i class="fa-solid fa-exclamation-circle text-2xl text-red-600"></i>';
+                        break;
+                    case "warning":
+                        iconHtml =
+                            '<i class="fa-solid fa-exclamation-triangle text-2xl text-yellow-600"></i>';
+                        break;
+                    default:
+                        iconHtml =
+                            '<i class="fa-solid fa-info-circle text-2xl text-blue-600"></i>';
+                }
+
+                iconElement.innerHTML = iconHtml;
+                titleElement.textContent = title;
+                messageElement.textContent = message;
+
+                modal.classList.remove("hidden");
+            }
+
+            // Event listeners for auth access management
+            document.addEventListener("DOMContentLoaded", function () {
+                // Auth Access Management button
+                const authAccessBtn = document.getElementById(
+                    "auth-access-management-btn",
+                );
+                if (authAccessBtn) {
+                    authAccessBtn.addEventListener("click", function () {
+                        document
+                            .getElementById("settings-modal")
+                            .classList.add("hidden");
+                        document
+                            .getElementById("auth-access-management-modal")
+                            .classList.remove("hidden");
+                        loadAuthAccessFiles();
+                    });
+                }
+
+                // Close auth access management modal
+                const closeAuthManagement = document.getElementById(
+                    "close-auth-access-management-modal",
+                );
+                const closeAuthManagementBottom = document.getElementById(
+                    "close-auth-management",
+                );
+                if (closeAuthManagement) {
+                    closeAuthManagement.addEventListener("click", function () {
+                        document
+                            .getElementById("auth-access-management-modal")
+                            .classList.add("hidden");
+                    });
+                }
+                if (closeAuthManagementBottom) {
+                    closeAuthManagementBottom.addEventListener(
+                        "click",
+                        function () {
+                            document
+                                .getElementById("auth-access-management-modal")
+                                .classList.add("hidden");
+                        },
+                    );
+                }
+
+                // Refresh auth files
+                const refreshBtn =
+                    document.getElementById("refresh-auth-files");
+                if (refreshBtn) {
+                    refreshBtn.addEventListener("click", function () {
+                        loadAuthAccessFiles();
+                    });
+                }
+
+                // Retry loading auth files
+                const retryBtn = document.getElementById(
+                    "retry-load-auth-files",
+                );
+                if (retryBtn) {
+                    retryBtn.addEventListener("click", function () {
+                        loadAuthAccessFiles();
+                    });
+                }
+
+                // Close notification modal
+                const closeNotificationBtn = document.getElementById(
+                    "close-notification-modal",
+                );
+                if (closeNotificationBtn) {
+                    closeNotificationBtn.addEventListener("click", function () {
+                        document
+                            .getElementById("system-notification-modal")
+                            .classList.add("hidden");
+                    });
+                }
+            });
+        </script>
+    </body>
+</html>

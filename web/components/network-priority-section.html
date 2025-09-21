@@ -1,0 +1,1307 @@
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl text-neutral-900 mb-2 flex items-center">
+            <i class="fa-solid fa-route text-neutral-700 mr-3"></i>
+            Network Interface Routing Priority
+        </h2>
+        <p class="text-neutral-600">Configure interface priorities and routing rules for internet access</p>
+    </div>
+
+    <!-- Interface Priority Order Section -->
+    <div id="priority-section" class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg text-neutral-800 flex items-center">
+                <i class="fa-solid fa-layer-group mr-2 text-neutral-600"></i>
+                Interface Priority Order
+            </h3>
+        </div>
+
+        <div class="bg-neutral-50 rounded-lg p-4 mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div class="text-center">
+                    <div class="text-2xl text-neutral-800" data-stat="total">0</div>
+                    <div class="text-sm text-neutral-600">Total Interfaces</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl text-green-600" data-stat="online">0</div>
+                    <div class="text-sm text-neutral-600">Online</div>
+                </div>
+                <div class="text-center">
+                    <div class="text-2xl text-red-600" data-stat="offline">0</div>
+                    <div class="text-sm text-neutral-600">Offline</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="interfaces-container" class="space-y-3">
+            <!-- Interfaces will be dynamically populated here -->
+        </div>
+    </div>
+
+    <!-- Custom Routing Rules Section -->
+    <div id="routing-rules-section" class="bg-white rounded-lg border border-neutral-200 p-6 mb-6">
+        <div class="flex items-center justify-between mb-6">
+            <h3 class="text-lg text-neutral-800 flex items-center">
+                <i class="fa-solid fa-list-ul mr-2 text-neutral-600"></i>
+                Custom Routing Rules
+            </h3>
+            <div class="flex space-x-2">
+                <button id="add-rule-btn" class="bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-md flex items-center text-sm">
+                    <i class="fa-solid fa-plus mr-2"></i>
+                    Add Rule
+                </button>
+                <button id="export-rules-btn" class="bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-md flex items-center text-sm">
+                    <i class="fa-solid fa-download mr-2"></i>
+                    Export Rules
+                </button>
+
+            </div>
+        </div>
+
+        <div class="bg-white border border-neutral-200 rounded-lg overflow-hidden">
+            <table class="w-full">
+                <thead class="bg-neutral-50">
+                    <tr>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">
+                            <input type="checkbox" class="rounded border-neutral-300" id="select-all-rules">
+                        </th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Priority</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Destination</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Gateway</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Interface</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Metric</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Status</th>
+                        <th class="px-4 py-3 text-left text-xs text-neutral-500 uppercase tracking-wider">Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="routing-rules-tbody" class="divide-y divide-neutral-200">
+                    <!-- Routing rules will be dynamically populated here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex items-center justify-between bg-white rounded-lg border border-neutral-200 p-4">
+        <div class="flex items-center space-x-4">
+            <button id="reset-defaults-btn" class="text-neutral-600 hover:text-neutral-800 text-sm flex items-center">
+                <i class="fa-solid fa-undo mr-2"></i>
+                Reset to Default
+            </button>
+            <button id="preview-changes-btn" class="text-neutral-600 hover:text-neutral-800 text-sm flex items-center">
+                <i class="fa-solid fa-eye mr-2"></i>
+                Preview Changes
+            </button>
+        </div>
+        <div class="flex items-center space-x-3">
+            <button id="cancel-btn" class="px-4 py-2 text-neutral-700 border border-neutral-300 rounded-md hover:bg-neutral-50">
+                Cancel
+            </button>
+            <button id="apply-changes-btn" class="px-4 py-2 bg-neutral-600 text-white rounded-md hover:bg-neutral-700">
+                Apply Changes
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Rule Modal -->
+<div id="add-rule-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-50">
+    <div class="bg-white rounded-lg p-8 shadow-xl w-full max-w-lg">
+        <div class="flex justify-between items-center mb-6">
+            <h3 class="text-xl font-semibold text-neutral-800">Add New Routing Rule</h3>
+            <button id="close-modal-btn" class="text-neutral-400 hover:text-neutral-600">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        <form id="add-rule-form">
+            <div class="grid grid-cols-1 gap-4 mb-4">
+                <div>
+                    <label for="rule-destination" class="block text-sm font-medium text-neutral-700 mb-1">Destination Network</label>
+                    <input type="text" id="rule-destination" name="destination" required class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="rule-gateway" class="block text-sm font-medium text-neutral-700 mb-1">Gateway</label>
+                    <input type="text" id="rule-gateway" name="gateway" required class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="rule-interface" class="block text-sm font-medium text-neutral-700 mb-1">Interface</label>
+                    <select id="rule-interface" name="interface" required class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                        <option value="">Select an interface...</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="rule-metric" class="block text-sm font-medium text-neutral-700 mb-1">Metric</label>
+                    <input type="number" id="rule-metric" name="metric" required class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+                <div>
+                    <label for="rule-priority" class="block text-sm font-medium text-neutral-700 mb-1">Priority</label>
+                    <input type="number" id="rule-priority" name="priority" required class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:ring-blue-500 focus:border-blue-500">
+                </div>
+            </div>
+            <div class="flex justify-end space-x-4">
+                <button type="button" id="cancel-add-rule-btn" class="px-4 py-2 text-neutral-700 border border-neutral-300 rounded-md hover:bg-neutral-50">Cancel</button>
+                <button type="submit" class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">Add Rule</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+/**
+ * Network Priority Manager with Fixed HTTP Communication
+ * Completely rewritten HTTP request mechanism to fix syntax errors
+ */
+
+(function() {
+    'use strict';
+
+    class NetworkPriorityManager {
+        constructor() {
+            console.log('[NETWORK-PRIORITY] Initializing NetworkPriorityManager...');
+            this.logPrefix = '[NETWORK-PRIORITY]';
+
+            // API endpoints
+            this.apiEndpoints = {
+                interfaces: '/api/network-priority/interfaces',
+                routingRules: '/api/network-priority/routing-rules',
+                reorderInterfaces: '/api/network-priority/reorder-interfaces',
+                reorderRules: '/api/network-priority/reorder-rules',
+                apply: '/api/network-priority/apply',
+                reset: '/api/network-priority/reset',
+                status: '/api/network-priority/status',
+                events: '/api/network-priority/events',
+                createRule: '/api/network-priority/routing-rules' // Endpoint for creating rules
+            };
+
+            // State management
+            this.state = {
+                data: {
+                    networkInterfaces: [],
+                    routingRules: [],
+                    statistics: {},
+                    lastUpdated: null
+                },
+                ui: {
+                    selectedRules: new Set(),
+                    isLoading: false,
+                    lastError: null
+                },
+                autoRefresh: {
+                    enabled: false,
+                    interval: 30000,
+                    timerId: null
+                }
+            };
+
+            // HTTP request configuration
+            this.httpConfig = {
+                timeout: 15000,
+                retryAttempts: 3,
+                retryDelay: 1000
+            };
+
+            this.init();
+        }
+
+        log(message, data) {
+            var timestamp = new Date().toISOString();
+            if (data) {
+                console.log(this.logPrefix + ' [' + timestamp + '] ' + message, data);
+            } else {
+                console.log(this.logPrefix + ' [' + timestamp + '] ' + message);
+            }
+        }
+
+        logError(message, error) {
+            var timestamp = new Date().toISOString();
+            console.error(this.logPrefix + ' [' + timestamp + '] [ERROR] ' + message, error);
+        }
+
+        async init() {
+            try {
+                this.log('Starting NetworkPriorityManager initialization...');
+
+                this.setupEventHandlers();
+                this.setupAutoRefreshControls();
+                this.setupPopupHandlers(); // Added popup handlers
+
+                await this.loadInitialData();
+                this.startAutoRefresh();
+
+                this.log('NetworkPriorityManager initialized successfully');
+
+            } catch (error) {
+                this.logError('Failed to initialize NetworkPriorityManager:', error);
+                this.showErrorMessage('Failed to initialize Network Priority manager');
+            }
+        }
+
+        /**
+         * Simplified HTTP request method with proper error handling
+         */
+        async makeHttpRequest(method, url, data, retryCount) {
+            if (typeof retryCount === 'undefined') {
+                retryCount = 0;
+            }
+
+            var requestId = method + '-' + url + '-' + Date.now();
+
+            try {
+                this.log('Making ' + method + ' request to ' + url + ' (attempt ' + (retryCount + 1) + '/' + this.httpConfig.retryAttempts + ')');
+
+                // Create abort controller for timeout
+                var controller = new AbortController();
+                var timeoutId = setTimeout(function() {
+                    controller.abort();
+                }, this.httpConfig.timeout);
+
+                // Prepare request options
+                var options = {
+                    method: method,
+                    signal: controller.signal,
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'Cache-Control': 'no-cache'
+                    }
+                };
+
+                // Add body for POST/PUT/DELETE requests
+                if (data && (method === 'POST' || method === 'PUT' || method === 'DELETE')) {
+                    options.body = JSON.stringify(data);
+                    this.log('Request body:', data);
+                }
+
+                // Make the request
+                var response = await fetch(url, options);
+                clearTimeout(timeoutId);
+
+                this.log('Response status: ' + response.status);
+
+                // Handle non-OK responses with more specific error information
+                if (!response.ok) {
+                    var errorText = '';
+                    try {
+                        var errorResponse = await response.json();
+                        errorText = errorResponse.message || errorResponse.error || response.statusText;
+                    } catch (e) {
+                        errorText = response.statusText;
+                    }
+                    throw new Error('HTTP ' + response.status + ': ' + errorText);
+                }
+
+                // Parse JSON response
+                var responseData;
+                try {
+                    responseData = await response.json();
+                } catch (parseError) {
+                    // For DELETE requests, empty response might be OK
+                    if (method === 'DELETE' && response.status === 200) {
+                        responseData = { success: true, message: 'Resource deleted successfully' };
+                    } else {
+                        throw new Error('Invalid JSON response from server');
+                    }
+                }
+
+                this.log('Response data:', responseData);
+                return responseData;
+
+            } catch (error) {
+                this.logError('Request failed for ' + url + ':', error);
+
+                // Handle timeout
+                if (error.name === 'AbortError') {
+                    throw new Error('Request timeout');
+                }
+
+                // Handle network errors with retry
+                if (this.shouldRetryRequest(error) && retryCount < this.httpConfig.retryAttempts - 1) {
+                    var delay = this.httpConfig.retryDelay * Math.pow(2, retryCount);
+                    this.log('Retrying request after ' + delay + 'ms...');
+
+                    await this.delay(delay);
+                    return await this.makeHttpRequest(method, url, data, retryCount + 1);
+                }
+
+                throw error;
+            }
+        }
+
+        /**
+         * Utility method for delays
+         */
+        delay(ms) {
+            return new Promise(function(resolve) {
+                setTimeout(resolve, ms);
+            });
+        }
+
+        /**
+         * Determine if a request should be retried
+         */
+        shouldRetryRequest(error) {
+            // Retry on network errors, timeouts, and server errors (5xx)
+            return error.name === 'AbortError' ||
+                   error.message.includes('Failed to fetch') ||
+                   error.message.includes('NetworkError') ||
+                   error.message.includes('HTTP 5');
+        }
+
+        /**
+         * Load initial data from backend
+         */
+        async loadInitialData() {
+            this.log('Loading data from backend...');
+            this.state.ui.isLoading = true;
+
+            try {
+                // Load all data concurrently but handle errors individually
+                var results = await Promise.allSettled([
+                    this.loadInterfaces(),
+                    this.loadRoutingRules(),
+                    this.loadNetworkStatus()
+                ]);
+
+                // Check for any failures
+                var failures = results.filter(function(result) {
+                    return result.status === 'rejected';
+                });
+                if (failures.length > 0) {
+                    this.logError('Some data failed to load:', failures.map(function(f) {
+                        return f.reason;
+                    }));
+                }
+
+                this.updateUI();
+                this.state.data.lastUpdated = new Date().toISOString();
+
+            } catch (error) {
+                this.logError('Error loading initial data:', error);
+                this.showErrorMessage('Failed to load network priority data');
+                throw error;
+            } finally {
+                this.state.ui.isLoading = false;
+            }
+        }
+
+        async loadInterfaces() {
+            try {
+                this.log('Fetching interfaces from API...');
+                var response = await this.makeHttpRequest('GET', this.apiEndpoints.interfaces);
+
+                if (response && response.success) {
+                    this.state.data.networkInterfaces = response.interfaces || [];
+                    this.state.data.statistics = response.statistics || {};
+                    this.log('Interfaces loaded:', this.state.data.networkInterfaces.length);
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Invalid API response for interfaces');
+                }
+            } catch (error) {
+                this.logError('Failed to load interfaces:', error);
+                // Don't throw - allow other data to load
+            }
+        }
+
+        async loadRoutingRules() {
+            try {
+                this.log('Fetching routing rules from API...');
+                var response = await this.makeHttpRequest('GET', this.apiEndpoints.routingRules);
+
+                if (response && response.success) {
+                    this.state.data.routingRules = response.routing_rules || [];
+                    this.log('Routing rules loaded:', this.state.data.routingRules.length);
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Invalid API response for routing rules');
+                }
+            } catch (error) {
+                this.logError('Failed to load routing rules:', error);
+                // Don't throw - allow other data to load
+            }
+        }
+
+        async loadNetworkStatus() {
+            try {
+                this.log('Fetching network status from API...');
+                var response = await this.makeHttpRequest('GET', this.apiEndpoints.status);
+
+                if (response && response.success) {
+                    // Update both interfaces and routing rules from status endpoint
+                    if (response.interfaces && response.interfaces.interfaces) {
+                        this.state.data.networkInterfaces = response.interfaces.interfaces;
+                        this.state.data.statistics = response.interfaces.statistics || {};
+                    }
+
+                    if (response.routing_rules && response.routing_rules.routing_rules) {
+                        this.state.data.routingRules = response.routing_rules.routing_rules;
+                    }
+
+                    this.log('Network status loaded successfully');
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Invalid API response for network status');
+                }
+            } catch (error) {
+                this.logError('Failed to load network status:', error);
+                // Don't throw - this is not critical if other endpoints work
+            }
+        }
+
+        setupAutoRefreshControls() {
+            // Create auto-refresh control panel
+            var prioritySection = document.getElementById('priority-section');
+            if (prioritySection) {
+                var controlsHTML = '<div id="auto-refresh-controls" class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">' +
+                    '<div class="flex items-center justify-between">' +
+                        '<div class="flex items-center space-x-4">' +
+                            '<div class="flex items-center">' +
+                                '<input type="checkbox" id="auto-refresh-toggle" class="rounded border-neutral-300 mr-2">' +
+                                '<label for="auto-refresh-toggle" class="text-sm text-neutral-700">Auto Refresh</label>' +
+                            '</div>' +
+                            '<div class="flex items-center space-x-2">' +
+                                '<label for="refresh-interval" class="text-sm text-neutral-700">Interval:</label>' +
+                                '<select id="refresh-interval" class="border border-neutral-300 rounded px-2 py-1 text-sm">' +
+                                    '<option value="5000">5 seconds</option>' +
+                                    '<option value="10000">10 seconds</option>' +
+                                    '<option value="30000" selected>30 seconds</option>' +
+                                    '<option value="60000">1 minute</option>' +
+                                '</select>' +
+                            '</div>' +
+                        '</div>' +
+                        '<div class="flex items-center space-x-3">' +
+                            '<button id="manual-refresh-btn" class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded text-sm">' +
+                                '<i class="fa-solid fa-refresh mr-1"></i>' +
+                                'Refresh Now' +
+                            '</button>' +
+                            '<div id="refresh-status" class="text-xs text-neutral-500">' +
+                                'Ready' +
+                            '</div>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+
+                prioritySection.insertAdjacentHTML('afterbegin', controlsHTML);
+                this.setupAutoRefreshEventHandlers();
+            }
+        }
+
+        setupAutoRefreshEventHandlers() {
+            var self = this;
+            var toggleBtn = document.getElementById('auto-refresh-toggle');
+            var intervalSelect = document.getElementById('refresh-interval');
+            var manualRefreshBtn = document.getElementById('manual-refresh-btn');
+
+            if (toggleBtn) {
+                toggleBtn.addEventListener('change', function(e) {
+                    self.state.autoRefresh.enabled = e.target.checked;
+                    if (self.state.autoRefresh.enabled) {
+                        self.startAutoRefresh();
+                    } else {
+                        self.stopAutoRefresh();
+                    }
+                    self.log('Auto-refresh ' + (self.state.autoRefresh.enabled ? 'enabled' : 'disabled'));
+                });
+            }
+
+            if (intervalSelect) {
+                intervalSelect.addEventListener('change', function(e) {
+                    self.state.autoRefresh.interval = parseInt(e.target.value);
+                    self.log('Auto-refresh interval changed to ' + self.state.autoRefresh.interval + 'ms');
+
+                    if (self.state.autoRefresh.enabled) {
+                        self.stopAutoRefresh();
+                        self.startAutoRefresh();
+                    }
+                });
+            }
+
+            if (manualRefreshBtn) {
+                manualRefreshBtn.addEventListener('click', function() {
+                    self.refreshData();
+                });
+            }
+        }
+
+        startAutoRefresh() {
+            var self = this;
+            if (!this.state.autoRefresh.enabled) {
+                return;
+            }
+
+            this.stopAutoRefresh(); // Clear any existing timer
+
+            this.state.autoRefresh.timerId = setInterval(function() {
+                self.refreshData();
+            }, this.state.autoRefresh.interval);
+
+            this.log('Auto-refresh started with ' + this.state.autoRefresh.interval + 'ms interval');
+            this.updateRefreshStatus('Auto-refresh active');
+        }
+
+        stopAutoRefresh() {
+            if (this.state.autoRefresh.timerId) {
+                clearInterval(this.state.autoRefresh.timerId);
+                this.state.autoRefresh.timerId = null;
+                this.log('Auto-refresh stopped');
+                this.updateRefreshStatus('Auto-refresh stopped');
+            }
+        }
+
+        async refreshData() {
+            if (this.state.ui.isLoading) {
+                this.log('Refresh already in progress, skipping...');
+                return;
+            }
+
+            try {
+                this.updateRefreshStatus('Refreshing...');
+                await this.loadInitialData();
+                this.updateRefreshStatus('Data refreshed');
+                this.log('Data refresh completed successfully');
+            } catch (error) {
+                this.logError('Failed to refresh data:', error);
+                this.updateRefreshStatus('Refresh failed');
+            }
+        }
+
+        updateRefreshStatus(message) {
+            var statusEl = document.getElementById('refresh-status');
+            if (statusEl) {
+                var timestamp = new Date().toLocaleTimeString();
+                statusEl.textContent = message + ' (' + timestamp + ')';
+            }
+        }
+
+        setupEventHandlers() {
+            var self = this;
+            this.log('Setting up event handlers...');
+
+            // Interface priority controls
+            document.addEventListener('click', function(e) {
+                if (e.target.matches('.interface-up-btn') || e.target.closest('.interface-up-btn')) {
+                    var btn = e.target.closest('.interface-up-btn') || e.target;
+                    var interfaceCard = btn.closest('[data-interface-id]');
+                    if (interfaceCard) {
+                        self.moveNetworkInterface(interfaceCard.dataset.interfaceId, 'up');
+                    }
+                }
+
+                if (e.target.matches('.interface-down-btn') || e.target.closest('.interface-down-btn')) {
+                    var btn = e.target.closest('.interface-down-btn') || e.target;
+                    var interfaceCard = btn.closest('[data-interface-id]');
+                    if (interfaceCard) {
+                        self.moveNetworkInterface(interfaceCard.dataset.interfaceId, 'down');
+                    }
+                }
+
+                // Routing rule priority controls
+                if (e.target.matches('.rule-up-btn') || e.target.closest('.rule-up-btn')) {
+                    var btn = e.target.closest('.rule-up-btn') || e.target;
+                    var ruleRow = btn.closest('[data-rule-id]');
+                    if (ruleRow) {
+                        self.moveRule(ruleRow.dataset.ruleId, 'up');
+                    }
+                }
+
+                if (e.target.matches('.rule-down-btn') || e.target.closest('.rule-down-btn')) {
+                    var btn = e.target.closest('.rule-down-btn') || e.target;
+                    var ruleRow = btn.closest('[data-rule-id]');
+                    if (ruleRow) {
+                        self.moveRule(ruleRow.dataset.ruleId, 'down');
+                    }
+                }
+
+                // Delete rule buttons
+                if (e.target.matches('.rule-delete-btn') || e.target.closest('.rule-delete-btn')) {
+                    var btn = e.target.closest('.rule-delete-btn') || e.target;
+                    var ruleRow = btn.closest('[data-rule-id]');
+                    if (ruleRow) {
+                        self.deleteRule(ruleRow.dataset.ruleId);
+                    }
+                }
+            });
+
+            // Action buttons
+            var addRuleBtn = document.getElementById('add-rule-btn');
+            if (addRuleBtn) {
+                addRuleBtn.addEventListener('click', function() {
+                    self.showAddRuleDialog();
+                });
+            }
+
+            var exportRulesBtn = document.getElementById('export-rules-btn');
+            if (exportRulesBtn) {
+                exportRulesBtn.addEventListener('click', function() {
+                    self.exportRoutingRules();
+                });
+            }
+
+            var resetDefaultsBtn = document.getElementById('reset-defaults-btn');
+            if (resetDefaultsBtn) {
+                resetDefaultsBtn.addEventListener('click', function() {
+                    self.resetToDefaults();
+                });
+            }
+
+            var applyChangesBtn = document.getElementById('apply-changes-btn');
+            if (applyChangesBtn) {
+                applyChangesBtn.addEventListener('click', function() {
+                    self.applyChanges();
+                });
+            }
+
+            // Checkbox changes
+            document.addEventListener('change', function(e) {
+                if (e.target.matches('.interface-checkbox')) {
+                    var interfaceCard = e.target.closest('[data-interface-id]');
+                    if (interfaceCard) {
+                        self.updateInterfaceStatus(interfaceCard.dataset.interfaceId, e.target.checked);
+                    }
+                }
+
+                if (e.target.matches('.rule-checkbox')) {
+                    var ruleRow = e.target.closest('[data-rule-id]');
+                    if (ruleRow) {
+                        self.updateRuleSelection(ruleRow.dataset.ruleId, e.target.checked);
+                    }
+                }
+            });
+
+            // Select all rules checkbox
+            var selectAllRulesBtn = document.getElementById('select-all-rules');
+            if (selectAllRulesBtn) {
+                selectAllRulesBtn.addEventListener('change', function(e) {
+                    self.toggleAllRulesSelection(e.target.checked);
+                });
+            }
+
+            this.log('Event handlers setup complete');
+        }
+
+        setupPopupHandlers() {
+            var self = this;
+            var addRuleBtn = document.getElementById('add-rule-btn');
+            var addRuleModal = document.getElementById('add-rule-modal');
+            var closeAddRuleBtn = document.getElementById('close-modal-btn');
+            var cancelAddRuleBtn = document.getElementById('cancel-add-rule-btn');
+            var addRuleForm = document.getElementById('add-rule-form');
+
+            if (addRuleBtn && addRuleModal) {
+                addRuleBtn.addEventListener('click', function() {
+                    self.populateInterfaceDropdown();
+                    addRuleModal.classList.remove('hidden');
+                    addRuleModal.classList.add('flex');
+                });
+            }
+
+            if (closeAddRuleBtn && addRuleModal) {
+                closeAddRuleBtn.addEventListener('click', function() {
+                    addRuleModal.classList.add('hidden');
+                    addRuleModal.classList.remove('flex');
+                    addRuleForm.reset(); // Reset form on close
+                });
+            }
+
+            if (cancelAddRuleBtn && addRuleModal) {
+                cancelAddRuleBtn.addEventListener('click', function() {
+                    addRuleModal.classList.add('hidden');
+                    addRuleModal.classList.remove('flex');
+                    addRuleForm.reset(); // Reset form on cancel
+                });
+            }
+
+            // Close modal if clicking outside of it
+            if (addRuleModal) {
+                addRuleModal.addEventListener('click', function(event) {
+                    if (event.target === addRuleModal) {
+                        addRuleModal.classList.add('hidden');
+                        addRuleModal.classList.remove('flex');
+                        addRuleForm.reset(); // Reset form on outside click
+                    }
+                });
+            }
+
+            // Handle form submission for adding a rule
+            if (addRuleForm) {
+                addRuleForm.addEventListener('submit', async function(event) {
+                    event.preventDefault();
+                    self.log('Submitting add rule form...');
+
+                    var formData = new FormData(addRuleForm);
+                    var newRule = {};
+                    formData.forEach((value, key) => {
+                        // Convert metric and priority to numbers
+                        if (key === 'metric' || key === 'priority') {
+                            newRule[key] = parseInt(value, 10);
+                        } else {
+                            newRule[key] = value;
+                        }
+                    });
+
+                    // Ensure required fields are not empty strings, allow 0 for metric/priority
+                    if (!newRule.destination || !newRule.gateway || !newRule.interface || newRule.metric === null || newRule.priority === null) {
+                        self.showErrorMessage('Please fill in all required fields.');
+                        return;
+                    }
+
+                    try {
+                        var response = await self.makeHttpRequest('POST', self.apiEndpoints.createRule, newRule);
+
+                        if (response && response.success) {
+                            self.log('Rule added successfully:', response.rule);
+                            await self.loadRoutingRules(); // Reload rules to show the new one
+                            self.renderRoutingRules();
+                            self.showSuccessMessage('Routing rule added successfully');
+                            addRuleModal.classList.add('hidden'); // Close modal
+                            addRuleModal.classList.remove('flex');
+                            addRuleForm.reset(); // Reset form
+                        } else {
+                            var errorMsg = response && response.message ? response.message : 'Failed to add routing rule';
+                            throw new Error(errorMsg);
+                        }
+                    } catch (error) {
+                        self.logError('Failed to add rule:', error);
+                        self.showErrorMessage('Failed to add routing rule: ' + error.message);
+                    }
+                });
+            }
+        }
+
+        updateUI() {
+            this.log('Updating UI with current data...');
+
+            try {
+                this.renderInterfaces();
+                this.renderRoutingRules();
+                this.updateStatistics();
+
+                this.log('UI updated successfully');
+
+            } catch (error) {
+                this.logError('Failed to update UI:', error);
+            }
+        }
+
+        renderInterfaces() {
+            var container = document.getElementById('interfaces-container');
+            if (!container) {
+                this.logError('Interfaces container not found');
+                return;
+            }
+
+            container.innerHTML = '';
+
+            if (!this.state.data.networkInterfaces || this.state.data.networkInterfaces.length === 0) {
+                container.innerHTML = '<div class="text-center text-neutral-500 py-8">No network interfaces found</div>';
+                return;
+            }
+
+            var self = this;
+            this.state.data.networkInterfaces.forEach(function(networkInterface, index) {
+                var interfaceElement = self.createInterfaceElement(networkInterface, index);
+                container.appendChild(interfaceElement);
+            });
+
+            this.log('Interfaces rendered:', this.state.data.networkInterfaces.length);
+        }
+
+        createInterfaceElement(networkInterface, index) {
+            var div = document.createElement('div');
+            div.className = 'bg-white border border-neutral-200 rounded-lg p-4 flex items-center justify-between hover:bg-neutral-50 transition-colors';
+            div.dataset.interfaceId = networkInterface.id;
+
+            var statusColor = this.getStatusColor(networkInterface.status);
+            var iconClass = this.getInterfaceIcon(networkInterface.type);
+            var isFirst = index === 0;
+            var isLast = index === this.state.data.networkInterfaces.length - 1;
+
+            div.innerHTML = '<div class="flex items-center">' +
+                '<div class="flex flex-col mr-3">' +
+                    '<button class="interface-up-btn text-neutral-400 hover:text-neutral-600 mb-1 ' + (isFirst ? 'opacity-50 cursor-not-allowed' : '') + '" ' + (isFirst ? 'disabled' : '') + '>' +
+                        '<i class="fa-solid fa-chevron-up"></i>' +
+                    '</button>' +
+                    '<button class="interface-down-btn text-neutral-400 hover:text-neutral-600 ' + (isLast ? 'opacity-50 cursor-not-allowed' : '') + '" ' + (isLast ? 'disabled' : '') + '>' +
+                        '<i class="fa-solid fa-chevron-down"></i>' +
+                    '</button>' +
+                '</div>' +
+                '<div class="w-10 h-10 bg-neutral-100 rounded-full flex items-center justify-center mr-4">' +
+                    '<i class="' + iconClass + ' text-neutral-600"></i>' +
+                '</div>' +
+                '<div>' +
+                    '<div class="flex items-center">' +
+                        '<h4 class="text-neutral-800 mr-2">' + (networkInterface.name || networkInterface.id) + '</h4>' +
+                        '<span class="bg-' + statusColor + '-100 text-' + statusColor + '-800 px-2 py-1 rounded-full text-xs">' + (networkInterface.status.charAt(0).toUpperCase() + networkInterface.status.slice(1)) + '</span>' +
+                    '</div>' +
+                    '<div class="text-sm text-neutral-600">' + (networkInterface.ip_address || 'N/A') + ' • Gateway: ' + (networkInterface.gateway || 'N/A') + '</div>' +
+                    '<div class="text-xs text-neutral-500">Priority: ' + networkInterface.priority + ' ' + (networkInterface.priority === 1 ? '(Highest)' : isLast ? '(Lowest)' : '') + '</div>' +
+                '</div>' +
+            '</div>' +
+            '<div class="flex items-center space-x-4">' +
+                '<div class="text-right">' +
+                    '<div class="text-sm text-neutral-800">' + (networkInterface.type || 'Unknown') + '</div>' +
+                    '<div class="text-xs text-neutral-500">Type</div>' +
+                '</div>' +
+                '<input type="checkbox" class="interface-checkbox rounded border-neutral-300" ' + (networkInterface.enabled ? 'checked' : '') + '>' +
+            '</div>';
+
+            return div;
+        }
+
+        renderRoutingRules() {
+            var tbody = document.getElementById('routing-rules-tbody');
+            if (!tbody) {
+                this.logError('Routing rules tbody not found');
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            if (!this.state.data.routingRules || this.state.data.routingRules.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-neutral-500 py-8">No routing rules found</td></tr>';
+                return;
+            }
+
+            var self = this;
+            this.state.data.routingRules.forEach(function(rule, index) {
+                var row = self.createRoutingRuleRow(rule, index);
+                tbody.appendChild(row);
+            });
+
+            this.log('Routing rules rendered:', this.state.data.routingRules.length);
+        }
+
+        createRoutingRuleRow(rule, index) {
+            var tr = document.createElement('tr');
+            tr.className = 'hover:bg-neutral-50';
+            tr.dataset.ruleId = rule.id;
+
+            var statusColor = this.getStatusColor(rule.status);
+            var isFirst = index === 0;
+            var isLast = index === this.state.data.routingRules.length - 1;
+
+            tr.innerHTML = '<td class="px-4 py-3">' +
+                '<input type="checkbox" class="rule-checkbox rounded border-neutral-300">' +
+            '</td>' +
+            '<td class="px-4 py-3 text-sm text-neutral-900">' + (rule.priority || 'N/A') + '</td>' +
+            '<td class="px-4 py-3 text-sm text-neutral-900">' + (rule.destination_network || rule.destination || 'N/A') + '</td>' +
+            '<td class="px-4 py-3 text-sm text-neutral-900">' + (rule.gateway || 'N/A') + '</td>' +
+            '<td class="px-4 py-3 text-sm text-neutral-900">' + (rule.interface || 'N/A') + '</td>' +
+            '<td class="px-4 py-3 text-sm text-neutral-900">' + (rule.metric || 'N/A') + '</td>' +
+            '<td class="px-4 py-3">' +
+                '<span class="bg-' + statusColor + '-100 text-' + statusColor + '-800 px-2 py-1 rounded-full text-xs">' + ((rule.status || 'inactive').charAt(0).toUpperCase() + (rule.status || 'inactive').slice(1)) + '</span>' +
+            '</td>' +
+            '<td class="px-4 py-3">' +
+                '<div class="flex space-x-1">' +
+                    '<button class="rule-up-btn text-neutral-400 hover:text-neutral-600 ' + (isFirst ? 'opacity-50 cursor-not-allowed' : '') + '" ' + (isFirst ? 'disabled' : '') + '>' +
+                        '<i class="fa-solid fa-chevron-up"></i>' +
+                    '</button>' +
+                    '<button class="rule-down-btn text-neutral-400 hover:text-neutral-600 ' + (isLast ? 'opacity-50 cursor-not-allowed' : '') + '" ' + (isLast ? 'disabled' : '') + '>' +
+                        '<i class="fa-solid fa-chevron-down"></i>' +
+                    '</button>' +
+                    '<button class="rule-delete-btn text-red-600 hover:text-red-800 ml-2">' +
+                        '<i class="fa-solid fa-trash"></i>' +
+                    '</button>' +
+                '</div>' +
+            '</td>';
+
+            return tr;
+        }
+
+        updateStatistics() {
+            var stats = this.state.data.statistics;
+
+            // Calculate statistics from interface data if not provided
+            var totalInterfaces = this.state.data.networkInterfaces ? this.state.data.networkInterfaces.length : 0;
+            var onlineCount = this.state.data.networkInterfaces ? this.state.data.networkInterfaces.filter(function(i) {
+                return i.status === 'online';
+            }).length : 0;
+            var standbyCount = this.state.data.networkInterfaces ? this.state.data.networkInterfaces.filter(function(i) {
+                return i.status === 'standby';
+            }).length : 0;
+            var offlineCount = totalInterfaces - onlineCount - standbyCount;
+
+            var totalEl = document.querySelector('[data-stat="total"]');
+            var onlineEl = document.querySelector('[data-stat="online"]');
+            var offlineEl = document.querySelector('[data-stat="offline"]');
+
+            if (totalEl) totalEl.textContent = (stats && stats.total_interfaces) || totalInterfaces;
+            if (onlineEl) onlineEl.textContent = (stats && stats.online_count) || onlineCount;
+            if (offlineEl) offlineEl.textContent = (stats && stats.offline_count) || offlineCount;
+
+            this.log('Statistics updated:', { total: totalInterfaces, online: onlineCount, standby: standbyCount, offline: offlineCount });
+        }
+
+        async moveNetworkInterface(interfaceId, direction) {
+            try {
+                this.log('Moving interface ' + direction + ':', interfaceId);
+
+                var response = await this.makeHttpRequest('POST', this.apiEndpoints.reorderInterfaces, {
+                    interfaceId: interfaceId,
+                    direction: direction
+                });
+
+                if (response && response.success) {
+                    await this.loadInterfaces();
+                    this.renderInterfaces();
+                    this.updateStatistics();
+                    this.showSuccessMessage('Interface ' + interfaceId + ' moved ' + direction + ' successfully');
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Failed to move interface');
+                }
+
+            } catch (error) {
+                this.logError('Failed to move interface:', error);
+                this.showErrorMessage('Failed to move interface ' + interfaceId);
+            }
+        }
+
+        async moveRule(ruleId, direction) {
+            try {
+                this.log('Moving rule ' + direction + ':', ruleId);
+
+                var response = await this.makeHttpRequest('POST', this.apiEndpoints.reorderRules, {
+                    ruleId: ruleId,
+                    direction: direction
+                });
+
+                if (response && response.success) {
+                    await this.loadRoutingRules();
+                    this.renderRoutingRules();
+                    this.showSuccessMessage('Rule ' + ruleId + ' moved ' + direction + ' successfully');
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Failed to move rule');
+                }
+
+            } catch (error) {
+                this.logError('Failed to move rule:', error);
+                this.showErrorMessage('Failed to move rule ' + ruleId);
+            }
+        }
+
+        async updateInterfaceStatus(interfaceId, enabled) {
+            try {
+                this.log('Updating interface status:', interfaceId, enabled);
+
+                var response = await this.makeHttpRequest('PUT', this.apiEndpoints.interfaces + '/' + interfaceId, {
+                    enabled: enabled
+                });
+
+                if (response && response.success) {
+                    // Update local data
+                    var networkInterface = this.state.data.networkInterfaces.find(function(i) {
+                        return i.id === interfaceId;
+                    });
+                    if (networkInterface) {
+                        networkInterface.enabled = enabled;
+                    }
+                    this.showSuccessMessage('Interface ' + interfaceId + ' ' + (enabled ? 'enabled' : 'disabled'));
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Failed to update interface');
+                }
+
+            } catch (error) {
+                this.logError('Failed to update interface status:', error);
+                this.showErrorMessage('Failed to update interface ' + interfaceId);
+
+                // Revert checkbox state
+                var checkbox = document.querySelector('[data-interface-id="' + interfaceId + '"] .interface-checkbox');
+                if (checkbox) checkbox.checked = !enabled;
+            }
+        }
+
+        async deleteRule(ruleId) {
+            try {
+                if (!confirm('Are you sure you want to delete this routing rule?')) {
+                    return;
+                }
+
+                this.log('Deleting rule:', ruleId);
+
+                // Use the correct endpoint format for individual rule deletion
+                var deleteUrl = '/api/network-priority/routing-rules/' + encodeURIComponent(ruleId);
+                this.log('DELETE URL:', deleteUrl);
+
+                var response = await this.makeHttpRequest('DELETE', deleteUrl);
+
+                if (response && response.success) {
+                    // Refresh the routing rules data
+                    await this.loadRoutingRules();
+                    this.renderRoutingRules();
+                    this.showSuccessMessage('Routing rule deleted successfully');
+                } else {
+                    var errorMsg = (response && response.message) || 'Failed to delete routing rule';
+                    throw new Error(errorMsg);
+                }
+
+            } catch (error) {
+                this.logError('Failed to delete rule:', error);
+                var errorMessage = error.message || 'Unknown error occurred';
+                this.showErrorMessage('Failed to delete routing rule: ' + errorMessage);
+
+                // Refresh data to ensure UI is in sync
+                try {
+                    await this.loadRoutingRules();
+                    this.renderRoutingRules();
+                } catch (refreshError) {
+                    this.logError('Failed to refresh data after delete error:', refreshError);
+                }
+            }
+        }
+
+        async applyChanges() {
+            try {
+                this.log('Applying changes...');
+
+                var response = await this.makeHttpRequest('POST', this.apiEndpoints.apply);
+
+                if (response && response.success) {
+                    await this.loadInitialData();
+                    this.showSuccessMessage('Changes applied successfully');
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Failed to apply changes');
+                }
+
+            } catch (error) {
+                this.logError('Failed to apply changes:', error);
+                this.showErrorMessage('Failed to apply changes');
+            }
+        }
+
+        async resetToDefaults() {
+            try {
+                if (!confirm('Are you sure you want to reset to default settings? This will undo all custom priority configurations.')) {
+                    return;
+                }
+
+                this.log('Resetting to defaults...');
+
+                var response = await this.makeHttpRequest('POST', this.apiEndpoints.reset);
+
+                if (response && response.success) {
+                    await this.loadInitialData();
+                    this.showSuccessMessage('Settings reset to defaults successfully');
+                } else {
+                    throw new Error(response && response.message ? response.message : 'Failed to reset to defaults');
+                }
+
+            } catch (error) {
+                this.logError('Failed to reset to defaults:', error);
+                this.showErrorMessage('Failed to reset to defaults');
+            }
+        }
+
+        updateRuleSelection(ruleId, checked) {
+            if (checked) {
+                this.state.ui.selectedRules.add(ruleId);
+            } else {
+                this.state.ui.selectedRules.delete(ruleId);
+            }
+            this.log('Selected rules:', Array.from(this.state.ui.selectedRules));
+        }
+
+        toggleAllRulesSelection(checked) {
+            var self = this;
+            var checkboxes = document.querySelectorAll('.rule-checkbox');
+            checkboxes.forEach(function(checkbox) {
+                checkbox.checked = checked;
+                var row = checkbox.closest('[data-rule-id]');
+                if (row) {
+                    self.updateRuleSelection(row.dataset.ruleId, checked);
+                }
+            });
+        }
+
+        showAddRuleDialog() {
+            this.log('Show add rule dialog');
+            var addRuleModal = document.getElementById('add-rule-modal');
+            if (addRuleModal) {
+                addRuleModal.classList.remove('hidden');
+                addRuleModal.classList.add('flex');
+            }
+        }
+
+        exportRoutingRules() {
+            try {
+                var exportData = {
+                    routing_rules: this.state.data.routingRules,
+                    exported_at: new Date().toISOString(),
+                    version: "1.0"
+                };
+
+                var dataStr = JSON.stringify(exportData, null, 2);
+                var dataBlob = new Blob([dataStr], { type: 'application/json' });
+                var url = URL.createObjectURL(dataBlob);
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = 'routing-rules-' + new Date().toISOString().split('T')[0] + '.json';
+                link.click();
+                URL.revokeObjectURL(url);
+
+                this.log('Routing rules exported successfully');
+                this.showSuccessMessage('Routing rules exported successfully');
+            } catch (error) {
+                this.logError('Failed to export rules:', error);
+                this.showErrorMessage('Failed to export routing rules');
+            }
+        }
+
+        getStatusColor(status) {
+            if (!status) return 'gray';
+            switch (status.toLowerCase()) {
+                case 'online':
+                case 'active':
+                    return 'green';
+                case 'offline':
+                case 'inactive':
+                    return 'red';
+                case 'standby':
+                case 'backup':
+                    return 'yellow';
+                default:
+                    return 'gray';
+            }
+        }
+
+        getInterfaceIcon(type) {
+            if (!type) return 'fa-solid fa-network-wired';
+            switch (type.toLowerCase()) {
+                case 'ethernet':
+                    return 'fa-solid fa-ethernet';
+                case 'wireless':
+                case 'wifi':
+                    return 'fa-solid fa-wifi';
+                case 'cellular':
+                    return 'fa-solid fa-mobile-screen';
+                case 'satellite':
+                    return 'fa-solid fa-satellite-dish';
+                case 'loopback':
+                    return 'fa-solid fa-arrow-rotate-right';
+                default:
+                    return 'fa-solid fa-network-wired';
+            }
+        }
+
+        showSuccessMessage(message) {
+            this.log('SUCCESS: ' + message);
+            this.showNotification(message, 'success');
+        }
+
+        showErrorMessage(message) {
+            this.logError('ERROR: ' + message);
+            this.showNotification(message, 'error');
+        }
+
+        showNotification(message, type) {
+            if (typeof type === 'undefined') {
+                type = 'info';
+            }
+            // Simple notification system
+            var notification = document.createElement('div');
+            notification.className = 'fixed top-4 right-4 px-4 py-2 rounded-lg text-white z-50 ' +
+                (type === 'success' ? 'bg-green-500' :
+                 type === 'error' ? 'bg-red-500' : 'bg-blue-500');
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            setTimeout(function() {
+                if (notification.parentNode) {
+                    notification.parentNode.removeChild(notification);
+                }
+            }, 3000);
+        }
+
+        populateInterfaceDropdown() {
+            var interfaceSelect = document.getElementById('rule-interface');
+            if (!interfaceSelect) {
+                this.logError('Interface select element not found');
+                return;
+            }
+
+            // Clear existing options except the first placeholder
+            interfaceSelect.innerHTML = '<option value="">Select an interface...</option>';
+
+            // Populate with current interface data
+            if (this.state.data.networkInterfaces && this.state.data.networkInterfaces.length > 0) {
+                this.state.data.networkInterfaces.forEach(function(networkInterface) {
+                    var option = document.createElement('option');
+                    option.value = networkInterface.id;
+                    option.textContent = networkInterface.name || networkInterface.id;
+                    
+                    // Add additional info in the display text
+                    if (networkInterface.ip_address) {
+                        option.textContent += ' (' + networkInterface.ip_address + ')';
+                    }
+                    
+                    // Disable offline interfaces
+                    if (networkInterface.status === 'offline') {
+                        option.disabled = true;
+                        option.textContent += ' - Offline';
+                    }
+                    
+                    interfaceSelect.appendChild(option);
+                });
+                
+                this.log('Interface dropdown populated with ' + this.state.data.networkInterfaces.length + ' interfaces');
+            } else {
+                // Add a message if no interfaces are available
+                var noInterfaceOption = document.createElement('option');
+                noInterfaceOption.value = '';
+                noInterfaceOption.textContent = 'No interfaces available';
+                noInterfaceOption.disabled = true;
+                interfaceSelect.appendChild(noInterfaceOption);
+                
+                this.log('No interfaces available for dropdown');
+            }
+        }
+
+        // Cleanup method
+        destroy() {
+            this.stopAutoRefresh();
+            this.log('NetworkPriorityManager destroyed');
+        }
+    }
+
+    // Initialize the manager when DOM is ready
+    function initializeNetworkPriorityManager() {
+        console.log('[NETWORK-PRIORITY] Initializing from DOM ready state...');
+        window.networkPriorityManager = new NetworkPriorityManager();
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initializeNetworkPriorityManager);
+    } else {
+        console.log('[NETWORK-PRIORITY] DOM already loaded, initializing immediately...');
+        initializeNetworkPriorityManager();
+    }
+
+    // Handle dynamic loading
+    var observer = new MutationObserver(function(mutations) {
+        mutations.forEach(function(mutation) {
+            if (mutation.type === 'childList') {
+                mutation.addedNodes.forEach(function(node) {
+                    if (node.nodeType === Node.ELEMENT_NODE &&
+                        (node.querySelector('#priority-section') || node.id === 'priority-section')) {
+                        if (!window.networkPriorityManager) {
+                            console.log('[NETWORK-PRIORITY] Detected network priority section, initializing...');
+                            setTimeout(initializeNetworkPriorityManager, 100);
+                        }
+                    }
+                });
+            }
+        });
+    });
+
+    observer.observe(document.body, {
+        childList: true,
+        subtree: true
+    });
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        if (window.networkPriorityManager) {
+            window.networkPriorityManager.destroy();
+        }
+    });
+
+})();
+</script>

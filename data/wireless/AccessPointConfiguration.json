@@ -1,0 +1,18 @@
+
+{
+  "access_point_config": {
+    "ssid": "UR-WebIF-AP",
+    "password": "SecureAP123",
+    "security_type": "WPA3",
+    "channel": 6,
+    "band_selection": "dual",
+    "max_clients": 10,
+    "dhcp_enabled": true,
+    "dhcp_start_ip": "192.168.50.10",
+    "dhcp_end_ip": "192.168.50.254",
+    "ip_mode": "nat",
+    "ap_ip_address": "192.168.50.1",
+    "subnet_mask": "255.255.255.0"
+  },
+  "last_updated": "2025-01-18T10:30:00Z"
+}

@@ -1,0 +1,577 @@
+{
+  "last_modified": "2025-09-21 13:27:15",
+  "vlans": [
+    {
+      "assigned_ports": [
+        "Port3",
+        "Port4"
+      ],
+      "created_date": "2025-01-15 10:15:00",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_2",
+      "name": "Guest VLAN",
+      "priority": 1,
+      "status": "inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:26:20",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_3",
+      "name": "Test VLAN 1758018380",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 180
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_4",
+      "name": "CRUD Test VLAN fe611c2f",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 570
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Network management traffic",
+      "enabled": false,
+      "id": "vlan_5",
+      "name": "Management VLAN 1758018381_0",
+      "status": "Inactive",
+      "tagged": "tagged",
+      "vlan_id": 10
+    },
+    {
+      "assigned_ports": "",
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_6",
+      "name": "Guest VLAN 1758018381_0",
+      "priority": 0,
+      "status": "Inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Internet of Things devices",
+      "enabled": true,
+      "id": "vlan_7",
+      "name": "IOT VLAN 1758018381_2",
+      "priority": 1,
+      "status": "Active",
+      "vlan_id": 100
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Test VLAN for concurrency testing 2",
+      "enabled": true,
+      "id": "vlan_8",
+      "name": "Concurrent VLAN 2 - 1758018381",
+      "status": "Active",
+      "vlan_id": 202
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Test VLAN for concurrency testing 1",
+      "enabled": true,
+      "id": "vlan_9",
+      "name": "Concurrent VLAN 1 - 1758018381",
+      "status": "Active",
+      "vlan_id": 201
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "description": "Test VLAN for concurrency testing 3",
+      "enabled": true,
+      "id": "vlan_10",
+      "name": "Concurrent VLAN 3 - 1758018381",
+      "status": "Active",
+      "vlan_id": 203
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "enabled": true,
+      "id": "vlan_11",
+      "name": "Edge Case VLAN 1 1758018381_0",
+      "status": "Active",
+      "vlan_id": 1
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "enabled": true,
+      "id": "vlan_12",
+      "name": "Edge Case VLAN Max 1758018381_1",
+      "status": "Active",
+      "vlan_id": 4094
+    },
+    {
+      "created_date": "2025-09-16 10:26:21",
+      "enabled": false,
+      "id": "vlan_13",
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1758018381_2",
+      "status": "Inactive",
+      "vlan_id": 100
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:42:49",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_14",
+      "name": "Test VLAN 1758019369",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 169
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_15",
+      "name": "CRUD Test VLAN 043c645c",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 567
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Network management traffic",
+      "enabled": true,
+      "id": "vlan_16",
+      "name": "Management VLAN 1758019370_0",
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 10
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_17",
+      "name": "Guest VLAN 1758019370_1",
+      "status": "Inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Internet of Things devices",
+      "enabled": true,
+      "id": "vlan_18",
+      "name": "IOT VLAN 1758019370_2",
+      "priority": 1,
+      "status": "Active",
+      "vlan_id": 100
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Test VLAN for concurrency testing 2",
+      "enabled": true,
+      "id": "vlan_19",
+      "name": "Concurrent VLAN 2 - 1758019370",
+      "status": "Active",
+      "vlan_id": 202
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Test VLAN for concurrency testing 1",
+      "enabled": true,
+      "id": "vlan_20",
+      "name": "Concurrent VLAN 1 - 1758019370",
+      "status": "Active",
+      "vlan_id": 201
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "description": "Test VLAN for concurrency testing 3",
+      "enabled": true,
+      "id": "vlan_21",
+      "name": "Concurrent VLAN 3 - 1758019370",
+      "status": "Active",
+      "vlan_id": 203
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "enabled": true,
+      "id": "vlan_22",
+      "name": "Edge Case VLAN 1 1758019370_0",
+      "status": "Active",
+      "vlan_id": 1
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "enabled": true,
+      "id": "vlan_23",
+      "name": "Edge Case VLAN Max 1758019370_1",
+      "status": "Active",
+      "vlan_id": 4094
+    },
+    {
+      "created_date": "2025-09-16 10:42:50",
+      "enabled": false,
+      "id": "vlan_24",
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1758019370_2",
+      "status": "Inactive",
+      "vlan_id": 100
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_25",
+      "name": "Test VLAN 1758019391",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 191
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_26",
+      "name": "CRUD Test VLAN e7af95ce",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 506
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Network management traffic",
+      "enabled": true,
+      "id": "vlan_27",
+      "name": "Management VLAN 1758019391_0",
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 10
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_28",
+      "name": "Guest VLAN 1758019391_1",
+      "status": "Inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Internet of Things devices",
+      "enabled": true,
+      "id": "vlan_29",
+      "name": "IOT VLAN 1758019391_2",
+      "priority": 1,
+      "status": "Active",
+      "vlan_id": 100
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Test VLAN for concurrency testing 1",
+      "enabled": true,
+      "id": "vlan_30",
+      "name": "Concurrent VLAN 1 - 1758019391",
+      "status": "Active",
+      "vlan_id": 201
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Test VLAN for concurrency testing 3",
+      "enabled": true,
+      "id": "vlan_31",
+      "name": "Concurrent VLAN 3 - 1758019391",
+      "status": "Active",
+      "vlan_id": 203
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "description": "Test VLAN for concurrency testing 2",
+      "enabled": true,
+      "id": "vlan_32",
+      "name": "Concurrent VLAN 2 - 1758019391",
+      "status": "Active",
+      "vlan_id": 202
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "enabled": true,
+      "id": "vlan_33",
+      "name": "Edge Case VLAN 1 1758019391_0",
+      "status": "Active",
+      "vlan_id": 1
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "enabled": true,
+      "id": "vlan_34",
+      "name": "Edge Case VLAN Max 1758019391_1",
+      "status": "Active",
+      "vlan_id": 4094
+    },
+    {
+      "created_date": "2025-09-16 10:43:11",
+      "enabled": false,
+      "id": "vlan_35",
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1758019391_2",
+      "status": "Inactive",
+      "vlan_id": 100
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_36",
+      "name": "Test VLAN 1758021849",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 149
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_37",
+      "name": "CRUD Test VLAN ecccbea5",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 588
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Network management traffic",
+      "enabled": true,
+      "id": "vlan_38",
+      "name": "Management VLAN 1758021849_0",
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 10
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_39",
+      "name": "Guest VLAN 1758021849_1",
+      "status": "Inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Internet of Things devices",
+      "enabled": true,
+      "id": "vlan_40",
+      "name": "IOT VLAN 1758021849_2",
+      "priority": 1,
+      "status": "Active",
+      "vlan_id": 100
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Test VLAN for concurrency testing 1",
+      "enabled": true,
+      "id": "vlan_41",
+      "name": "Concurrent VLAN 1 - 1758021849",
+      "status": "Active",
+      "vlan_id": 201
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Test VLAN for concurrency testing 2",
+      "enabled": true,
+      "id": "vlan_42",
+      "name": "Concurrent VLAN 2 - 1758021849",
+      "status": "Active",
+      "vlan_id": 202
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "description": "Test VLAN for concurrency testing 3",
+      "enabled": true,
+      "id": "vlan_43",
+      "name": "Concurrent VLAN 3 - 1758021849",
+      "status": "Active",
+      "vlan_id": 203
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "enabled": true,
+      "id": "vlan_44",
+      "name": "Edge Case VLAN 1 1758021849_0",
+      "status": "Active",
+      "vlan_id": 1
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "enabled": true,
+      "id": "vlan_45",
+      "name": "Edge Case VLAN Max 1758021849_1",
+      "status": "Active",
+      "vlan_id": 4094
+    },
+    {
+      "created_date": "2025-09-16 11:24:09",
+      "enabled": false,
+      "id": "vlan_46",
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1758021849_2",
+      "status": "Inactive",
+      "vlan_id": 100
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_47",
+      "name": "Test VLAN 1758023831",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 131
+    },
+    {
+      "assigned_ports": [
+        "Port5",
+        "Port6"
+      ],
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Test VLAN for advanced network testing",
+      "enabled": true,
+      "id": "vlan_48",
+      "name": "CRUD Test VLAN 2688a623",
+      "priority": 1,
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 516
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Network management traffic",
+      "enabled": true,
+      "id": "vlan_49",
+      "name": "Management VLAN 1758023831_0",
+      "status": "Active",
+      "tagged": "tagged",
+      "vlan_id": 10
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Guest network access",
+      "enabled": false,
+      "id": "vlan_50",
+      "name": "Guest VLAN 1758023831_1",
+      "status": "Inactive",
+      "tagged": "untagged",
+      "vlan_id": 20
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Internet of Things devices",
+      "enabled": true,
+      "id": "vlan_51",
+      "name": "IOT VLAN 1758023831_2",
+      "priority": 1,
+      "status": "Active",
+      "vlan_id": 100
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Test VLAN for concurrency testing 1",
+      "enabled": true,
+      "id": "vlan_52",
+      "name": "Concurrent VLAN 1 - 1758023831",
+      "status": "Active",
+      "vlan_id": 201
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Test VLAN for concurrency testing 2",
+      "enabled": true,
+      "id": "vlan_53",
+      "name": "Concurrent VLAN 2 - 1758023831",
+      "status": "Active",
+      "vlan_id": 202
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "description": "Test VLAN for concurrency testing 3",
+      "enabled": true,
+      "id": "vlan_54",
+      "name": "Concurrent VLAN 3 - 1758023831",
+      "status": "Active",
+      "vlan_id": 203
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "enabled": true,
+      "id": "vlan_55",
+      "name": "Edge Case VLAN 1 1758023831_0",
+      "status": "Active",
+      "vlan_id": 1
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "enabled": true,
+      "id": "vlan_56",
+      "name": "Edge Case VLAN Max 1758023831_1",
+      "status": "Active",
+      "vlan_id": 4094
+    },
+    {
+      "created_date": "2025-09-16 11:57:11",
+      "enabled": false,
+      "id": "vlan_57",
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA 1758023831_2",
+      "status": "Inactive",
+      "vlan_id": 100
+    }
+  ]
+}

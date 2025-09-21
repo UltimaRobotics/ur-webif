@@ -1,0 +1,23 @@
+{
+  "activation_methods": [
+    "license_key",
+    "file_upload",
+    "online_activation"
+  ],
+  "auto_renewal_enabled": false,
+  "backup_license_servers": [
+    "https://license1.example.com",
+    "https://license2.example.com"
+  ],
+  "log_level": "info",
+  "max_file_size_mb": 5,
+  "retry_attempts": 3,
+  "signature_validation_enabled": true,
+  "supported_file_types": [
+    ".lic",
+    ".dat",
+    ".key"
+  ],
+  "timeout_seconds": 30,
+  "validation_interval_days": 7
+}

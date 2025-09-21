@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "icon": "check",
+      "name": "Firmware file validated",
+      "status": "passed"
+    },
+    {
+      "icon": "check",
+      "name": "System checks passed",
+      "status": "passed"
+    },
+    {
+      "icon": "check",
+      "name": "Backup configured",
+      "status": "passed"
+    },
+    {
+      "icon": "check",
+      "name": "TFTP client ready",
+      "status": "passed"
+    }
+  ],
+  "firmware_selection": {
+    "selected_firmware_id": "tftp_firmware",
+    "selected_source": "tftp",
+    "selection_timestamp": "1758461413936"
+  },
+  "last_updated": "2025-01-18T10:30:00Z",
+  "new_firmware": {
+    "build_date": "Feb 10, 2025",
+    "release_notes": [
+      "Added support for WiFi 6 protocols",
+      "Improved security patches",
+      "Enhanced performance optimizations",
+      "Bug fixes and stability improvements"
+    ],
+    "version": "v2.5.0"
+  },
+  "readiness_status": "Ready",
+  "status_color": "green",
+  "status_description": "Firmware selected and ready for upgrade",
+  "upgrade_available": true
+}

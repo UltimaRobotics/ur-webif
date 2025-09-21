@@ -1,0 +1,1002 @@
+
+<div class="max-w-6xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+        <h1 class="text-2xl text-neutral-800">Welcome to Ultima Robotics</h1>
+        <div class="flex items-center space-x-4">
+            <button id="auto-refresh-toggle" class="text-sm text-neutral-500 hover:text-neutral-700 flex items-center space-x-1 px-3 py-1 rounded border border-neutral-300 hover:bg-neutral-50 transition-colors" title="Toggle automatic refresh">
+                <i class="fa-solid fa-clock" id="auto-refresh-icon"></i>
+                <span id="auto-refresh-text">Auto</span>
+            </button>
+            <button id="refresh-data-btn" class="text-sm text-neutral-500 hover:text-neutral-700 flex items-center space-x-1 px-3 py-1 rounded border border-neutral-300 hover:bg-neutral-50 transition-colors">
+                <i class="fa-solid fa-refresh" id="refresh-icon"></i>
+                <span>Refresh</span>
+            </button>
+            <span class="text-sm text-neutral-500" data-last-login></span>
+            <div id="update-indicator" class="flex items-center space-x-1 text-xs text-neutral-400">
+                <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse" id="status-dot"></div>
+                <span data-last-update></span>
+            </div>
+        </div>
+    </div>
+
+    <!-- System Stats Section -->
+    <div class="system p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="cpu flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-gauge-high"></i>
+                        <span class="text-neutral-800">CPU Usage</span>
+                    </div>
+                    <span class="text-2xl text-neutral-600" data-cpu-usage>0%</span>
+                </div>
+                <div class="w-full bg-neutral-200 rounded-full h-3 mb-2">
+                    <div class="bg-neutral-500 h-3 rounded-full" data-cpu-progress style="width: 0%"></div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span data-cpu-cores>0 Cores</span>
+                        <span data-cpu-temp>0°C</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span data-cpu-base-clock>0 GHz</span>
+                        <span data-cpu-boost-clock>0 GHz</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-memory"></i>
+                        <span class="text-neutral-800">RAM Usage</span>
+                    </div>
+                    <span class="text-2xl text-neutral-600" data-ram-usage>0%</span>
+                </div>
+                <div class="w-full bg-neutral-200 rounded-full h-3 mb-2">
+                    <div class="bg-neutral-500 h-3 rounded-full" data-ram-progress style="width: 0%"></div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span data-ram-used>0 GB</span>
+                        <span data-ram-total>0 GB</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span data-ram-available>0 GB</span>
+                        <span data-ram-type>N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-hard-drive"></i>
+                        <span class="text-neutral-800">Swap Usage</span>
+                    </div>
+                    <span class="text-2xl text-neutral-600" data-swap-usage>0%</span>
+                </div>
+                <div class="w-full bg-neutral-200 rounded-full h-3 mb-2">
+                    <div class="bg-neutral-500 h-3 rounded-full" data-swap-progress style="width: 0%"></div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span data-swap-used>0 MB</span>
+                        <span data-swap-total>0 GB</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span data-swap-available>0 GB</span>
+                        <span data-swap-priority>Normal</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Network Status Section -->
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-globe"></i>
+                        <span class="text-neutral-800">Internet</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <div class="w-2 h-2 bg-neutral-500 rounded-full" data-internet-indicator></div>
+                        <span class="text-sm text-neutral-600" data-internet-status>Unknown</span>
+                    </div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span>External IP:</span>
+                        <span data-external-ip>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>DNS Primary:</span>
+                        <span data-dns-primary>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>DNS Secondary:</span>
+                        <span data-dns-secondary>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Latency:</span>
+                        <span class="text-neutral-600" data-latency>0 ms</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Bandwidth:</span>
+                        <span data-bandwidth>N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-server"></i>
+                        <span class="text-neutral-800">Ultima Server</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <div class="w-2 h-2 bg-neutral-500 rounded-full" data-server-indicator></div>
+                        <span class="text-sm text-neutral-600" data-server-status>Unknown</span>
+                    </div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span>Server:</span>
+                        <span data-server-hostname>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Port:</span>
+                        <span data-server-port>0</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Protocol:</span>
+                        <span data-server-protocol>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Last Ping:</span>
+                        <span class="text-neutral-600" data-last-ping>0 ms</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Session:</span>
+                        <span data-session-duration>N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-ethernet"></i>
+                        <span class="text-neutral-800">Connection Type</span>
+                    </div>
+                    <div class="text-sm text-neutral-600" data-connection-type>Unknown</div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span>Interface:</span>
+                        <span data-interface-name>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>MAC Address:</span>
+                        <span data-mac-address>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Local IP:</span>
+                        <span data-local-ip>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Gateway:</span>
+                        <span data-gateway-ip>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Speed:</span>
+                        <span data-connection-speed>N/A</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile/Cellular Status Section -->
+    <div class="p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-signal"></i>
+                        <span class="text-neutral-800">Signal Strength</span>
+                    </div>
+                    <div class="flex items-center space-x-2">
+                        <div class="flex items-center space-x-1" data-signal-bars>
+                            <div class="w-1 h-3 bg-neutral-300 rounded"></div>
+                            <div class="w-1 h-4 bg-neutral-300 rounded"></div>
+                            <div class="w-1 h-5 bg-neutral-300 rounded"></div>
+                            <div class="w-1 h-6 bg-neutral-300 rounded"></div>
+                        </div>
+                        <span class="text-sm text-neutral-500" data-signal-status>No Signal</span>
+                    </div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span>RSSI:</span>
+                        <span class="text-neutral-600" data-rssi>0 dBm</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>RSRP:</span>
+                        <span class="text-neutral-600" data-rsrp>0 dBm</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>RSRQ:</span>
+                        <span class="text-neutral-600" data-rsrq>0 dB</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>SINR:</span>
+                        <span class="text-neutral-600" data-sinr>0 dB</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Cell ID:</span>
+                        <span class="text-neutral-500" data-cell-id>N/A</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-neutral-50 to-neutral-100 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-3">
+                    <div class="flex items-center space-x-2">
+                        <i class="text-neutral-600 fa-solid fa-mobile-screen-button"></i>
+                        <span class="text-neutral-800">Connection Status</span>
+                    </div>
+                    <div class="flex items-center space-x-1">
+                        <div class="w-2 h-2 bg-neutral-400 rounded-full" data-cellular-indicator></div>
+                        <span class="text-sm text-neutral-600" data-cellular-status>Disconnected</span>
+                    </div>
+                </div>
+                <div class="text-xs text-neutral-600 space-y-1">
+                    <div class="flex justify-between">
+                        <span>Network:</span>
+                        <span class="text-neutral-500" data-network-name>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Technology:</span>
+                        <span class="text-neutral-500" data-technology>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Band:</span>
+                        <span class="text-neutral-500" data-band>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>APN:</span>
+                        <span class="text-neutral-500" data-apn>N/A</span>
+                    </div>
+                    <div class="flex justify-between">
+                        <span>Data Usage:</span>
+                        <span class="text-neutral-500" data-data-usage>0 MB</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Section -->
+    <div id="quick-actions" class="mb-8">
+        <h2 class="text-lg text-neutral-800 mb-4">Quick Actions</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div id="cellular-cnfg-btn" class="action-card bg-white rounded-lg border border-neutral-200 p-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                        <i class="fa-solid fa-plus text-neutral-600"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-neutral-400"></i>
+                </div>
+                <h3 class="text-sm text-neutral-800">Configure Cellular</h3>
+                <p class="text-xs text-neutral-500 mt-1">Manage 5G/LTE configuration</p>
+            </div>
+
+            <div id="network-scan-btn" class="action-card bg-white rounded-lg border border-neutral-200 p-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                        <i class="fa-solid fa-wifi text-neutral-600"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-neutral-400"></i>
+                </div>
+                <h3 class="text-sm text-neutral-800">Network Scan</h3>
+                <p class="text-xs text-neutral-500 mt-1">Discover devices on your network</p>
+            </div>
+
+            <div id="update-firmware-btn" class="action-card bg-white rounded-lg border border-neutral-200 p-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                        <i class="fa-solid fa-download text-neutral-600"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-neutral-400"></i>
+                </div>
+                <h3 class="text-sm text-neutral-800">Update Firmware</h3>
+                <p class="text-xs text-neutral-500 mt-1">Keep your devices up to date</p>
+            </div>
+
+            <div id="backup-config-btn" class="action-card bg-white rounded-lg border border-neutral-200 p-5 hover:shadow-md transition-shadow cursor-pointer">
+                <div class="flex items-center justify-between mb-4">
+                    <div class="w-10 h-10 rounded-full bg-neutral-100 flex items-center justify-center">
+                        <i class="fa-solid fa-shield text-neutral-600"></i>
+                    </div>
+                    <i class="fa-solid fa-arrow-right text-neutral-400"></i>
+                </div>
+                <h3 class="text-sm text-neutral-800">Backup Config</h3>
+                <p class="text-xs text-neutral-500 mt-1">Save your current configuration</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Start and Tutorials Section -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div id="quick-start" class="bg-white rounded-lg border border-neutral-200 p-6">
+            <div class="flex items-center mb-4">
+                <i class="fa-solid fa-rocket text-neutral-700 text-xl mr-3"></i>
+                <h2 class="text-xl text-neutral-800">Quick Start</h2>
+            </div>
+            <p class="text-neutral-600 mb-6">Get started with Ultima Robotics platform in just a few steps.</p>
+            <div class="space-y-4">
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center">
+                        <span class="text-neutral-700">1</span>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-sm text-neutral-800">Connect your first device</h3>
+                        <p class="text-sm text-neutral-600">Configure your robot and connect it to the network.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center">
+                        <span class="text-neutral-700">2</span>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-sm text-neutral-800">Set up your workspace</h3>
+                        <p class="text-sm text-neutral-600">Configure your dashboard and preferences.</p>
+                    </div>
+                </div>
+                <div class="flex items-start">
+                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center">
+                        <span class="text-neutral-700">3</span>
+                    </div>
+                    <div class="ml-4">
+                        <h3 class="text-sm text-neutral-800">Create your first automation</h3>
+                        <p class="text-sm text-neutral-600">Set up routines and automated tasks for your robots.</p>
+                    </div>
+                </div>
+            </div>
+            <button id="setup-wizard-btn" class="mt-6 w-full bg-neutral-800 hover:bg-neutral-900 text-white py-2 px-4 rounded-md text-sm">
+                Start Setup Wizard
+            </button>
+        </div>
+
+        <div id="tutorials" class="bg-white rounded-lg border border-neutral-200 p-6">
+            <div class="flex items-center mb-4">
+                <i class="fa-solid fa-play-circle text-neutral-700 text-xl mr-3"></i>
+                <h2 class="text-xl text-neutral-800">Watch Tutorials</h2>
+            </div>
+            <p class="text-neutral-600 mb-6">Learn how to use Ultima Robotics platform with our video guides.</p>
+            <div class="space-y-4">
+                <div class="border border-neutral-200 rounded-md overflow-hidden">
+                    <div class="bg-neutral-700 h-32 flex items-center justify-center">
+                        <i class="fa-solid fa-play text-white text-3xl"></i>
+                    </div>
+                    <div class="p-3">
+                        <h3 class="text-sm text-neutral-800">Getting Started with Ultima Robotics</h3>
+                        <p class="text-xs text-neutral-500">5:32 min</p>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between">
+                    <span id="view-tutorials-btn" class="text-sm text-neutral-600 hover:text-neutral-900 flex items-center cursor-pointer">
+                        <i class="fa-solid fa-list mr-2"></i>
+                        View all tutorials
+                    </span>
+                    <span id="documentation-btn" class="text-sm text-neutral-600 hover:text-neutral-900 flex items-center cursor-pointer">
+                        <i class="fa-solid fa-book mr-2"></i>
+                        Documentation
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    'use strict';
+
+    console.log('[LANDING-SECTION] Self-contained landing section initializing...');
+
+    // Data storage
+    let systemData = {
+        system: {},
+        network: {},
+        cellular: {},
+        performance: {},
+        data_freshness: {}
+    };
+
+    // Configuration
+    const CONFIG = {
+        AUTO_REFRESH_INTERVAL: 30000, // 30 seconds
+        API_BASE_URL: '/api',
+        MAX_RETRY_ATTEMPTS: 3,
+        RETRY_DELAY: 1000
+    };
+
+    // State management
+    let state = {
+        autoRefreshEnabled: true,
+        autoRefreshInterval: null,
+        isRefreshing: false,
+        retryCount: 0
+    };
+
+    // HTTP Request Manager - Self-contained
+    class EmbeddedHttpManager {
+        constructor() {
+            this.baseURL = CONFIG.API_BASE_URL;
+            console.log('[HTTP] Embedded HTTP Manager initialized with base URL:', this.baseURL);
+        }
+
+        async makeRequest(endpoint, options = {}) {
+            const url = `${this.baseURL}${endpoint}`;
+            const defaultOptions = {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                credentials: 'include'
+            };
+
+            const requestOptions = { ...defaultOptions, ...options };
+
+            console.log(`[HTTP] Making ${requestOptions.method} request to ${endpoint}`);
+
+            try {
+                const response = await fetch(url, requestOptions);
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+
+                const data = await response.json();
+                console.log('[HTTP] Response received:', Object.keys(data));
+                return data;
+            } catch (error) {
+                console.error('[HTTP] Request failed:', error);
+                throw error;
+            }
+        }
+
+        async post(endpoint, data) {
+            return this.makeRequest(endpoint, {
+                method: 'POST',
+                body: JSON.stringify(data)
+            });
+        }
+
+        async get(endpoint) {
+            return this.makeRequest(endpoint, {
+                method: 'GET'
+            });
+        }
+    }
+
+    // Initialize HTTP manager
+    const httpManager = new EmbeddedHttpManager();
+
+    // Data fetching and rendering functions
+    async function fetchDashboardData(forceRefresh = false) {
+        if (state.isRefreshing) {
+            console.log('[DASHBOARD] Already refreshing, skipping request');
+            return;
+        }
+
+        state.isRefreshing = true;
+        console.log('[DASHBOARD] Fetching dashboard data...');
+
+        try {
+            const requestData = {
+                force_refresh: forceRefresh,
+                refresh: true,
+                timestamp: Date.now(),
+                source: 'landing_section_embedded'
+            };
+
+            const data = await httpManager.post('/dashboard-data', requestData);
+            
+            if (data && data.success) {
+                console.log('[DASHBOARD] Dashboard data received successfully');
+                systemData = data;
+                updateDisplay(data);
+                updateStatusIndicator('success');
+                state.retryCount = 0;
+            } else {
+                throw new Error(data.message || 'Invalid dashboard response');
+            }
+        } catch (error) {
+            console.error('[DASHBOARD] Failed to fetch data:', error);
+            updateStatusIndicator('error');
+            handleFetchError(error);
+        } finally {
+            state.isRefreshing = false;
+        }
+    }
+
+    function handleFetchError(error) {
+        state.retryCount++;
+        
+        if (state.retryCount < CONFIG.MAX_RETRY_ATTEMPTS) {
+            console.log(`[DASHBOARD] Retrying in ${CONFIG.RETRY_DELAY}ms (attempt ${state.retryCount})`);
+            setTimeout(() => fetchDashboardData(), CONFIG.RETRY_DELAY * state.retryCount);
+        } else {
+            console.error('[DASHBOARD] Max retry attempts reached');
+            showErrorMessage(error.message);
+        }
+    }
+
+    function showErrorMessage(message) {
+        const container = document.querySelector('.max-w-6xl');
+        if (!container) return;
+
+        // Remove existing error messages
+        const existingError = container.querySelector('.error-message');
+        if (existingError) {
+            existingError.remove();
+        }
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'error-message bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4';
+        errorDiv.innerHTML = `
+            <div class="flex items-center justify-between">
+                <div class="flex items-center">
+                    <i class="fa-solid fa-exclamation-triangle mr-2"></i>
+                    <span>Failed to refresh data: ${message}</span>
+                </div>
+                <button onclick="this.parentElement.parentElement.remove()" class="text-red-600 hover:text-red-800">
+                    <i class="fa-solid fa-times"></i>
+                </button>
+            </div>
+        `;
+
+        container.insertBefore(errorDiv, container.firstChild);
+
+        // Auto-remove after 8 seconds
+        setTimeout(() => {
+            if (errorDiv.parentNode) {
+                errorDiv.remove();
+            }
+        }, 8000);
+    }
+
+    function updateDisplay(data) {
+        console.log('[DASHBOARD] Updating display with data');
+
+        // Update system metrics
+        if (data.system) {
+            updateElement('[data-cpu-usage]', `${data.system.cpu_usage_percent || 0}%`);
+            updateElement('[data-cpu-progress]', '', (el) => {
+                el.style.width = `${data.system.cpu_usage_percent || 0}%`;
+            });
+            updateElement('[data-cpu-cores]', `${data.system.cpu_cores || 0} Cores`);
+            updateElement('[data-cpu-temp]', `${data.system.cpu_temp_celsius || 0}°C`);
+            updateElement('[data-cpu-base-clock]', `${(data.system.cpu_base_clock_ghz || 0).toFixed(2)} GHz`);
+            updateElement('[data-cpu-boost-clock]', `${(data.system.cpu_boost_clock_ghz || 0).toFixed(2)} GHz`);
+
+            updateElement('[data-ram-usage]', `${data.system.ram_usage_percent || 0}%`);
+            updateElement('[data-ram-progress]', '', (el) => {
+                el.style.width = `${data.system.ram_usage_percent || 0}%`;
+            });
+            updateElement('[data-ram-used]', `${(data.system.ram_used_gb || 0).toFixed(1)} GB`);
+            updateElement('[data-ram-total]', `${(data.system.ram_total_gb || 0).toFixed(1)} GB`);
+            updateElement('[data-ram-available]', `${(data.system.ram_available_gb || 0).toFixed(1)} GB`);
+            updateElement('[data-ram-type]', data.system.ram_type || 'N/A');
+
+            updateElement('[data-swap-usage]', `${data.system.swap_usage_percent || 0}%`);
+            updateElement('[data-swap-progress]', '', (el) => {
+                el.style.width = `${data.system.swap_usage_percent || 0}%`;
+            });
+            updateElement('[data-swap-used]', `${(data.system.swap_used_mb || 0).toFixed(0)} MB`);
+            updateElement('[data-swap-total]', `${(data.system.swap_total_gb || 0).toFixed(1)} GB`);
+            updateElement('[data-swap-available]', `${(data.system.swap_available_gb || 0).toFixed(1)} GB`);
+            updateElement('[data-swap-priority]', data.system.swap_priority || 'Normal');
+        }
+
+        // Update network metrics
+        if (data.network) {
+            updateElement('[data-internet-status]', data.network.internet_status || 'Unknown');
+            updateNetworkIndicator('[data-internet-indicator]', data.network.internet_connected);
+            updateElement('[data-external-ip]', data.network.external_ip || 'N/A');
+            updateElement('[data-dns-primary]', data.network.dns_primary || 'N/A');
+            updateElement('[data-dns-secondary]', data.network.dns_secondary || 'N/A');
+            updateElement('[data-latency]', `${data.network.latency_ms || 0} ms`);
+            updateElement('[data-bandwidth]', `${data.network.download_speed_mbps || 0}/${data.network.upload_speed_mbps || 0} Mbps`);
+
+            updateElement('[data-server-status]', data.network.server_status || 'Unknown');
+            updateNetworkIndicator('[data-server-indicator]', data.network.server_connected);
+            updateElement('[data-server-hostname]', data.network.server_hostname || 'N/A');
+            updateElement('[data-server-port]', data.network.server_port || '0');
+            updateElement('[data-server-protocol]', data.network.server_protocol || 'N/A');
+            updateElement('[data-last-ping]', `${data.network.last_ping_ms || 0} ms`);
+            updateElement('[data-session-duration]', data.network.session_duration || 'N/A');
+
+            updateElement('[data-connection-type]', data.network.connection_type || 'Unknown');
+            updateElement('[data-interface-name]', data.network.interface_name || 'N/A');
+            updateElement('[data-mac-address]', data.network.mac_address || 'N/A');
+            updateElement('[data-local-ip]', data.network.local_ip || 'N/A');
+            updateElement('[data-gateway-ip]', data.network.gateway_ip || 'N/A');
+            updateElement('[data-connection-speed]', data.network.connection_speed || 'N/A');
+        }
+
+        // Update cellular metrics
+        if (data.cellular) {
+            updateElement('[data-signal-status]', data.cellular.signal_status || 'No Signal');
+            updateSignalBars(data.cellular.signal_bars || 0);
+            updateElement('[data-rssi]', `${data.cellular.rssi_dbm || 0} dBm`);
+            updateElement('[data-rsrp]', `${data.cellular.rsrp_dbm || 0} dBm`);
+            updateElement('[data-rsrq]', `${data.cellular.rsrq_db || 0} dB`);
+            updateElement('[data-sinr]', `${data.cellular.sinr_db || 0} dB`);
+            updateElement('[data-cell-id]', data.cellular.cell_id || 'N/A');
+
+            updateElement('[data-cellular-status]', data.cellular.connection_status || 'Disconnected');
+            updateNetworkIndicator('[data-cellular-indicator]', data.cellular.is_connected);
+            updateElement('[data-network-name]', data.cellular.network_name || 'N/A');
+            updateElement('[data-technology]', data.cellular.technology || 'N/A');
+            updateElement('[data-band]', data.cellular.band || 'N/A');
+            updateElement('[data-apn]', data.cellular.apn || 'N/A');
+            updateElement('[data-data-usage]', `${data.cellular.data_usage_mb || 0} MB`);
+        }
+
+        // Update last update time
+        if (data.data_freshness) {
+            updateElement('[data-last-update]', `Last updated: ${new Date().toLocaleTimeString()}`);
+        }
+
+        console.log('[DASHBOARD] Display updated successfully');
+    }
+
+    function updateElement(selector, text, callback) {
+        const element = document.querySelector(selector);
+        if (element) {
+            if (callback) {
+                callback(element);
+            } else {
+                element.textContent = text;
+            }
+        }
+    }
+
+    function updateNetworkIndicator(selector, isConnected) {
+        const element = document.querySelector(selector);
+        if (element) {
+            element.className = `w-2 h-2 rounded-full ${isConnected ? 'bg-green-500' : 'bg-red-500'}`;
+        }
+    }
+
+    function updateSignalBars(signalBars) {
+        const container = document.querySelector('[data-signal-bars]');
+        if (!container) return;
+
+        const bars = container.querySelectorAll('div');
+        bars.forEach((bar, index) => {
+            if (index < signalBars) {
+                bar.className = bar.className.replace('bg-neutral-300', 'bg-green-500');
+            } else {
+                bar.className = bar.className.replace('bg-green-500', 'bg-neutral-300');
+            }
+        });
+    }
+
+    function updateStatusIndicator(status) {
+        const statusDot = document.getElementById('status-dot');
+        if (!statusDot) return;
+
+        switch (status) {
+            case 'loading':
+                statusDot.className = 'w-2 h-2 bg-yellow-500 rounded-full animate-pulse';
+                break;
+            case 'success':
+                statusDot.className = 'w-2 h-2 bg-green-500 rounded-full animate-pulse';
+                break;
+            case 'error':
+                statusDot.className = 'w-2 h-2 bg-red-500 rounded-full';
+                break;
+            default:
+                statusDot.className = 'w-2 h-2 bg-neutral-400 rounded-full';
+        }
+    }
+
+    // Auto-refresh management
+    function startAutoRefresh() {
+        if (state.autoRefreshInterval) {
+            clearInterval(state.autoRefreshInterval);
+        }
+
+        if (state.autoRefreshEnabled) {
+            state.autoRefreshInterval = setInterval(() => {
+                console.log('[DASHBOARD] Auto-refresh triggered');
+                fetchDashboardData();
+            }, CONFIG.AUTO_REFRESH_INTERVAL);
+
+            console.log(`[DASHBOARD] Auto-refresh started with ${CONFIG.AUTO_REFRESH_INTERVAL}ms interval`);
+        }
+    }
+
+    function stopAutoRefresh() {
+        if (state.autoRefreshInterval) {
+            clearInterval(state.autoRefreshInterval);
+            state.autoRefreshInterval = null;
+            console.log('[DASHBOARD] Auto-refresh stopped');
+        }
+    }
+
+    function toggleAutoRefresh() {
+        state.autoRefreshEnabled = !state.autoRefreshEnabled;
+        
+        const toggleText = document.getElementById('auto-refresh-text');
+        const toggleIcon = document.getElementById('auto-refresh-icon');
+        
+        if (state.autoRefreshEnabled) {
+            if (toggleText) toggleText.textContent = 'Auto';
+            if (toggleIcon) toggleIcon.className = 'fa-solid fa-clock';
+            startAutoRefresh();
+        } else {
+            if (toggleText) toggleText.textContent = 'Manual';
+            if (toggleIcon) toggleIcon.className = 'fa-solid fa-pause';
+            stopAutoRefresh();
+        }
+
+        console.log('[DASHBOARD] Auto-refresh toggled:', state.autoRefreshEnabled);
+    }
+
+    // Manual refresh function
+    async function refreshDataNow() {
+        const refreshIcon = document.getElementById('refresh-icon');
+        
+        try {
+            console.log('[DASHBOARD] Manual refresh initiated');
+            
+            // Show loading state
+            if (refreshIcon) {
+                refreshIcon.classList.add('fa-spin');
+            }
+            updateStatusIndicator('loading');
+
+            await fetchDashboardData(true);
+            
+        } catch (error) {
+            console.error('[DASHBOARD] Manual refresh failed:', error);
+        } finally {
+            // Remove loading state
+            if (refreshIcon) {
+                refreshIcon.classList.remove('fa-spin');
+            }
+        }
+    }
+
+    // Event sending function
+    function sendEvent(eventType, elementId, data = {}) {
+        const eventData = {
+            type: eventType,
+            elementId: elementId,
+            eventName: eventType + '_' + elementId,
+            timestamp: new Date().toISOString(),
+            data: data
+        };
+
+        console.log('[EVENTS] Sending event:', eventData);
+
+        fetch('/api/event', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(eventData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('[EVENTS] Event response:', data);
+        })
+        .catch(error => {
+            console.error('[EVENTS] Event error:', error);
+        });
+    }
+
+    // Action handlers
+    function handleCellularConfig() {
+        console.log('[ACTIONS] Navigating to cellular configuration');
+        sendEvent('navigation', 'cellular-cnfg-btn', {
+            destination: 'cellular-configuration'
+        });
+    }
+
+    function handleNetworkScan() {
+        console.log('[ACTIONS] Navigating to network scan');
+        sendEvent('navigation', 'network-scan-btn', {
+            destination: 'wireless-configuration'
+        });
+    }
+
+    function handleUpdateFirmware() {
+        console.log('[ACTIONS] Navigating to firmware upgrade');
+        sendEvent('navigation', 'update-firmware-btn', {
+            destination: 'firmware-upgrade'
+        });
+    }
+
+    function handleBackupConfig() {
+        console.log('[ACTIONS] Navigating to backup configuration');
+        sendEvent('navigation', 'backup-config-btn', {
+            destination: 'backup-restore'
+        });
+    }
+
+    function handleSetupWizard() {
+        console.log('[ACTIONS] Starting setup wizard');
+        sendEvent('button_click', 'setup-wizard-btn', {
+            action: 'start_setup_wizard'
+        });
+    }
+
+    function handleViewTutorials() {
+        console.log('[ACTIONS] Viewing tutorials');
+        sendEvent('button_click', 'view-tutorials-btn', {
+            action: 'view_tutorials'
+        });
+    }
+
+    function handleDocumentation() {
+        console.log('[ACTIONS] Viewing documentation');
+        sendEvent('button_click', 'documentation-btn', {
+            action: 'view_documentation'
+        });
+    }
+
+    // Event listeners setup
+    function setupEventListeners() {
+        console.log('[DASHBOARD] Setting up event listeners...');
+
+        // Refresh button
+        const refreshBtn = document.getElementById('refresh-data-btn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (this.disabled || state.isRefreshing) return;
+                
+                refreshDataNow();
+                sendEvent('button_click', 'refresh-data-btn', {
+                    action: 'manual_refresh'
+                });
+            });
+            console.log('[DASHBOARD] Refresh button event listener attached');
+        }
+
+        // Auto-refresh toggle
+        const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
+        if (autoRefreshToggle) {
+            autoRefreshToggle.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                if (this.disabled) return;
+                
+                toggleAutoRefresh();
+                sendEvent('button_click', 'auto-refresh-toggle', {
+                    action: 'toggle_auto_refresh',
+                    enabled: state.autoRefreshEnabled
+                });
+            });
+            console.log('[DASHBOARD] Auto-refresh toggle event listener attached');
+        }
+
+        // Quick action buttons
+        const cellularBtn = document.getElementById('cellular-cnfg-btn');
+        if (cellularBtn) {
+            cellularBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleCellularConfig();
+            });
+        }
+
+        const networkScanBtn = document.getElementById('network-scan-btn');
+        if (networkScanBtn) {
+            networkScanBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleNetworkScan();
+            });
+        }
+
+        const updateFirmwareBtn = document.getElementById('update-firmware-btn');
+        if (updateFirmwareBtn) {
+            updateFirmwareBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleUpdateFirmware();
+            });
+        }
+
+        const backupConfigBtn = document.getElementById('backup-config-btn');
+        if (backupConfigBtn) {
+            backupConfigBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleBackupConfig();
+            });
+        }
+
+        const setupWizardBtn = document.getElementById('setup-wizard-btn');
+        if (setupWizardBtn) {
+            setupWizardBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleSetupWizard();
+            });
+        }
+
+        const viewTutorialsBtn = document.getElementById('view-tutorials-btn');
+        if (viewTutorialsBtn) {
+            viewTutorialsBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleViewTutorials();
+            });
+        }
+
+        const documentationBtn = document.getElementById('documentation-btn');
+        if (documentationBtn) {
+            documentationBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                handleDocumentation();
+            });
+        }
+
+        console.log('[DASHBOARD] All event listeners attached');
+    }
+
+    // Initialization function
+    function initialize() {
+        console.log('[DASHBOARD] Initializing self-contained landing section...');
+        
+        // Setup event listeners
+        setupEventListeners();
+        
+        // Start auto-refresh
+        startAutoRefresh();
+        
+        // Initial data fetch
+        fetchDashboardData();
+        
+        // Send page load event
+        sendEvent('page_load', 'landing-section', {
+            url: window.location.href,
+            timestamp: Date.now()
+        });
+        
+        console.log('[DASHBOARD] Landing section initialization complete');
+    }
+
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initialize);
+    } else {
+        // Use setTimeout to ensure this runs after current execution stack
+        setTimeout(initialize, 0);
+    }
+
+    // Cleanup on page unload
+    window.addEventListener('beforeunload', function() {
+        stopAutoRefresh();
+        console.log('[DASHBOARD] Landing section cleanup complete');
+    });
+
+})();
+</script>

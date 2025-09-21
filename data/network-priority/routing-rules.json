@@ -1,0 +1,121 @@
+{
+    "last_modified": "2025-09-21T13:28:25Z",
+    "routing_rules": [
+        {
+            "created_date": "2025-09-13T17:12:10Z",
+            "destination": "10.530.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1757783530768",
+            "interface": "eth0",
+            "last_modified": "2025-09-13T17:12:10Z",
+            "metric": 50,
+            "name": "Test Rule 1757783530",
+            "priority": 1
+        },
+        {
+            "created_date": "2025-01-15T10:00:00Z",
+            "destination": "0.0.0.0/0",
+            "gateway": "192.168.1.1",
+            "id": "rule_1",
+            "interface": "eth0",
+            "last_modified": "2025-01-15T10:00:00Z",
+            "metric": 100,
+            "priority": 2,
+            "status": "active"
+        },
+        {
+            "created_date": "2025-09-13T17:12:31Z",
+            "destination": "10.551.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1757783551481",
+            "interface": "eth0",
+            "last_modified": "2025-09-13T17:12:31Z",
+            "metric": 50,
+            "name": "Test Rule 1757783551",
+            "priority": 3
+        },
+        {
+            "created_date": "2025-09-13T17:37:35Z",
+            "destination": "10.055.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1757785055437",
+            "interface": "eth0",
+            "last_modified": "2025-09-13T17:37:35Z",
+            "metric": 50,
+            "name": "Test Rule 1757785055",
+            "priority": 4
+        },
+        {
+            "created_date": "2025-01-15T10:15:00Z",
+            "destination": "10.0.0.0/8",
+            "gateway": "192.168.1.254",
+            "id": "rule_2",
+            "interface": "wlan0",
+            "last_modified": "2025-01-15T10:15:00Z",
+            "metric": 200,
+            "priority": 5,
+            "status": "active"
+        },
+        {
+            "created_date": "2025-09-13T17:38:05Z",
+            "destination": "10.085.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1757785085028",
+            "interface": "eth0",
+            "last_modified": "2025-09-13T17:38:05Z",
+            "metric": 50,
+            "name": "Test Rule 1757785085",
+            "priority": 6
+        },
+        {
+            "created_date": "2025-09-13T17:59:05Z",
+            "destination": "10.345.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1757786345266",
+            "interface": "eth0",
+            "last_modified": "2025-09-13T17:59:05Z",
+            "metric": 50,
+            "name": "Test Rule 1757786345",
+            "priority": 7
+        },
+        {
+            "created_date": "2025-09-16T12:03:16Z",
+            "destination": "10.196.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1758024196559",
+            "interface": "eth0",
+            "last_modified": "2025-09-16T12:03:16Z",
+            "metric": 50,
+            "name": "Test Rule 1758024196",
+            "priority": 8
+        },
+        {
+            "created_date": "2025-09-16T15:13:01Z",
+            "destination": "127.0.0.1",
+            "gateway": "0.0.0.0",
+            "id": "rule_1758035581644",
+            "interface": "eth0",
+            "last_modified": "2025-09-16T15:13:01Z",
+            "metric": 1500,
+            "priority": 9
+        },
+        {
+            "created_date": "2025-09-16T12:03:34Z",
+            "destination": "10.214.0.0/16",
+            "enabled": true,
+            "gateway": "192.168.1.1",
+            "id": "rule_1758024214110",
+            "interface": "eth0",
+            "last_modified": "2025-09-16T12:03:34Z",
+            "metric": 50,
+            "name": "Test Rule 1758024214",
+            "priority": 10
+        }
+    ]
+}

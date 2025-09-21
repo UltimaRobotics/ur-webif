@@ -1,0 +1,141 @@
+{
+    "port": 5000,
+    "host": "0.0.0.0",
+    "document_root": "./web",
+    "default_file": "index.html",
+    "data_directory": "./data",
+    "enable_websocket": false,
+    "websocket_port": 8081,
+    "websocket_host": "0.0.0.0",
+    "enable_ssl": false,
+    "ssl_cert_file": "",
+    "ssl_key_file": "",
+    "max_connections": 1000,
+    "connection_timeout": 30,
+    "enable_cors": true,
+    "allowed_origins": ["*"],
+    "websocket_debug_enabled": true,
+    "websocket_debug_connections": true,
+    "websocket_debug_messages": true,
+    "websocket_debug_handshakes": true,
+    "websocket_debug_errors": true,
+    "websocket_debug_frame_details": true,
+    "credentials_file": "./config/credentials.enc",
+    "session_timeout": 300,
+    "max_login_attempts": 5,
+    "lockout_duration": 300,
+    "endpoint_logging": {
+        "auth": true,
+        "dashboard": false,
+        "system": false,
+        "network": false,
+        "cellular": false,
+        "utils": false,
+        "wired": false,
+        "wireless": false,
+        "firmware": true,
+        "http": true,
+        "websocket": false,
+        "file_server": false
+    },
+    "backup_configuration": {
+        "storage_directory": "./data/backup-storage",
+        "temp_directory": "./data/backup-temp",
+        "max_backup_count": 10,
+        "max_backup_age_days": 30,
+        "auto_cleanup": true,
+        "compression_level": 6,
+        "backup_categories": [
+            {
+                "name": "network_config",
+                "description": "Network configuration files",
+                "files": [
+                    "data/network-priority/*.json"
+                ]
+            },
+            {
+                "name": "license",
+                "description": "License information and activation keys",
+                "files": [
+                    "data/license/*.json"
+                ]
+            },
+            {
+                "name": "authentication",
+                "description": "User accounts and authentication data",
+                "files": [
+                    "data/auth-gen/*.uacc",
+                    "data/file-auth-attempts/*"
+                ],
+                "sensitive": true
+            },
+            {
+                "name": "cellular",
+                "description": "Cellular network settings",
+                "files": [
+                    "data/cellular/*.json"
+                ]
+            },
+            {
+                "name": "vpn",
+                "description": "VPN configurations and profiles",
+                "files": [
+                    "data/vpn/*.json"
+                ]
+            },
+            {
+                "name": "wireless",
+                "description": "Wi-Fi settings and network profiles",
+                "files": [
+                    "data/wireless/*.json"
+                ]
+            },
+            {
+                "name": "firmware",
+                "description": "Firmware configuration and metadata",
+                "files": [
+                    "data/firmware/*.json"
+                ]
+            },
+            {
+                "name": "system_config",
+                "description": "System configuration files",
+                "files": [
+                    "config/*.json"
+                ]
+            }
+        ],
+        "backup_types": {
+            "full": {
+                "name": "Full System Backup",
+                "description": "Complete system backup including all configuration and data",
+                "includes_all_categories": true,
+                "default_encryption": false
+            },
+            "partial": {
+                "name": "Partial Backup",
+                "description": "Selective backup of specific components",
+                "includes_all_categories": false,
+                "default_encryption": false,
+                "selectable_categories": [
+                    "network_config",
+                    "license", 
+                    "authentication",
+                    "cellular",
+                    "vpn",
+                    "wireless"
+                ]
+            },
+            "credentials_only": {
+                "name": "Credentials Backup",
+                "description": "Authentication and sensitive data only",
+                "includes_all_categories": false,
+                "default_encryption": true,
+                "required_categories": [
+                    "authentication",
+                    "license"
+                ]
+            }
+        }
+    }
+}

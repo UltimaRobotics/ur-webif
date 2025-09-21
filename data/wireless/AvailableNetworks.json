@@ -1,0 +1,31 @@
+{
+    "available_networks": [
+        {
+            "channel": 36,
+            "frequency": "5GHz",
+            "security": "WPA3",
+            "signal_bars": 4,
+            "signal_strength_dbm": -42,
+            "ssid": "HomeWiFi_5G"
+        },
+        {
+            "channel": 6,
+            "frequency": "2.4GHz",
+            "security": "WPA2",
+            "signal_bars": 3,
+            "signal_strength_dbm": -58,
+            "ssid": "OfficeNetwork"
+        },
+        {
+            "channel": 11,
+            "frequency": "2.4GHz",
+            "security": "Open",
+            "signal_bars": 2,
+            "signal_strength_dbm": -65,
+            "ssid": "GuestNetwork"
+        }
+    ],
+    "networks_found": 3,
+    "scan_duration_seconds": 5,
+    "scan_timestamp": "2025-09-20T15:37:11.475Z"
+}

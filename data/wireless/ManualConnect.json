@@ -1,0 +1,50 @@
+{
+    "last_updated": "2025-09-20T14:39:36.024Z",
+    "manual_connections": [
+        {
+            "connection_id": "manual_001",
+            "connection_status": "success",
+            "connection_timestamp": "2025-01-18T10:25:00Z",
+            "dns_server": "",
+            "error_message": "",
+            "gateway": "",
+            "hidden_network": false,
+            "ip_mode": "dhcp",
+            "password": "TestPassword123",
+            "security_type": "WPA2",
+            "ssid": "TestNetwork",
+            "static_ip": "",
+            "subnet_mask": ""
+        },
+        {
+            "connection_id": "manual_1758379176008",
+            "connection_status": "success",
+            "connection_timestamp": "2025-09-20T14:39:36.008Z",
+            "dns_server": "",
+            "error_message": "",
+            "gateway": "",
+            "hidden_network": false,
+            "ip_mode": "dhcp",
+            "password": "trrrrrr3213213213",
+            "security_type": "None",
+            "ssid": "trrrrr",
+            "static_ip": "",
+            "subnet_mask": ""
+        },
+        {
+            "connection_id": "manual_1758379176024",
+            "connection_status": "success",
+            "connection_timestamp": "2025-09-20T14:39:36.024Z",
+            "dns_server": "",
+            "error_message": "",
+            "gateway": "",
+            "hidden_network": false,
+            "ip_mode": "dhcp",
+            "password": "trrrrrr3213213213",
+            "security_type": "None",
+            "ssid": "trrrrr",
+            "static_ip": "",
+            "subnet_mask": ""
+        }
+    ]
+}

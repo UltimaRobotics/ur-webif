@@ -1,0 +1,17 @@
+
+{
+  "sim_information": {
+    "sim_status": "Not Available",
+    "imsi": "Not Available",
+    "iccid": "Not Available", 
+    "sim_type": "Unknown",
+    "pin_status": "Unknown"
+  },
+  "device_information": {
+    "imei": "Not Available",
+    "device_model": "Unknown",
+    "firmware_version": "Unknown",
+    "temperature": "Unknown",
+    "manufacturer": "Unknown"
+  }
+}

@@ -1,0 +1,930 @@
+{
+  "bridges": [
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-01-15 10:00:00",
+      "description": "Updated test bridge",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_1",
+      "ip_address": "192.168.1.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "multicast_snooping": true,
+      "name": "Updated Bridge 1758023829",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": false,
+      "created_date": "2025-01-15 10:30:00",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_2",
+      "ip_address": "192.168.10.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2"
+      ],
+      "multicast_snooping": false,
+      "name": "br1",
+      "priority": 32768,
+      "status": "down",
+      "stp_enabled": false
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 09:11:09",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_3",
+      "ip_address": "192.168.9.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758013869",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 09:32:50",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_4",
+      "ip_address": "192.168.35.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758015170",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:19:27",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_5",
+      "ip_address": "192.168.168.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758017967",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_6",
+      "ip_address": "192.168.180.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758018379",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Main network bridge",
+      "enabled": true,
+      "id": "bridge_7",
+      "ip_address": "192.168.1.1/24",
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "name": "br-main-1758018379-0",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": false,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "id": "bridge_8",
+      "ip_address": "192.168.10.1/24",
+      "member_interfaces": [
+        "eth2"
+      ],
+      "name": "br-guest-1758018379-1",
+      "priority": 32768,
+      "status": "Down",
+      "stp_enabled": false
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "IoT devices bridge",
+      "enabled": true,
+      "forward_delay": 10,
+      "hello_time": 1,
+      "id": "bridge_9",
+      "ip_address": "192.168.20.1/24",
+      "max_age": 15,
+      "member_interfaces": [
+        "eth3",
+        "wlan0"
+      ],
+      "name": "br-iot-1758018379-2",
+      "priority": 16384,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Concurrent bridge 1 for testing",
+      "enabled": true,
+      "id": "bridge_10",
+      "ip_address": "192.168.101.1/24",
+      "member_interfaces": [
+        "eth1",
+        "eth11"
+      ],
+      "name": "br-concurrent-1-1758018379",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Concurrent bridge 2 for testing",
+      "enabled": true,
+      "id": "bridge_11",
+      "ip_address": "192.168.102.1/24",
+      "member_interfaces": [
+        "eth2",
+        "eth12"
+      ],
+      "name": "br-concurrent-2-1758018379",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Concurrent bridge 3 for testing",
+      "enabled": true,
+      "id": "bridge_12",
+      "ip_address": "192.168.103.1/24",
+      "member_interfaces": [
+        "eth3",
+        "eth13"
+      ],
+      "name": "br-concurrent-3-1758018379",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "created_date": "2025-09-16 10:26:19",
+      "enabled": true,
+      "id": "bridge_13",
+      "ip_address": "127.0.0.1/32",
+      "member_interfaces": [],
+      "name": "br-minimal-1758018379-0",
+      "status": "Up"
+    },
+    {
+      "created_date": "2025-09-16 10:26:19",
+      "enabled": false,
+      "id": "bridge_14",
+      "ip_address": "169.254.1.1/16",
+      "member_interfaces": [
+        "lo"
+      ],
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-1758018379-1",
+      "priority": 65535,
+      "status": "Down"
+    },
+    {
+      "aging_time": 600,
+      "created_date": "2025-09-16 10:26:19",
+      "description": "Bridge with special characters in name",
+      "enabled": true,
+      "forward_delay": 30,
+      "hello_time": 5,
+      "id": "bridge_15",
+      "ip_address": "10.0.0.1/8",
+      "max_age": 40,
+      "member_interfaces": [
+        "dummy0",
+        "dummy1"
+      ],
+      "name": "br-special-!@#-1758018379-2",
+      "priority": 0,
+      "status": "Up"
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:31:07",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_16",
+      "ip_address": "192.168.68.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758018667",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:31:36",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_17",
+      "ip_address": "192.168.97.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758018696",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:41:29",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_18",
+      "ip_address": "192.168.90.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758019289",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:47",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_19",
+      "ip_address": "192.168.168.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758019367",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Main network bridge",
+      "enabled": true,
+      "id": "bridge_20",
+      "ip_address": "192.168.1.1/24",
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "name": "br-main-1758019367-0",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": false,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "id": "bridge_21",
+      "ip_address": "192.168.10.1/24",
+      "member_interfaces": [
+        "eth2"
+      ],
+      "name": "br-guest-1758019368-1",
+      "priority": 32768,
+      "status": "Down",
+      "stp_enabled": false
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "IoT devices bridge",
+      "enabled": true,
+      "forward_delay": 10,
+      "hello_time": 1,
+      "id": "bridge_22",
+      "ip_address": "192.168.20.1/24",
+      "max_age": 15,
+      "member_interfaces": [
+        "eth3",
+        "wlan0"
+      ],
+      "name": "br-iot-1758019368-2",
+      "priority": 16384,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Concurrent bridge 2 for testing",
+      "enabled": true,
+      "id": "bridge_23",
+      "ip_address": "192.168.102.1/24",
+      "member_interfaces": [
+        "eth2",
+        "eth12"
+      ],
+      "name": "br-concurrent-2-1758019368",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Concurrent bridge 1 for testing",
+      "enabled": true,
+      "id": "bridge_24",
+      "ip_address": "192.168.101.1/24",
+      "member_interfaces": [
+        "eth1",
+        "eth11"
+      ],
+      "name": "br-concurrent-1-1758019368",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Concurrent bridge 3 for testing",
+      "enabled": true,
+      "id": "bridge_25",
+      "ip_address": "192.168.103.1/24",
+      "member_interfaces": [
+        "eth3",
+        "eth13"
+      ],
+      "name": "br-concurrent-3-1758019368",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "created_date": "2025-09-16 10:42:48",
+      "enabled": true,
+      "id": "bridge_26",
+      "ip_address": "127.0.0.1/32",
+      "member_interfaces": [],
+      "name": "br-minimal-1758019368-0",
+      "status": "Up"
+    },
+    {
+      "created_date": "2025-09-16 10:42:48",
+      "enabled": false,
+      "id": "bridge_27",
+      "ip_address": "169.254.1.1/16",
+      "member_interfaces": [
+        "lo"
+      ],
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-1758019368-1",
+      "priority": 65535,
+      "status": "Down"
+    },
+    {
+      "aging_time": 600,
+      "created_date": "2025-09-16 10:42:48",
+      "description": "Bridge with special characters in name",
+      "enabled": true,
+      "forward_delay": 30,
+      "hello_time": 5,
+      "id": "bridge_28",
+      "ip_address": "10.0.0.1/8",
+      "max_age": 40,
+      "member_interfaces": [
+        "dummy0",
+        "dummy1"
+      ],
+      "name": "br-special-!@#-1758019368-2",
+      "priority": 0,
+      "status": "Up"
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:09",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_29",
+      "ip_address": "192.168.190.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758019389",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Main network bridge",
+      "enabled": true,
+      "id": "bridge_30",
+      "ip_address": "192.168.1.1/24",
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "name": "br-main-1758019390-0",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": false,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "id": "bridge_31",
+      "ip_address": "192.168.10.1/24",
+      "member_interfaces": [
+        "eth2"
+      ],
+      "name": "br-guest-1758019390-1",
+      "priority": 32768,
+      "status": "Down",
+      "stp_enabled": false
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "IoT devices bridge",
+      "enabled": true,
+      "forward_delay": 10,
+      "hello_time": 1,
+      "id": "bridge_32",
+      "ip_address": "192.168.20.1/24",
+      "max_age": 15,
+      "member_interfaces": [
+        "eth3",
+        "wlan0"
+      ],
+      "name": "br-iot-1758019390-2",
+      "priority": 16384,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Concurrent bridge 1 for testing",
+      "enabled": true,
+      "id": "bridge_33",
+      "ip_address": "192.168.101.1/24",
+      "member_interfaces": [
+        "eth1",
+        "eth11"
+      ],
+      "name": "br-concurrent-1-1758019390",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Concurrent bridge 3 for testing",
+      "enabled": true,
+      "id": "bridge_34",
+      "ip_address": "192.168.103.1/24",
+      "member_interfaces": [
+        "eth3",
+        "eth13"
+      ],
+      "name": "br-concurrent-3-1758019390",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Concurrent bridge 2 for testing",
+      "enabled": true,
+      "id": "bridge_35",
+      "ip_address": "192.168.102.1/24",
+      "member_interfaces": [
+        "eth2",
+        "eth12"
+      ],
+      "name": "br-concurrent-2-1758019390",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "created_date": "2025-09-16 10:43:10",
+      "enabled": true,
+      "id": "bridge_36",
+      "ip_address": "127.0.0.1/32",
+      "member_interfaces": [],
+      "name": "br-minimal-1758019390-0",
+      "status": "Up"
+    },
+    {
+      "created_date": "2025-09-16 10:43:10",
+      "enabled": false,
+      "id": "bridge_37",
+      "ip_address": "169.254.1.1/16",
+      "member_interfaces": [
+        "lo"
+      ],
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-1758019390-1",
+      "priority": 65535,
+      "status": "Down"
+    },
+    {
+      "aging_time": 600,
+      "created_date": "2025-09-16 10:43:10",
+      "description": "Bridge with special characters in name",
+      "enabled": true,
+      "forward_delay": 30,
+      "hello_time": 5,
+      "id": "bridge_38",
+      "ip_address": "10.0.0.1/8",
+      "max_age": 40,
+      "member_interfaces": [
+        "dummy0",
+        "dummy1"
+      ],
+      "name": "br-special-!@#-1758019390-2",
+      "priority": 0,
+      "status": "Up"
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_39",
+      "ip_address": "192.168.49.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758021848",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "Main network bridge",
+      "enabled": true,
+      "id": "bridge_40",
+      "ip_address": "192.168.1.1/24",
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "name": "br-main-1758021848-0",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": false,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "id": "bridge_41",
+      "ip_address": "192.168.10.1/24",
+      "member_interfaces": [
+        "eth2"
+      ],
+      "name": "br-guest-1758021848-1",
+      "priority": 32768,
+      "status": "Down",
+      "stp_enabled": false
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "IoT devices bridge",
+      "enabled": true,
+      "forward_delay": 10,
+      "hello_time": 1,
+      "id": "bridge_42",
+      "ip_address": "192.168.20.1/24",
+      "max_age": 15,
+      "member_interfaces": [
+        "eth3",
+        "wlan0"
+      ],
+      "name": "br-iot-1758021848-2",
+      "priority": 16384,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "Concurrent bridge 2 for testing",
+      "enabled": true,
+      "id": "bridge_44",
+      "ip_address": "192.168.102.1/24",
+      "member_interfaces": [
+        "eth2",
+        "eth12"
+      ],
+      "name": "br-concurrent-2-1758021848",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "created_date": "2025-09-16 11:24:08",
+      "enabled": true,
+      "id": "bridge_46",
+      "ip_address": "127.0.0.1/32",
+      "member_interfaces": [],
+      "name": "br-minimal-1758021848-0",
+      "status": "Up"
+    },
+    {
+      "created_date": "2025-09-16 11:24:08",
+      "enabled": false,
+      "id": "bridge_47",
+      "ip_address": "169.254.1.1/16",
+      "member_interfaces": [
+        "lo"
+      ],
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-1758021848-1",
+      "priority": 65535,
+      "status": "Down"
+    },
+    {
+      "aging_time": 600,
+      "created_date": "2025-09-16 11:24:08",
+      "description": "Bridge with special characters in name",
+      "enabled": true,
+      "forward_delay": 30,
+      "hello_time": 5,
+      "id": "bridge_48",
+      "ip_address": "10.0.0.1/8",
+      "max_age": 40,
+      "member_interfaces": [
+        "dummy0",
+        "dummy1"
+      ],
+      "name": "br-special-!@#-1758021848-2",
+      "priority": 0,
+      "status": "Up"
+    },
+    {
+      "aging_time": 300,
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:09",
+      "description": "Test bridge for advanced network testing",
+      "enabled": true,
+      "forward_delay": 15,
+      "hello_time": 2,
+      "id": "bridge_49",
+      "ip_address": "192.168.30.1/24",
+      "max_age": 20,
+      "member_interfaces": [
+        "eth2",
+        "eth3"
+      ],
+      "multicast_snooping": true,
+      "name": "br-test-1758023829",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Main network bridge",
+      "enabled": true,
+      "id": "bridge_50",
+      "ip_address": "192.168.1.1/24",
+      "member_interfaces": [
+        "eth0",
+        "eth1"
+      ],
+      "name": "br-main-1758023830-0",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": false,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Guest network bridge",
+      "enabled": false,
+      "id": "bridge_51",
+      "ip_address": "192.168.10.1/24",
+      "member_interfaces": [
+        "eth2"
+      ],
+      "name": "br-guest-1758023830-1",
+      "priority": 32768,
+      "status": "Down",
+      "stp_enabled": false
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "IoT devices bridge",
+      "enabled": true,
+      "forward_delay": 10,
+      "hello_time": 1,
+      "id": "bridge_52",
+      "ip_address": "192.168.20.1/24",
+      "max_age": 15,
+      "member_interfaces": [
+        "eth3",
+        "wlan0"
+      ],
+      "name": "br-iot-1758023830-2",
+      "priority": 16384,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Concurrent bridge 1 for testing",
+      "enabled": true,
+      "id": "bridge_53",
+      "ip_address": "192.168.101.1/24",
+      "member_interfaces": [
+        "eth1",
+        "eth11"
+      ],
+      "name": "br-concurrent-1-1758023830",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Concurrent bridge 3 for testing",
+      "enabled": true,
+      "id": "bridge_54",
+      "ip_address": "192.168.103.1/24",
+      "member_interfaces": [
+        "eth3",
+        "eth13"
+      ],
+      "name": "br-concurrent-3-1758023830",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "auto_start": true,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Concurrent bridge 2 for testing",
+      "enabled": true,
+      "id": "bridge_55",
+      "ip_address": "192.168.102.1/24",
+      "member_interfaces": [
+        "eth2",
+        "eth12"
+      ],
+      "name": "br-concurrent-2-1758023830",
+      "priority": 32768,
+      "status": "Up",
+      "stp_enabled": true
+    },
+    {
+      "created_date": "2025-09-16 11:57:10",
+      "enabled": true,
+      "id": "bridge_56",
+      "ip_address": "127.0.0.1/32",
+      "member_interfaces": [],
+      "name": "br-minimal-1758023830-0",
+      "status": "Up"
+    },
+    {
+      "created_date": "2025-09-16 11:57:10",
+      "enabled": false,
+      "id": "bridge_57",
+      "ip_address": "169.254.1.1/16",
+      "member_interfaces": [
+        "lo"
+      ],
+      "name": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA-1758023830-1",
+      "priority": 65535,
+      "status": "Down"
+    },
+    {
+      "aging_time": 600,
+      "created_date": "2025-09-16 11:57:10",
+      "description": "Bridge with special characters in name",
+      "enabled": true,
+      "forward_delay": 30,
+      "hello_time": 5,
+      "id": "bridge_58",
+      "ip_address": "10.0.0.1/8",
+      "max_age": 40,
+      "member_interfaces": [
+        "dummy0",
+        "dummy1"
+      ],
+      "name": "br-special-!@#-1758023830-2",
+      "priority": 0,
+      "status": "Up"
+    }
+  ],
+  "last_modified": "2025-09-16 11:59:28"
+}

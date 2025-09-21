@@ -1,0 +1,1214 @@
+
+<div class="space-y-6">
+    <!-- Page Header -->
+    <div class="mb-8">
+        <h2 class="text-2xl text-neutral-900 mb-2 flex items-center">
+            <i class="fa-solid fa-certificate text-neutral-700 mr-3"></i>
+            License Management
+        </h2>
+        <p class="text-neutral-600">Manage your software licensing, activation, and feature access</p>
+    </div>
+
+    <!-- License Status Overview -->
+    <section id="license-status-overview" class="bg-white rounded-lg border border-neutral-200">
+        <div class="px-6 py-4 border-b border-neutral-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <h3 class="text-lg text-neutral-900">License Status Overview</h3>
+                    <div id="license-status-indicator" class="flex items-center space-x-2">
+                        <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                        <span id="license-status-text" class="text-sm text-neutral-600">Active</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="license-refresh-btn" class="text-neutral-600 hover:text-neutral-900 p-2 rounded-lg hover:bg-neutral-100" title="Refresh License Status">
+                        <i class="fa-solid fa-refresh text-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- License Information Grid -->
+        <div class="p-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- License Information Card -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-info-circle text-neutral-600 mr-2"></i>
+                        License Information
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">License Type:</span>
+                            <span id="license-type" class="text-neutral-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">License ID:</span>
+                            <span id="license-id" class="text-neutral-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Status:</span>
+                            <span id="license-activation-status" class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Health Score:</span>
+                            <span id="license-health-score" class="text-neutral-800">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Validity Information Card -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-calendar text-neutral-600 mr-2"></i>
+                        Validity Information
+                    </h4>
+                    <div class="space-y-3">
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Start Date:</span>
+                            <span id="license-start-date" class="text-neutral-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Expiry Date:</span>
+                            <span id="license-expiry-date" class="text-neutral-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Days Remaining:</span>
+                            <span id="license-remaining-days" class="text-neutral-800">Loading...</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-neutral-600">Next Validation:</span>
+                            <span id="license-validation-days" class="text-neutral-800">7 days</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Card -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-list-check text-neutral-600 mr-2"></i>
+                        Enabled Features
+                    </h4>
+                    <div id="license-features-list" class="space-y-2 max-h-48 overflow-y-auto">
+                        <!-- Features will be populated dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Health Status Bar -->
+            <div class="mt-6 p-4 bg-neutral-50 rounded-lg">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-neutral-800">License Health Score</span>
+                    <span id="license-health-percentage" class="text-neutral-900 font-semibold">Loading...</span>
+                </div>
+                <div class="w-full bg-gray-200 rounded-full h-2">
+                    <div id="license-health-bar" class="bg-green-600 h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                </div>
+                <p class="text-neutral-600 text-sm mt-2">All features are functioning optimally. System health monitoring active.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Activation Section -->
+    <section id="license-activation-section" class="bg-white rounded-lg border border-neutral-200">
+        <div class="px-6 py-4 border-b border-neutral-200 cursor-pointer hover:bg-neutral-50" id="license-activation-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg text-neutral-900">License Activation</h3>
+                    <p class="text-sm text-neutral-600 mt-1">Activate your license using key, file upload, or online activation</p>
+                </div>
+                <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200 rotate-180" id="license-activation-chevron"></i>
+            </div>
+        </div>
+
+        <div class="p-6 hidden" id="license-activation-content">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- License Key Activation -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-key text-neutral-600 mr-2"></i>
+                        License Key
+                    </h4>
+                    <form id="license-key-form" class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-neutral-700 mb-2">Enter License Key</label>
+                            <input type="text" id="license-key-input" placeholder="XXXX-XXXX-XXXX-XXXX" 
+                                   class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                        </div>
+                        <button type="submit" id="activate-license-key-btn" 
+                                class="w-full bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg text-sm">
+                            <i class="fa-solid fa-key mr-2"></i>
+                            Activate License
+                        </button>
+                    </form>
+                </div>
+
+                <!-- File Upload Activation -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-upload text-neutral-600 mr-2"></i>
+                        File Upload
+                    </h4>
+                    <div class="space-y-4">
+                        <div id="license-file-drop-zone" class="border-2 border-dashed border-neutral-300 rounded-lg p-6 text-center hover:border-neutral-400 transition-colors cursor-pointer">
+                            <input type="file" id="license-file-input" accept=".lic,.dat,.key" style="display: none;">
+                            <div class="w-12 h-12 bg-neutral-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                                <i class="fa-solid fa-cloud-upload text-neutral-400 text-xl"></i>
+                            </div>
+                            <p class="text-neutral-700">Drop license file here</p>
+                            <p class="text-neutral-500 text-sm">or click to browse</p>
+                        </div>
+                        <button id="upload-activate-btn" disabled
+                                class="w-full bg-neutral-400 text-white px-4 py-2 rounded-lg text-sm cursor-not-allowed">
+                            <i class="fa-solid fa-upload mr-2"></i>
+                            Upload & Activate
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Online Activation -->
+                <div class="border border-neutral-200 rounded-lg p-6">
+                    <h4 class="text-lg text-neutral-800 mb-4 flex items-center">
+                        <i class="fa-solid fa-globe text-neutral-600 mr-2"></i>
+                        Online Activation
+                    </h4>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-neutral-700 mb-2">Product Code</label>
+                            <input type="text" id="product-code-input" placeholder="Enter product code" 
+                                   class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-neutral-700 mb-2">Email Address</label>
+                            <input type="email" id="email-input" placeholder="your@email.com" 
+                                   class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                        </div>
+                        <button id="online-activate-btn" 
+                                class="w-full bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg text-sm">
+                            <i class="fa-solid fa-globe mr-2"></i>
+                            Auto-Activate Online
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Configuration Section -->
+    <section id="license-configuration-section" class="bg-white rounded-lg border border-neutral-200">
+        <div class="px-6 py-4 border-b border-neutral-200 cursor-pointer hover:bg-neutral-50" id="license-configuration-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg text-neutral-900">License Configuration</h3>
+                    <p class="text-sm text-neutral-600 mt-1">Configure license validation and security settings</p>
+                </div>
+                <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200 rotate-180" id="license-configuration-chevron"></i>
+            </div>
+        </div>
+
+        <div class="p-6 hidden" id="license-configuration-content">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Validation Settings -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-medium text-neutral-800">Validation Settings</h4>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h5 class="text-sm text-neutral-700">Signature Validation</h5>
+                            <p class="text-xs text-neutral-500">Verify license signatures</p>
+                        </div>
+                        <div id="signature-validation-toggle" class="w-12 h-6 bg-neutral-600 rounded-full relative cursor-pointer" data-setting="signature_validation">
+                            <div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h5 class="text-sm text-neutral-700">Auto Renewal</h5>
+                            <p class="text-xs text-neutral-500">Automatically renew before expiry</p>
+                        </div>
+                        <div id="auto-renewal-toggle" class="w-12 h-6 bg-neutral-300 rounded-full relative cursor-pointer" data-setting="auto_renewal">
+                            <div class="absolute left-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Validation Interval (Days)</label>
+                        <input type="number" id="validation-interval-input" value="7" min="1" max="30"
+                               class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                    </div>
+                </div>
+
+                <!-- Security Settings -->
+                <div class="space-y-4">
+                    <h4 class="text-sm font-medium text-neutral-800">Security Settings</h4>
+                    
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h5 class="text-sm text-neutral-700">Require HTTPS</h5>
+                            <p class="text-xs text-neutral-500">Force secure connections</p>
+                        </div>
+                        <div id="require-https-toggle" class="w-12 h-6 bg-neutral-600 rounded-full relative cursor-pointer" data-setting="require_https">
+                            <div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center justify-between">
+                        <div>
+                            <h5 class="text-sm text-neutral-700">Log Activation Attempts</h5>
+                            <p class="text-xs text-neutral-500">Record all activation events</p>
+                        </div>
+                        <div id="log-attempts-toggle" class="w-12 h-6 bg-neutral-600 rounded-full relative cursor-pointer" data-setting="log_activation_attempts">
+                            <div class="absolute right-1 top-1 bg-white w-4 h-4 rounded-full transition-transform"></div>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Max File Size (MB)</label>
+                        <input type="number" id="max-file-size-input" value="5" min="1" max="50"
+                               class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-500">
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-6 pt-6 border-t border-neutral-200">
+                <div class="flex justify-end space-x-3">
+                    <button id="reset-config-btn" class="px-4 py-2 border border-neutral-300 text-neutral-700 rounded-lg hover:bg-neutral-50">
+                        Reset to Defaults
+                    </button>
+                    <button id="save-config-btn" class="px-4 py-2 bg-neutral-600 hover:bg-neutral-700 text-white rounded-lg">
+                        Save Configuration
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- License Events Section -->
+    <section id="license-events-section" class="bg-white rounded-lg border border-neutral-200">
+        <div class="px-6 py-4 border-b border-neutral-200 cursor-pointer hover:bg-neutral-50" id="license-events-header">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h3 class="text-lg text-neutral-900">License Events</h3>
+                    <p class="text-sm text-neutral-600 mt-1">Recent license activity and events</p>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="clear-events-btn" class="text-neutral-600 hover:text-neutral-900 px-3 py-1 rounded border border-neutral-300 text-sm">
+                        Clear Events
+                    </button>
+                    <i class="fa-solid fa-chevron-down text-neutral-500 transition-transform duration-200 rotate-180" id="license-events-chevron"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6 hidden" id="license-events-content">
+            <div id="license-events-container" class="space-y-3 max-h-64 overflow-y-auto">
+                <!-- Events will be populated dynamically -->
+            </div>
+            
+            <div id="license-no-events" class="text-center py-8 text-neutral-500" style="display: none;">
+                <i class="fa-solid fa-calendar-xmark text-2xl mb-3"></i>
+                <p>No license events recorded</p>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+/**
+ * License Management Section Implementation
+ * Handles license status, activation, configuration, and events
+ */
+class LicenseManager {
+    constructor() {
+        this.sectionName = 'license';
+        this.logPrefix = '[LICENSE]';
+        
+        // API endpoints
+        this.endpoints = {
+            status: '/api/license/status',
+            activate: '/api/license/activate',
+            validate: '/api/license/validate',
+            configure: '/api/license/configure',
+            events: '/api/license/events'
+        };
+        
+        // Current state
+        this.licenseData = null;
+        this.configData = null;
+        this.eventsData = null;
+        
+        // Auto-refresh settings
+        this.autoRefreshInterval = 60000; // 60 seconds
+        this.refreshTimer = null;
+        
+        this.init();
+    }
+    
+    log(message, data = null) {
+        const timestamp = new Date().toISOString();
+        console.log(this.logPrefix, message, data || '');
+    }
+    
+    logError(message, error) {
+        console.error(this.logPrefix, message, error);
+    }
+    
+    async init() {
+        this.log('Initializing License Manager...');
+        
+        try {
+            this.setupEventHandlers();
+            await this.loadInitialData();
+            this.startAutoRefresh();
+            
+            this.log('License Manager initialized successfully');
+        } catch (error) {
+            this.logError('Failed to initialize License Manager:', error);
+            throw error;
+        }
+    }
+    
+    async setupEventHandlers() {
+        this.log('Setting up event handlers...');
+        
+        // Setup expandable sections
+        this.setupExpandableSections();
+        
+        // Refresh button
+        const refreshBtn = document.getElementById('license-refresh-btn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', () => this.refreshLicenseData());
+        }
+        
+        // License key activation
+        const licenseKeyForm = document.getElementById('license-key-form');
+        if (licenseKeyForm) {
+            licenseKeyForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                this.handleLicenseKeyActivation();
+            });
+        }
+        
+        // File upload activation
+        const fileDropZone = document.getElementById('license-file-drop-zone');
+        const fileInput = document.getElementById('license-file-input');
+        const uploadBtn = document.getElementById('upload-activate-btn');
+        
+        if (fileDropZone && fileInput) {
+            fileDropZone.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', (e) => this.handleFileSelection(e));
+            
+            // Drag and drop
+            fileDropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                fileDropZone.classList.add('border-neutral-400', 'bg-neutral-50');
+            });
+            
+            fileDropZone.addEventListener('dragleave', (e) => {
+                e.preventDefault();
+                fileDropZone.classList.remove('border-neutral-400', 'bg-neutral-50');
+            });
+            
+            fileDropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                fileDropZone.classList.remove('border-neutral-400', 'bg-neutral-50');
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    this.handleFileUpload(files[0]);
+                }
+            });
+        }
+        
+        if (uploadBtn) {
+            uploadBtn.addEventListener('click', () => this.handleFileActivation());
+        }
+        
+        // Online activation
+        const onlineBtn = document.getElementById('online-activate-btn');
+        if (onlineBtn) {
+            onlineBtn.addEventListener('click', () => this.handleOnlineActivation());
+        }
+        
+        // Configuration toggles
+        this.setupConfigurationToggles();
+        
+        // Configuration save/reset
+        const saveConfigBtn = document.getElementById('save-config-btn');
+        const resetConfigBtn = document.getElementById('reset-config-btn');
+        
+        if (saveConfigBtn) {
+            saveConfigBtn.addEventListener('click', () => this.saveConfiguration());
+        }
+        
+        if (resetConfigBtn) {
+            resetConfigBtn.addEventListener('click', () => this.resetConfiguration());
+        }
+        
+        // Clear events
+        const clearEventsBtn = document.getElementById('clear-events-btn');
+        if (clearEventsBtn) {
+            clearEventsBtn.addEventListener('click', () => this.clearEvents());
+        }
+    }
+    
+    setupExpandableSections() {
+        // Setup expandable sections
+        const sections = [
+            {
+                header: 'license-activation-header',
+                content: 'license-activation-content',
+                chevron: 'license-activation-chevron'
+            },
+            {
+                header: 'license-configuration-header',
+                content: 'license-configuration-content',
+                chevron: 'license-configuration-chevron'
+            },
+            {
+                header: 'license-events-header',
+                content: 'license-events-content',
+                chevron: 'license-events-chevron'
+            }
+        ];
+
+        sections.forEach(section => {
+            const header = document.getElementById(section.header);
+            const content = document.getElementById(section.content);
+            const chevron = document.getElementById(section.chevron);
+
+            if (header && content && chevron) {
+                header.addEventListener('click', () => {
+                    const isExpanded = !content.classList.contains('hidden');
+                    
+                    if (isExpanded) {
+                        // Collapse
+                        content.classList.add('hidden');
+                        chevron.classList.add('rotate-180');
+                        chevron.classList.remove('rotate-0');
+                    } else {
+                        // Expand
+                        content.classList.remove('hidden');
+                        chevron.classList.remove('rotate-180');
+                        chevron.classList.add('rotate-0');
+                    }
+                    
+                    this.log(`Section ${section.header} ${isExpanded ? 'collapsed' : 'expanded'}`);
+                });
+            }
+        });
+    }
+
+    setupConfigurationToggles() {
+        const toggleIds = [
+            'signature-validation-toggle',
+            'auto-renewal-toggle', 
+            'require-https-toggle',
+            'log-attempts-toggle'
+        ];
+        
+        toggleIds.forEach(toggleId => {
+            const toggle = document.getElementById(toggleId);
+            if (toggle) {
+                toggle.addEventListener('click', () => {
+                    this.handleToggleChange(toggle);
+                });
+            }
+        });
+    }
+    
+    async loadInitialData() {
+        this.log('Loading initial license data...');
+        
+        await Promise.all([
+            this.fetchLicenseStatus(),
+            this.fetchLicenseConfiguration(),
+            this.fetchLicenseEvents()
+        ]);
+    }
+    
+    async refreshLicenseData() {
+        this.log('Refreshing license data...');
+        
+        const refreshBtn = document.getElementById('license-refresh-btn');
+        if (refreshBtn) {
+            refreshBtn.disabled = true;
+            refreshBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin text-sm"></i>';
+        }
+        
+        try {
+            await this.loadInitialData();
+        } catch (error) {
+            this.logError('Failed to refresh license data:', error);
+        } finally {
+            if (refreshBtn) {
+                refreshBtn.disabled = false;
+                refreshBtn.innerHTML = '<i class="fa-solid fa-refresh text-sm"></i>';
+            }
+        }
+    }
+    
+    async fetchLicenseStatus() {
+        try {
+            this.log('Fetching license status...');
+            
+            // Create HTTP request manager if not exists
+            if (!this.httpManager) {
+                this.httpManager = {
+                    post: async (url, data) => {
+                        const response = await fetch(url, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify(data)
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        return await response.json();
+                    },
+                    get: async (url) => {
+                        const response = await fetch(url, {
+                            method: 'GET',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            }
+                        });
+                        
+                        if (!response.ok) {
+                            throw new Error(`HTTP error! status: ${response.status}`);
+                        }
+                        
+                        return await response.json();
+                    }
+                };
+            }
+            
+            const data = await this.httpManager.post(this.endpoints.status, {
+                include_usage_stats: true,
+                force_refresh: false
+            });
+            
+            this.log('License status response:', data);
+            
+            if (data.success && data.license) {
+                this.licenseData = data.license;
+                this.updateLicenseDisplay();
+            } else {
+                throw new Error('Invalid license status response: ' + (data.error || 'Unknown error'));
+            }
+        } catch (error) {
+            this.logError('Failed to fetch license status:', error);
+            // Show error to user
+            this.updateElementText('license-type', 'Error loading data');
+            this.updateElementText('license-id', 'Connection failed');
+        }
+    }
+    
+    async fetchLicenseConfiguration() {
+        try {
+            this.log('Fetching license configuration...');
+            
+            const data = await this.httpManager.get(this.endpoints.configure);
+            this.log('License configuration response:', data);
+            
+            if (data.success && data.configuration) {
+                this.configData = data.configuration;
+                this.updateConfigurationDisplay();
+            } else {
+                throw new Error('Invalid configuration response: ' + (data.error || 'Unknown error'));
+            }
+        } catch (error) {
+            this.logError('Failed to fetch license configuration:', error);
+        }
+    }
+    
+    async fetchLicenseEvents() {
+        try {
+            this.log('Fetching license events...');
+            
+            const data = await this.httpManager.get(this.endpoints.events);
+            this.log('License events response:', data);
+            
+            if (data.success && data.events) {
+                this.eventsData = data.events;
+                this.updateEventsDisplay();
+            } else {
+                this.log('No events data or failed response');
+                this.eventsData = [];
+                this.updateEventsDisplay();
+            }
+        } catch (error) {
+            this.logError('Failed to fetch license events:', error);
+            this.eventsData = [];
+            this.updateEventsDisplay();
+        }
+    }
+    
+    updateLicenseDisplay() {
+        if (!this.licenseData) return;
+        
+        this.log('Updating license display with:', this.licenseData);
+        
+        // Status indicator
+        const statusIndicator = document.getElementById('license-status-indicator');
+        const statusText = document.getElementById('license-status-text');
+        
+        if (statusIndicator && statusText) {
+            const dot = statusIndicator.querySelector('.w-2.h-2');
+            const color = this.licenseData.status_color || 'green';
+            
+            if (dot) {
+                dot.className = `w-2 h-2 bg-${color}-500 rounded-full`;
+            }
+            statusText.textContent = this.licenseData.activation_status || 'Unknown';
+        }
+        
+        // License information
+        this.updateElementText('license-type', this.licenseData.license_type);
+        this.updateElementText('license-id', this.licenseData.license_id);
+        
+        const activationStatus = document.getElementById('license-activation-status');
+        if (activationStatus) {
+            const status = this.licenseData.activation_status || 'Unknown';
+            const color = this.licenseData.status_color || 'gray';
+            activationStatus.textContent = status;
+            activationStatus.className = `px-2 py-1 text-xs rounded-full bg-${color === 'green' ? 'green' : color === 'yellow' ? 'yellow' : 'red'}-100 text-${color === 'green' ? 'green' : color === 'yellow' ? 'yellow' : 'red'}-800`;
+        }
+        
+        this.updateElementText('license-health-score', `${this.licenseData.health_score || 0}%`);
+        
+        // Validity information
+        this.updateElementText('license-start-date', this.licenseData.start_date);
+        this.updateElementText('license-expiry-date', this.licenseData.expiry_date);
+        this.updateElementText('license-remaining-days', `${this.licenseData.remaining_days || 0} days`);
+        this.updateElementText('license-validation-days', `${this.licenseData.validation_days || 7} days`);
+        
+        // Health bar
+        const healthBar = document.getElementById('license-health-bar');
+        const healthPercentage = document.getElementById('license-health-percentage');
+        
+        if (healthBar && healthPercentage) {
+            const score = this.licenseData.health_score || 0;
+            healthBar.style.width = `${score}%`;
+            healthPercentage.textContent = `${score}%`;
+            
+            // Update color based on score
+            if (score >= 80) {
+                healthBar.className = 'bg-green-600 h-2 rounded-full transition-all duration-500';
+            } else if (score >= 60) {
+                healthBar.className = 'bg-yellow-600 h-2 rounded-full transition-all duration-500';
+            } else {
+                healthBar.className = 'bg-red-600 h-2 rounded-full transition-all duration-500';
+            }
+        }
+        
+        // Features list
+        this.updateFeaturesList();
+    }
+    
+    updateFeaturesList() {
+        const featuresList = document.getElementById('license-features-list');
+        if (!featuresList) return;
+        
+        featuresList.innerHTML = '';
+        
+        const features = this.licenseData.enabled_features || [];
+        
+        if (features.length === 0) {
+            featuresList.innerHTML = '<p class="text-neutral-500 text-sm">No features enabled</p>';
+            return;
+        }
+        
+        features.forEach(feature => {
+            const featureItem = document.createElement('div');
+            featureItem.className = 'flex items-center space-x-2';
+            featureItem.innerHTML = `
+                <i class="fa-solid fa-check-circle text-green-500 text-xs"></i>
+                <span class="text-sm text-neutral-700">${feature}</span>
+            `;
+            featuresList.appendChild(featureItem);
+        });
+    }
+    
+    updateConfigurationDisplay() {
+        if (!this.configData) return;
+        
+        this.log('Updating configuration display with:', this.configData);
+        
+        // Update toggles
+        const toggleMappings = {
+            'signature-validation-toggle': this.configData.signature_validation_enabled,
+            'auto-renewal-toggle': this.configData.auto_renewal_enabled,
+            'require-https-toggle': this.configData.security_settings?.require_https,
+            'log-attempts-toggle': this.configData.security_settings?.log_activation_attempts
+        };
+        
+        Object.entries(toggleMappings).forEach(([toggleId, value]) => {
+            this.updateToggleState(toggleId, value);
+        });
+        
+        // Update input fields
+        this.updateElementValue('validation-interval-input', this.configData.validation_interval_days);
+        this.updateElementValue('max-file-size-input', this.configData.max_file_size_mb);
+    }
+    
+    updateEventsDisplay() {
+        const eventsContainer = document.getElementById('license-events-container');
+        const noEventsDiv = document.getElementById('license-no-events');
+        
+        if (!eventsContainer || !noEventsDiv) return;
+        
+        if (!this.eventsData || this.eventsData.length === 0) {
+            eventsContainer.style.display = 'none';
+            noEventsDiv.style.display = 'block';
+            return;
+        }
+        
+        eventsContainer.style.display = 'block';
+        noEventsDiv.style.display = 'none';
+        eventsContainer.innerHTML = '';
+        
+        this.eventsData.forEach(event => {
+            const eventItem = document.createElement('div');
+            eventItem.className = 'flex items-start space-x-3 p-3 bg-neutral-50 rounded-lg';
+            
+            const eventTypeIcon = this.getEventTypeIcon(event.event_type);
+            const eventTime = new Date(event.timestamp).toLocaleDateString() + ' ' + new Date(event.timestamp).toLocaleTimeString();
+            
+            eventItem.innerHTML = `
+                <div class="w-8 h-8 rounded-full bg-neutral-200 flex items-center justify-center flex-shrink-0">
+                    <i class="${eventTypeIcon} text-neutral-600 text-xs"></i>
+                </div>
+                <div class="flex-1">
+                    <p class="text-sm font-medium text-neutral-900">${event.description}</p>
+                    <p class="text-xs text-neutral-500">${eventTime}</p>
+                </div>
+            `;
+            
+            eventsContainer.appendChild(eventItem);
+        });
+    }
+    
+    getEventTypeIcon(eventType) {
+        const iconMap = {
+            'activation_success': 'fa-solid fa-check-circle',
+            'activation_failed': 'fa-solid fa-exclamation-circle',
+            'validation_check': 'fa-solid fa-shield-check',
+            'configuration_change': 'fa-solid fa-cog',
+            'license_expired': 'fa-solid fa-clock'
+        };
+        
+        return iconMap[eventType] || 'fa-solid fa-info-circle';
+    }
+    
+    async handleLicenseKeyActivation() {
+        const keyInput = document.getElementById('license-key-input');
+        const activateBtn = document.getElementById('activate-license-key-btn');
+        
+        if (!keyInput || !activateBtn) return;
+        
+        const licenseKey = keyInput.value.trim();
+        if (!licenseKey) {
+            alert('Please enter a license key');
+            return;
+        }
+        
+        this.log('Activating license with key:', licenseKey);
+        
+        activateBtn.disabled = true;
+        activateBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Activating...';
+        
+        try {
+            const data = await this.httpManager.post(this.endpoints.activate, {
+                activation_method: 'license_key',
+                activation_content: licenseKey
+            });
+            
+            this.log('License key activation response:', data);
+            
+            if (data.success) {
+                alert('License activated successfully!');
+                keyInput.value = '';
+                await this.loadInitialData();
+            } else {
+                alert(`Activation failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('License key activation failed:', error);
+            alert('Activation failed: Network error');
+        } finally {
+            activateBtn.disabled = false;
+            activateBtn.innerHTML = '<i class="fa-solid fa-key mr-2"></i>Activate License';
+        }
+    }
+    
+    handleFileSelection(e) {
+        const files = e.target.files;
+        if (files.length > 0) {
+            this.handleFileUpload(files[0]);
+        }
+    }
+    
+    handleFileUpload(file) {
+        this.log('File selected for upload:', file.name);
+        
+        const uploadBtn = document.getElementById('upload-activate-btn');
+        if (uploadBtn) {
+            uploadBtn.disabled = false;
+            uploadBtn.className = 'w-full bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-lg text-sm cursor-pointer';
+            uploadBtn.textContent = `Upload & Activate (${file.name})`;
+        }
+        
+        this.selectedFile = file;
+    }
+    
+    async handleFileActivation() {
+        if (!this.selectedFile) {
+            alert('Please select a file first');
+            return;
+        }
+        
+        this.log('Activating license with file:', this.selectedFile.name);
+        
+        const uploadBtn = document.getElementById('upload-activate-btn');
+        if (uploadBtn) {
+            uploadBtn.disabled = true;
+            uploadBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Uploading...';
+        }
+        
+        try {
+            // Read file content
+            const fileContent = await this.readFileAsText(this.selectedFile);
+            
+            const response = await fetch(this.endpoints.activate, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    activation_method: 'file_upload',
+                    activation_content: {
+                        filename: this.selectedFile.name,
+                        content: fileContent,
+                        size: this.selectedFile.size
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            this.log('File activation response:', data);
+            
+            if (data.success) {
+                alert('License activated successfully!');
+                this.selectedFile = null;
+                await this.loadInitialData();
+            } else {
+                alert(`Activation failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('File activation failed:', error);
+            alert('Activation failed: File processing error');
+        } finally {
+            if (uploadBtn) {
+                uploadBtn.disabled = true;
+                uploadBtn.className = 'w-full bg-neutral-400 text-white px-4 py-2 rounded-lg text-sm cursor-not-allowed';
+                uploadBtn.innerHTML = '<i class="fa-solid fa-upload mr-2"></i>Upload & Activate';
+            }
+        }
+    }
+    
+    async handleOnlineActivation() {
+        const productCodeInput = document.getElementById('product-code-input');
+        const emailInput = document.getElementById('email-input');
+        const onlineBtn = document.getElementById('online-activate-btn');
+        
+        if (!productCodeInput || !emailInput || !onlineBtn) return;
+        
+        const productCode = productCodeInput.value.trim();
+        const email = emailInput.value.trim();
+        
+        if (!productCode || !email) {
+            alert('Please enter both product code and email address');
+            return;
+        }
+        
+        this.log('Online activation with:', { productCode, email });
+        
+        onlineBtn.disabled = true;
+        onlineBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Activating...';
+        
+        try {
+            const response = await fetch(this.endpoints.activate, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    activation_method: 'online_activation',
+                    activation_content: {
+                        product_code: productCode,
+                        email: email
+                    }
+                })
+            });
+            
+            const data = await response.json();
+            this.log('Online activation response:', data);
+            
+            if (data.success) {
+                alert('License activated successfully!');
+                productCodeInput.value = '';
+                emailInput.value = '';
+                await this.loadInitialData();
+            } else {
+                alert(`Activation failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('Online activation failed:', error);
+            alert('Activation failed: Network error');
+        } finally {
+            onlineBtn.disabled = false;
+            onlineBtn.innerHTML = '<i class="fa-solid fa-globe mr-2"></i>Auto-Activate Online';
+        }
+    }
+    
+    handleToggleChange(toggle) {
+        const slider = toggle.querySelector('div');
+        const isEnabled = slider.classList.contains('right-1');
+        
+        // Toggle UI state
+        if (isEnabled) {
+            slider.classList.remove('right-1');
+            slider.classList.add('left-1');
+            toggle.classList.remove('bg-neutral-600');
+            toggle.classList.add('bg-neutral-300');
+        } else {
+            slider.classList.remove('left-1');
+            slider.classList.add('right-1');
+            toggle.classList.remove('bg-neutral-300');
+            toggle.classList.add('bg-neutral-600');
+        }
+        
+        this.log('Toggle changed:', toggle.id, !isEnabled);
+    }
+    
+    async saveConfiguration() {
+        this.log('Saving configuration...');
+        
+        const saveBtn = document.getElementById('save-config-btn');
+        if (saveBtn) {
+            saveBtn.disabled = true;
+            saveBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Saving...';
+        }
+        
+        try {
+            // Collect configuration data
+            const configData = {
+                signature_validation_enabled: this.getToggleState('signature-validation-toggle'),
+                auto_renewal_enabled: this.getToggleState('auto-renewal-toggle'),
+                validation_interval_days: parseInt(document.getElementById('validation-interval-input')?.value || '7'),
+                max_file_size_mb: parseInt(document.getElementById('max-file-size-input')?.value || '5'),
+                security_settings: {
+                    require_https: this.getToggleState('require-https-toggle'),
+                    log_activation_attempts: this.getToggleState('log-attempts-toggle')
+                }
+            };
+            
+            const data = await this.httpManager.post(this.endpoints.configure, {
+                action: 'update_configuration',
+                configuration: configData
+            });
+            
+            this.log('Save configuration response:', data);
+            
+            if (data.success) {
+                alert('Configuration saved successfully!');
+                await this.fetchLicenseConfiguration();
+            } else {
+                alert(`Save failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('Save configuration failed:', error);
+            alert('Save failed: Network error');
+        } finally {
+            if (saveBtn) {
+                saveBtn.disabled = false;
+                saveBtn.innerHTML = 'Save Configuration';
+            }
+        }
+    }
+    
+    async resetConfiguration() {
+        if (!confirm('Are you sure you want to reset configuration to defaults?')) {
+            return;
+        }
+        
+        this.log('Resetting configuration...');
+        
+        try {
+            const response = await fetch(this.endpoints.configure, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    action: 'reset_configuration'
+                })
+            });
+            
+            const data = await response.json();
+            this.log('Reset configuration response:', data);
+            
+            if (data.success) {
+                alert('Configuration reset to defaults!');
+                await this.fetchLicenseConfiguration();
+            } else {
+                alert(`Reset failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('Reset configuration failed:', error);
+            alert('Reset failed: Network error');
+        }
+    }
+    
+    async clearEvents() {
+        if (!confirm('Are you sure you want to clear all license events?')) {
+            return;
+        }
+        
+        this.log('Clearing events...');
+        
+        try {
+            const response = await fetch(this.endpoints.events, {
+                method: 'DELETE'
+            });
+            
+            const data = await response.json();
+            this.log('Clear events response:', data);
+            
+            if (data.success) {
+                alert('Events cleared successfully!');
+                await this.fetchLicenseEvents();
+            } else {
+                alert(`Clear failed: ${data.error || 'Unknown error'}`);
+            }
+        } catch (error) {
+            this.logError('Clear events failed:', error);
+            alert('Clear failed: Network error');
+        }
+    }
+    
+    startAutoRefresh() {
+        if (this.refreshTimer) {
+            clearInterval(this.refreshTimer);
+        }
+        
+        this.refreshTimer = setInterval(() => {
+            this.log('Auto-refreshing license data...');
+            this.fetchLicenseStatus();
+        }, this.autoRefreshInterval);
+        
+        this.log(`Auto-refresh started with ${this.autoRefreshInterval}ms interval`);
+    }
+    
+    // Utility functions
+    updateElementText(elementId, text) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.textContent = text || 'N/A';
+        }
+    }
+    
+    updateElementValue(elementId, value) {
+        const element = document.getElementById(elementId);
+        if (element) {
+            element.value = value || '';
+        }
+    }
+    
+    updateToggleState(toggleId, enabled) {
+        const toggle = document.getElementById(toggleId);
+        if (!toggle) return;
+        
+        const slider = toggle.querySelector('div');
+        if (!slider) return;
+        
+        if (enabled) {
+            slider.classList.remove('left-1');
+            slider.classList.add('right-1');
+            toggle.classList.remove('bg-neutral-300');
+            toggle.classList.add('bg-neutral-600');
+        } else {
+            slider.classList.remove('right-1');
+            slider.classList.add('left-1');
+            toggle.classList.remove('bg-neutral-600');
+            toggle.classList.add('bg-neutral-300');
+        }
+    }
+    
+    getToggleState(toggleId) {
+        const toggle = document.getElementById(toggleId);
+        if (!toggle) return false;
+        
+        const slider = toggle.querySelector('div');
+        return slider ? slider.classList.contains('right-1') : false;
+    }
+    
+    readFileAsText(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = reject;
+            reader.readAsText(file);
+        });
+    }
+    
+    destroy() {
+        if (this.refreshTimer) {
+            clearInterval(this.refreshTimer);
+        }
+        
+        this.log('License Manager destroyed');
+    }
+}
+
+// Initialize License Manager when DOM is ready
+let licenseManager;
+
+// Global initialization function for license section
+function initializeLicenseSection() {
+    console.log('[LICENSE] Initializing License Section...');
+    
+    if (licenseManager) {
+        console.log('[LICENSE] License manager already exists, skipping initialization');
+        return;
+    }
+    
+    try {
+        licenseManager = new LicenseManager();
+        console.log('[LICENSE] License manager initialized successfully');
+    } catch (error) {
+        console.error('[LICENSE] Failed to initialize license manager:', error);
+    }
+}
+
+// Auto-initialize when DOM is ready
+document.addEventListener('DOMContentLoaded', () => {
+    initializeLicenseSection();
+});
+
+// Expose functions to global scope
+window.licenseManager = licenseManager;
+window.initializeLicenseSection = initializeLicenseSection;
+
+// Clean up on page unload
+window.addEventListener('beforeunload', () => {
+    if (licenseManager) {
+        licenseManager.destroy();
+    }
+});
+</script>

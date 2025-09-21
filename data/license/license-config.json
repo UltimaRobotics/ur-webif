@@ -1,0 +1,29 @@
+
+{
+  "configuration": {
+    "signature_validation_enabled": true,
+    "auto_renewal_enabled": false,
+    "validation_interval_days": 7,
+    "backup_license_servers": [
+      "https://license1.example.com",
+      "https://license2.example.com"
+    ],
+    "activation_methods": [
+      "license_key",
+      "file_upload",
+      "online_activation"
+    ],
+    "supported_file_types": [".lic", ".dat", ".key"],
+    "max_file_size_mb": 5,
+    "timeout_seconds": 30,
+    "retry_attempts": 3,
+    "log_level": "info"
+  },
+  "security_settings": {
+    "require_https": true,
+    "enable_api_rate_limiting": true,
+    "log_activation_attempts": true,
+    "block_expired_keys": true
+  },
+  "last_updated": "2025-01-18T10:30:00Z"
+}

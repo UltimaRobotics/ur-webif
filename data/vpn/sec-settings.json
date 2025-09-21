@@ -1,0 +1,33 @@
+
+{
+  "security_settings": {
+    "global_settings": {
+      "auto_start": false,
+      "auto_connect": false,
+      "kill_switch": true,
+      "dns_leak_protection": true,
+      "ipv6_disable": false,
+      "reconnect_attempts": 3,
+      "connection_timeout": 30,
+      "last_modified": "2024-01-15T10:00:00Z"
+    },
+    "protocols": {
+      "supported": ["OpenVPN", "IKEv2", "WireGuard", "SSTP"],
+      "preferred": "OpenVPN"
+    },
+    "security": {
+      "encryption_algorithms": ["AES-256", "AES-128", "ChaCha20"],
+      "auth_methods": ["Certificate", "Username/Password", "PSK"],
+      "cipher": "AES-256-CBC",
+      "hash": "SHA256"
+    },
+    "advanced": {
+      "mtu_size": 1500,
+      "compression": true,
+      "obfuscation": false,
+      "custom_dns": [],
+      "split_tunneling": false,
+      "port_forwarding": false
+    }
+  }
+}

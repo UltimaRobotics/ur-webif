@@ -1,0 +1,94 @@
+{
+  "vpn_profiles": [
+    {
+      "auth_method": "Certificate",
+      "auto_connect": true,
+      "connection_stats": {
+        "average_connection_time": 0,
+        "failed_connections": 0,
+        "successful_connections": 0,
+        "total_connections": 0,
+        "total_data_transferred": "0MB"
+      },
+      "created_date": "2024-02-20",
+      "encryption": "AES-256",
+      "id": "profile_2",
+      "name": "Secure Tunnel test ",
+      "password": "",
+      "port": 500,
+      "protocol": "IKEv2",
+      "server": "secure.vpnprovider.net",
+      "username": "user123"
+    },
+    {
+      "auth_method": "Certificate",
+      "auto_connect": false,
+      "config_file": {
+        "content": "client\nproto udp\nexplicit-exit-notify\nremote 164.132.53.65 1194\ndev tun\nresolv-retry infinite\nnobind\npersist-key\npersist-tun\nremote-cert-tls server\nverify-x509-name server_TdRVRdZMQXooJ8YK name\nauth SHA256\nauth-nocache\ncipher AES-128-GCM\ntls-client\ntls-version-min 1.2\ntls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\nignore-unknown-option block-outside-dns\nsetenv opt block-outside-dns # Prevent Windows 10 DNS leak\nverb 3\n<ca>\n-----BEGIN CERTIFICATE-----\nMIIB1zCCAX2gAwIBAgIUKu0dlV/p50POOmdd9rV/5LSlHAgwCgYIKoZIzj0EAwIw\nHjEcMBoGA1UEAwwTY25fQmVLRzhPcHBGbmpPQTVHdDAeFw0yNTAxMjUyMTM0NTFa\nFw0zNTAxMjMyMTM0NTFaMB4xHDAaBgNVBAMME2NuX0JlS0c4T3BwRm5qT0E1R3Qw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASKJV4qF+jf3kS0q6lfyj9mpHiKBB7J\nI+VtRP6hRu7Z//wbvAxja/W8k8ZEVdYYGsptoBdIrICk/yLLarqR7vwYo4GYMIGV\nMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFMyVjreBF8fKrM7DQ+bE5nuoFJrSMFkG\nA1UdIwRSMFCAFMyVjreBF8fKrM7DQ+bE5nuoFJrSoSKkIDAeMRwwGgYDVQQDDBNj\nbl9CZUtHOE9wcEZuak9BNUd0ghQq7R2VX+nnQ846Z132tX/ktKUcCDALBgNVHQ8E\nBAMCAQYwCgYIKoZIzj0EAwIDSAAwRQIgTZ83kdb3QF7ZxK9UqhJ48Ulp0BOt4wzA\naCRzrmEWrssCIQCGQyiio2x9fCPkDx9ORZpSx7E1LeXv0Me1fmaGPm1mvw==\n-----END CERTIFICATE-----\n</ca>\n<cert>\n-----BEGIN CERTIFICATE-----\nMIIB7TCCAZOgAwIBAgIQSBsd2pGnJUKt8Rerd9RK9zAKBggqhkjOPQQDAjAeMRww\nGgYDVQQDDBNjbl9CZUtHOE9wcEZuak9BNUd0MB4XDTI1MDIxNzEyMjI1NVoXDTM1\nMDIxNTEyMjI1NVowJjEkMCIGA1UEAwwbVWx0aW1hLVJvYm90aWNzLUZlaG1pWW91\nc2ZpMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEgx7/hffwjMpsvR2PsZmKDdVg\nmVVZlZtVUfYeNbtfUkIxYHglDlqLaqNxHuBmuStX5ZyZbygHJtf1y2SJHicJ2qOB\nqjCBpzAJBgNVHRMEAjAAMB0GA1UdDgQWBBQ/FqemJppFKOjNWgkmIfEMCj1vFDBZ\nBgNVHSMEUjBQgBTMlY63gRfHyqzOw0PmxOZ7qBSa0qEipCAwHjEcMBoGA1UEAwwT\nY25fQmVLRzhPcHBGbmpPQTVHdIIUKu0dlV/p50POOmdd9rV/5LSlHAgwEwYDVR0l\nBAwwCgYIKwYBBQUHAwIwCwYDVR0PBAQDAgeAMAoGCCqGSM49BAMCA0gAMEUCIQDP\nyRgCkRLRWbjn6ILdVNcsKK8/jqZ0wzm6L9Al+wc3gQIgGgZztraKQDqk3y7tYXIn\nNZRfMCv5F9lurmPvmAY9Ls8=\n-----END CERTIFICATE-----\n</cert>\n<key>\n-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgTzUbi+pUGOQw6zYa\nCLNhb+Mlih7hz8G7rEolu5bjnimhRANCAASDHv+F9/CMymy9HY+xmYoN1WCZVVmV\nm1VR9h41u19SQjFgeCUOWotqo3Ee4Ga5K1flnJlvKAcm1/XLZIkeJwna\n-----END PRIVATE KEY-----\n</key>\n<tls-crypt>\n#\n# 2048 bit OpenVPN static key\n#\n-----BEGIN OpenVPN Static key V1-----\na486e383d2808b4de536e98ba5fde00e\nd49954340fe8ea1dd9d5415c93b46295\nab8e57fecdd1371f6deed36a332647d7\n0ba89d3adfe8ab83284d871016f2a544\ncf88c32ed5de130265f6bfc22cd5ff83\n4fa7ae14a1b7732538b186d2b41552fb\n41d22e6986b8bf3cf1ff5d288fb39e5c\n8cbf9d47de509e64247a6e7527fabd98\nd42e7263c311af475fcefb10b826fdd7\nc6cb208e495a904c92f4216f4d49e326\n60ab8cb7f3e5858b6d37799c31ef29c3\n9f66cc10d522459294dfaedae1a11e67\n7eff722b5876b59794d31141d69dfe45\n43f9649a8d25373aa894116fc829926f\nc7e3623de0bc1ab0d0f5985eff3883e1\n6364e395f7fb34f0d2262a8f09da4785\n-----END OpenVPN Static key V1-----\n</tls-crypt>\n\n",
+        "filename": "Ultima-Robotics-FehmiYousfi.ovpn",
+        "size": 2797,
+        "type": "text/plain",
+        "upload_timestamp": 1758392064353
+      },
+      "connection_stats": {
+        "average_connection_time": 0,
+        "failed_connections": 0,
+        "successful_connections": 0,
+        "total_connections": 0,
+        "total_data_transferred": "0MB"
+      },
+      "created_date": "2025-09-20T18:14:24Z",
+      "encryption": "AES-128-GCM",
+      "id": "profile_1758392064353",
+      "last_used": "Never",
+      "name": "OpenVPN (164.132.53.65)",
+      "parsed_config": {
+        "filename": "Ultima-Robotics-FehmiYousfi.ovpn",
+        "original_content": "client\nproto udp\nexplicit-exit-notify\nremote 164.132.53.65 1194\ndev tun\nresolv-retry infinite\nnobind\npersist-key\npersist-tun\nremote-cert-tls server\nverify-x509-name server_TdRVRdZMQXooJ8YK name\nauth SHA256\nauth-nocache\ncipher AES-128-GCM\ntls-client\ntls-version-min 1.2\ntls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\nignore-unknown-option block-outside-dns\nsetenv opt block-outside-dns # Prevent Windows 10 DNS leak\nverb 3\n<ca>\n-----BEGIN CERTIFICATE-----\nMIIB1zCCAX2gAwIBAgIUKu0dlV/p50POOmdd9rV/5LSlHAgwCgYIKoZIzj0EAwIw\nHjEcMBoGA1UEAwwTY25fQmVLRzhPcHBGbmpPQTVHdDAeFw0yNTAxMjUyMTM0NTFa\nFw0zNTAxMjMyMTM0NTFaMB4xHDAaBgNVBAMME2NuX0JlS0c4T3BwRm5qT0E1R3Qw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASKJV4qF+jf3kS0q6lfyj9mpHiKBB7J\nI+VtRP6hRu7Z//wbvAxja/W8k8ZEVdYYGsptoBdIrICk/yLLarqR7vwYo4GYMIGV\nMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFMyVjreBF8fKrM7DQ+bE5nuoFJrSMFkG\nA1UdIwRSMFCAFMyVjreBF8fKrM7DQ+bE5nuoFJrSoSKkIDAeMRwwGgYDVQQDDBNj\nbl9CZUtHOE9wcEZuak9BNUd0ghQq7R2VX+nnQ846Z132tX/ktKUcCDALBgNVHQ8E\nBAMCAQYwCgYIKoZIzj0EA",
+        "parser_used": "OpenVPN",
+        "protocol_detected": "OpenVPN"
+      },
+      "password": "",
+      "port": 1194,
+      "protocol": "OpenVPN",
+      "server": "164.132.53.65",
+      "status": "Ready",
+      "username": ""
+    },
+    {
+      "auth_method": "Certificate",
+      "auto_connect": false,
+      "config_file": {
+        "content": "client\nproto udp\nexplicit-exit-notify\nremote 164.132.53.65 1194\ndev tun\nresolv-retry infinite\nnobind\npersist-key\npersist-tun\nremote-cert-tls server\nverify-x509-name server_TdRVRdZMQXooJ8YK name\nauth SHA256\nauth-nocache\ncipher AES-128-GCM\ntls-client\ntls-version-min 1.2\ntls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\nignore-unknown-option block-outside-dns\nsetenv opt block-outside-dns # Prevent Windows 10 DNS leak\nverb 3\n<ca>\n-----BEGIN CERTIFICATE-----\nMIIB1zCCAX2gAwIBAgIUKu0dlV/p50POOmdd9rV/5LSlHAgwCgYIKoZIzj0EAwIw\nHjEcMBoGA1UEAwwTY25fQmVLRzhPcHBGbmpPQTVHdDAeFw0yNTAxMjUyMTM0NTFa\nFw0zNTAxMjMyMTM0NTFaMB4xHDAaBgNVBAMME2NuX0JlS0c4T3BwRm5qT0E1R3Qw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASKJV4qF+jf3kS0q6lfyj9mpHiKBB7J\nI+VtRP6hRu7Z//wbvAxja/W8k8ZEVdYYGsptoBdIrICk/yLLarqR7vwYo4GYMIGV\nMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFMyVjreBF8fKrM7DQ+bE5nuoFJrSMFkG\nA1UdIwRSMFCAFMyVjreBF8fKrM7DQ+bE5nuoFJrSoSKkIDAeMRwwGgYDVQQDDBNj\nbl9CZUtHOE9wcEZuak9BNUd0ghQq7R2VX+nnQ846Z132tX/ktKUcCDALBgNVHQ8E\nBAMCAQYwCgYIKoZIzj0EAwIDSAAwRQIgTZ83kdb3QF7ZxK9UqhJ48Ulp0BOt4wzA\naCRzrmEWrssCIQCGQyiio2x9fCPkDx9ORZpSx7E1LeXv0Me1fmaGPm1mvw==\n-----END CERTIFICATE-----\n</ca>\n<cert>\n-----BEGIN CERTIFICATE-----\nMIIB7TCCAZOgAwIBAgIQSBsd2pGnJUKt8Rerd9RK9zAKBggqhkjOPQQDAjAeMRww\nGgYDVQQDDBNjbl9CZUtHOE9wcEZuak9BNUd0MB4XDTI1MDIxNzEyMjI1NVoXDTM1\nMDIxNTEyMjI1NVowJjEkMCIGA1UEAwwbVWx0aW1hLVJvYm90aWNzLUZlaG1pWW91\nc2ZpMFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEgx7/hffwjMpsvR2PsZmKDdVg\nmVVZlZtVUfYeNbtfUkIxYHglDlqLaqNxHuBmuStX5ZyZbygHJtf1y2SJHicJ2qOB\nqjCBpzAJBgNVHRMEAjAAMB0GA1UdDgQWBBQ/FqemJppFKOjNWgkmIfEMCj1vFDBZ\nBgNVHSMEUjBQgBTMlY63gRfHyqzOw0PmxOZ7qBSa0qEipCAwHjEcMBoGA1UEAwwT\nY25fQmVLRzhPcHBGbmpPQTVHdIIUKu0dlV/p50POOmdd9rV/5LSlHAgwEwYDVR0l\nBAwwCgYIKwYBBQUHAwIwCwYDVR0PBAQDAgeAMAoGCCqGSM49BAMCA0gAMEUCIQDP\nyRgCkRLRWbjn6ILdVNcsKK8/jqZ0wzm6L9Al+wc3gQIgGgZztraKQDqk3y7tYXIn\nNZRfMCv5F9lurmPvmAY9Ls8=\n-----END CERTIFICATE-----\n</cert>\n<key>\n-----BEGIN PRIVATE KEY-----\nMIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgTzUbi+pUGOQw6zYa\nCLNhb+Mlih7hz8G7rEolu5bjnimhRANCAASDHv+F9/CMymy9HY+xmYoN1WCZVVmV\nm1VR9h41u19SQjFgeCUOWotqo3Ee4Ga5K1flnJlvKAcm1/XLZIkeJwna\n-----END PRIVATE KEY-----\n</key>\n<tls-crypt>\n#\n# 2048 bit OpenVPN static key\n#\n-----BEGIN OpenVPN Static key V1-----\na486e383d2808b4de536e98ba5fde00e\nd49954340fe8ea1dd9d5415c93b46295\nab8e57fecdd1371f6deed36a332647d7\n0ba89d3adfe8ab83284d871016f2a544\ncf88c32ed5de130265f6bfc22cd5ff83\n4fa7ae14a1b7732538b186d2b41552fb\n41d22e6986b8bf3cf1ff5d288fb39e5c\n8cbf9d47de509e64247a6e7527fabd98\nd42e7263c311af475fcefb10b826fdd7\nc6cb208e495a904c92f4216f4d49e326\n60ab8cb7f3e5858b6d37799c31ef29c3\n9f66cc10d522459294dfaedae1a11e67\n7eff722b5876b59794d31141d69dfe45\n43f9649a8d25373aa894116fc829926f\nc7e3623de0bc1ab0d0f5985eff3883e1\n6364e395f7fb34f0d2262a8f09da4785\n-----END OpenVPN Static key V1-----\n</tls-crypt>\n\n",
+        "filename": "Ultima-Robotics-FehmiYousfi.ovpn",
+        "size": 2797,
+        "type": "text/plain",
+        "upload_timestamp": 1758461144658
+      },
+      "connection_stats": {
+        "average_connection_time": 0,
+        "failed_connections": 0,
+        "successful_connections": 0,
+        "total_connections": 0,
+        "total_data_transferred": "0MB"
+      },
+      "created_date": "2025-09-21T13:25:44Z",
+      "encryption": "AES-128-GCM",
+      "id": "profile_1758461144658",
+      "last_used": "Never",
+      "name": "OpenVPN Namm (164.132.53.65)",
+      "parsed_config": {
+        "filename": "Ultima-Robotics-FehmiYousfi.ovpn",
+        "original_content": "client\nproto udp\nexplicit-exit-notify\nremote 164.132.53.65 1194\ndev tun\nresolv-retry infinite\nnobind\npersist-key\npersist-tun\nremote-cert-tls server\nverify-x509-name server_TdRVRdZMQXooJ8YK name\nauth SHA256\nauth-nocache\ncipher AES-128-GCM\ntls-client\ntls-version-min 1.2\ntls-cipher TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256\nignore-unknown-option block-outside-dns\nsetenv opt block-outside-dns # Prevent Windows 10 DNS leak\nverb 3\n<ca>\n-----BEGIN CERTIFICATE-----\nMIIB1zCCAX2gAwIBAgIUKu0dlV/p50POOmdd9rV/5LSlHAgwCgYIKoZIzj0EAwIw\nHjEcMBoGA1UEAwwTY25fQmVLRzhPcHBGbmpPQTVHdDAeFw0yNTAxMjUyMTM0NTFa\nFw0zNTAxMjMyMTM0NTFaMB4xHDAaBgNVBAMME2NuX0JlS0c4T3BwRm5qT0E1R3Qw\nWTATBgcqhkjOPQIBBggqhkjOPQMBBwNCAASKJV4qF+jf3kS0q6lfyj9mpHiKBB7J\nI+VtRP6hRu7Z//wbvAxja/W8k8ZEVdYYGsptoBdIrICk/yLLarqR7vwYo4GYMIGV\nMAwGA1UdEwQFMAMBAf8wHQYDVR0OBBYEFMyVjreBF8fKrM7DQ+bE5nuoFJrSMFkG\nA1UdIwRSMFCAFMyVjreBF8fKrM7DQ+bE5nuoFJrSoSKkIDAeMRwwGgYDVQQDDBNj\nbl9CZUtHOE9wcEZuak9BNUd0ghQq7R2VX+nnQ846Z132tX/ktKUcCDALBgNVHQ8E\nBAMCAQYwCgYIKoZIzj0EA",
+        "parser_used": "OpenVPN",
+        "protocol_detected": "OpenVPN"
+      },
+      "password": "",
+      "port": 1194,
+      "protocol": "OpenVPN",
+      "server": "164.132.53.65",
+      "status": "Ready",
+      "username": ""
+    }
+  ]
+}

@@ -1,0 +1,30 @@
+
+{
+  "saved_networks": [
+    {
+      "network_id": "network_001",
+      "ssid": "HomeWiFi_5G",
+      "security_type": "WPA3",
+      "password": "MySecurePassword123",
+      "auto_connect": true,
+      "last_connected": "2025-01-18T10:30:00Z",
+      "connection_priority": 1,
+      "status": "Available",
+      "frequency": "5GHz",
+      "hidden": false
+    },
+    {
+      "network_id": "network_002", 
+      "ssid": "OfficeNetwork",
+      "security_type": "WPA2",
+      "password": "OfficePass456",
+      "auto_connect": true,
+      "last_connected": "2025-01-17T15:45:00Z",
+      "connection_priority": 2,
+      "status": "Connected",
+      "frequency": "2.4GHz",
+      "hidden": false
+    }
+  ],
+  "last_updated": "2025-01-18T10:30:00Z"
+}

@@ -1,0 +1,383 @@
+
+<!-- MAVLink System Overview Section -->
+<div id="flight-controllers-section" class="p-6">
+    <div class="max-w-7xl mx-auto">
+        <div class="flex items-center justify-between mb-6">
+            <div>
+                <h1 class="text-2xl text-neutral-900 mb-1">MAVLink System Overview</h1>
+                <p class="text-neutral-600">Real-time monitoring of flight controllers and GPS systems</p>
+            </div>
+        </div>
+
+        <!-- Flight Controllers Section -->
+        <div class="mb-8">
+            <div class="flex items-center justify-between mb-4">
+                <h2 class="text-lg text-neutral-900 flex items-center">
+                    <i class="fa-solid fa-microchip text-blue-600 mr-2"></i>
+                    Flight Controllers
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Primary FC -->
+                <div class="bg-white rounded-lg shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-microchip text-blue-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-neutral-900">Primary FC</h3>
+                                    <p class="text-sm text-neutral-500">Pixhawk 6C</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-green-500 rounded-full"></div>
+                                <span class="text-sm text-green-600">Active</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Firmware</span>
+                                <span class="text-sm">ArduPilot 4.3.8</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">System ID</span>
+                                <span class="text-sm">1</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Component ID</span>
+                                <span class="text-sm">1</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Heartbeat</span>
+                                <span class="text-sm text-neutral-600">1.2s ago</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Flight Mode</span>
+                                <span class="text-sm">STABILIZE</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Armed Status</span>
+                                <span class="text-sm text-red-600">DISARMED</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Battery Voltage</span>
+                                <span class="text-sm">12.4V</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">CPU Load</span>
+                                <span class="text-sm">23%</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-neutral-200">
+                            <div class="flex space-x-2">
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-wrench mr-1"></i>
+                                    Diagnose
+                                </button>
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-power-off mr-1"></i>
+                                    Reboot
+                                </button>
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-pen-to-square mr-1"></i>
+                                    Rename
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Secondary FC -->
+                <div class="bg-white rounded-lg shadow border">
+                    <div class="p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center space-x-3">
+                                <div class="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                                    <i class="fa-solid fa-microchip text-orange-600"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-neutral-900">Secondary FC</h3>
+                                    <p class="text-sm text-neutral-500">Cube Orange+</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <div class="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                                <span class="text-sm text-yellow-600">Standby</span>
+                            </div>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Firmware</span>
+                                <span class="text-sm">ArduPilot 4.3.8</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">System ID</span>
+                                <span class="text-sm">2</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Component ID</span>
+                                <span class="text-sm">1</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Heartbeat</span>
+                                <span class="text-sm text-neutral-600">0.8s ago</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Flight Mode</span>
+                                <span class="text-sm">STABILIZE</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Armed Status</span>
+                                <span class="text-sm text-red-600">DISARMED</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">Battery Voltage</span>
+                                <span class="text-sm">12.6V</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-sm text-neutral-600">CPU Load</span>
+                                <span class="text-sm">18%</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-4 border-t border-neutral-200">
+                            <div class="flex space-x-2">
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-wrench mr-1"></i>
+                                    Diagnose
+                                </button>
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-power-off mr-1"></i>
+                                    Reboot
+                                </button>
+                                <button class="flex-1 px-3 py-2 text-sm bg-neutral-100 text-neutral-700 rounded hover:bg-neutral-200">
+                                    <i class="fa-solid fa-pen-to-square mr-1"></i>
+                                    Rename
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!-- Reboot Popup Overlay -->
+<div class="overlay" id="rebootPopupOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <button class="close-btn" id="closeRebootPopup" style="position: absolute; top: 15px; right: 20px; font-size: 24px; background: none; border: none; color: white; cursor: pointer;">&times;</button>
+    <iframe src="mavlink-device-reboot-popup.html" class="popup-frame" style="width: 80vw; height: 80vh; max-width: 600px; max-height: 800px; border: none; border-radius: 10px;"></iframe>
+</div>
+
+<!-- Diagnose Popup Overlay -->
+<div class="overlay" id="diagnosePopupOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <button class="close-btn" id="closeDiagnosePopup" style="position: absolute; top: 15px; right: 20px; font-size: 24px; background: none; border: none; color: white; cursor: pointer;">&times;</button>
+    <iframe src="mavlink-device-data-popup.html" class="popup-frame" style="width: 80vw; height: 80vh; max-width: 1400px; max-height: 800px; border: none; border-radius: 10px;"></iframe>
+</div>
+
+<!-- Rename Popup Overlay -->
+<div class="overlay" id="renamePopupOverlay" style="position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000;">
+    <button class="close-btn" id="closeRenamePopup" style="position: absolute; top: 15px; right: 20px; font-size: 24px; background: none; border: none; color: white; cursor: pointer;">&times;</button>
+    <iframe src="mavlink-device-rename-popup.html" class="popup-frame" style="width: 80vw; height: 80vh; max-width: 600px; max-height: 800px; border: none; border-radius: 10px;"></iframe>
+</div>
+
+<style>
+    .overlay.active { 
+        display: flex !important; 
+    }
+    
+    .close-btn:hover {
+        color: #f0f0f0 !important;
+        transform: scale(1.1);
+    }
+    
+    .popup-frame {
+        transition: all 0.3s ease;
+        background: white;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+    }
+</style>
+
+<script>
+// Initialize popup functionality immediately
+(function initializePopupSection() {
+    registerPopupHandlers();
+    
+    // Register close handlers for reboot popup
+    const closeRebootBtn = document.getElementById('closeRebootPopup');
+    if (closeRebootBtn) {
+        closeRebootBtn.addEventListener('click', closeRebootPopup);
+    }
+    
+    // Register close handlers for diagnose popup
+    const closeDiagnoseBtn = document.getElementById('closeDiagnosePopup');
+    if (closeDiagnoseBtn) {
+        closeDiagnoseBtn.addEventListener('click', closeDiagnosePopup);
+    }
+    
+    // Register close handlers for rename popup
+    const closeRenameBtn = document.getElementById('closeRenamePopup');
+    if (closeRenameBtn) {
+        closeRenameBtn.addEventListener('click', closeRenamePopup);
+    }
+    
+    // Close on overlay click for reboot popup
+    const rebootOverlay = document.getElementById('rebootPopupOverlay');
+    if (rebootOverlay) {
+        rebootOverlay.addEventListener('click', function(e) {
+            if (e.target === rebootOverlay) {
+                closeRebootPopup();
+            }
+        });
+    }
+    
+    // Close on overlay click for diagnose popup
+    const diagnoseOverlay = document.getElementById('diagnosePopupOverlay');
+    if (diagnoseOverlay) {
+        diagnoseOverlay.addEventListener('click', function(e) {
+            if (e.target === diagnoseOverlay) {
+                closeDiagnosePopup();
+            }
+        });
+    }
+    
+    // Close on overlay click for rename popup
+    const renameOverlay = document.getElementById('renamePopupOverlay');
+    if (renameOverlay) {
+        renameOverlay.addEventListener('click', function(e) {
+            if (e.target === renameOverlay) {
+                closeRenamePopup();
+            }
+        });
+    }
+    
+    // ESC key support
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            closeRebootPopup();
+            closeDiagnosePopup();
+            closeRenamePopup();
+        }
+    });
+})();
+
+// Also run on DOMContentLoaded as fallback
+document.addEventListener('DOMContentLoaded', function() {
+    registerPopupHandlers();
+});
+
+function registerPopupHandlers() {
+    // Add event handlers for buttons
+    const diagnoseButtons = document.querySelectorAll('button:has(.fa-wrench)');
+    const rebootButtons = document.querySelectorAll('button:has(.fa-power-off)');
+    const renameButtons = document.querySelectorAll('button:has(.fa-pen-to-square)');
+
+    diagnoseButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showDiagnosePopup();
+        });
+    });
+
+    rebootButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRebootPopup();
+        });
+    });
+
+    renameButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            e.preventDefault();
+            showRenamePopup();
+        });
+    });
+}
+
+function showRebootPopup() {
+    const overlay = document.getElementById('rebootPopupOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        overlay.style.display = 'flex';
+    }
+}
+
+function closeRebootPopup() {
+    const overlay = document.getElementById('rebootPopupOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+    }
+}
+
+function showDiagnosePopup() {
+    const overlay = document.getElementById('diagnosePopupOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        overlay.style.display = 'flex';
+    }
+}
+
+function closeDiagnosePopup() {
+    const overlay = document.getElementById('diagnosePopupOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+    }
+}
+
+function showRenamePopup() {
+    const overlay = document.getElementById('renamePopupOverlay');
+    if (overlay) {
+        overlay.classList.add('active');
+        overlay.style.display = 'flex';
+    }
+}
+
+function closeRenamePopup() {
+    const overlay = document.getElementById('renamePopupOverlay');
+    if (overlay) {
+        overlay.classList.remove('active');
+        overlay.style.display = 'none';
+    }
+}
+
+// Listen for messages from popup
+window.addEventListener('message', function(event) {
+    if (event.data.type === 'close-reboot-popup') {
+        closeRebootPopup();
+    } else if (event.data.type === 'device-reboot-confirmed') {
+        // Handle confirmed reboot action
+        if (typeof sendEvent === 'function') {
+            sendEvent('button_click', 'confirm-device-reboot', { 
+                action: 'reboot-flight-controller-confirmed' 
+            });
+        }
+        closeRebootPopup();
+        console.log('Device reboot confirmed:', event.data.action);
+    } else if (event.data.type === 'close-diagnose-popup') {
+        closeDiagnosePopup();
+    } else if (event.data.type === 'close-rename-popup') {
+        closeRenamePopup();
+    } else if (event.data.type === 'device-rename-confirmed') {
+        // Handle confirmed rename action
+        if (typeof sendEvent === 'function') {
+            sendEvent('button_click', 'confirm-device-rename', { 
+                action: 'rename-flight-controller-confirmed',
+                newName: event.data.data.name,
+                description: event.data.data.description
+            });
+        }
+        closeRenamePopup();
+        console.log('Device rename confirmed:', event.data.data);
+    }
+});
+</script>

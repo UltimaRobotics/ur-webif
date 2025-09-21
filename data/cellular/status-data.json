@@ -1,0 +1,23 @@
+{
+  "connection_details": {
+    "connection_status": "Connecting",
+    "is_connected": false
+  },
+  "network_information": {
+    "apn": "Not Set",
+    "band": "N/A",
+    "cell_id": "Unknown",
+    "network_type": "N/A",
+    "operator": "Not Connected"
+  },
+  "signal_quality": {
+    "has_signal": false,
+    "rsrp_dbm": 0,
+    "rsrq_db": 0,
+    "rssi_dbm": 0,
+    "signal_bars": 0,
+    "signal_status": "No Signal",
+    "signal_strength": 0,
+    "sinr_db": 0
+  }
+}

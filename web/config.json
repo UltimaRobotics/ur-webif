@@ -1,0 +1,24 @@
+
+{
+    "connection": {
+        "api_endpoint": "/api",
+        "websocket": {
+            "enabled": false,
+            "url": "auto",
+            "port": 8081,
+            "connection_timeout": 10000,
+            "retry_interval": 2000,
+            "ping_interval": 30000,
+            "max_retries": 10
+        }
+    },
+    "ui": {
+        "show_connection_status": true,
+        "auto_reconnect": true,
+        "debug_mode": true
+    },
+    "environment": {
+        "auto_detect": true,
+        "override": null
+    }
+}

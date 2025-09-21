@@ -1,0 +1,56 @@
+
+{
+  "recent_backups": [
+    {
+      "filename": "backup-2025-01-15-143225-full.tar.gz",
+      "created_at": "2025-01-15 14:32:25.123",
+      "type": "full",
+      "encrypted": false,
+      "includes_credentials": true,
+      "size": 2654208,
+      "formatted_size": "2.5 GB",
+      "status": "completed"
+    },
+    {
+      "filename": "backup-2025-01-14-091830-partial-encrypted.tar.gz", 
+      "created_at": "2025-01-14 09:18:30.456",
+      "type": "partial",
+      "encrypted": true,
+      "includes_credentials": false,
+      "size": 1073741824,
+      "formatted_size": "1.0 GB",
+      "status": "completed"
+    },
+    {
+      "filename": "backup-2025-01-13-165512-full.tar.gz",
+      "created_at": "2025-01-13 16:55:12.789",
+      "type": "full",
+      "encrypted": false,
+      "includes_credentials": true,
+      "size": 2831155200,
+      "formatted_size": "2.6 GB", 
+      "status": "completed"
+    }
+  ],
+  "backup_settings": {
+    "default_compression": "gzip",
+    "max_backup_age_days": 30,
+    "max_backup_count": 10,
+    "backup_location": "/tmp/backups",
+    "auto_cleanup": true
+  },
+  "system_info": {
+    "total_disk_space": "62 GB",
+    "available_disk_space": "36 GB",
+    "backup_capable": true,
+    "encryption_available": true
+  },
+  "size_estimates": {
+    "full_backup_base": 2400000000,
+    "partial_backup_base": 800000000,
+    "credentials_overhead": 100000000,
+    "encryption_overhead": 50000000,
+    "logs_size": 200000000
+  },
+  "last_updated": "2025-01-18 10:30:00.000"
+}

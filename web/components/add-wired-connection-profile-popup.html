@@ -1,0 +1,449 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add New Connection Profile</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        * { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { display: none; }
+    </style>
+</head>
+<body>
+
+<!-- Popup Container -->
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div class="bg-white w-[100vw] h-[100vh] shadow-lg overflow-y-auto">
+        
+        <!-- Header -->
+        <div class="border-b border-neutral-200 p-6">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 bg-neutral-600 rounded-lg flex items-center justify-center">
+                        <i class="fa-solid fa-plus text-white text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-2xl text-neutral-900">Add New Connection Profile</h1>
+                        <p class="text-neutral-500 text-sm">Create a new wired network configuration profile</p>
+                    </div>
+                </div>
+                <button id="popup-close" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+                    <i class="fa-solid fa-xmark text-neutral-500"></i>
+                </button>
+            </div>
+        </div>
+        
+        <!-- Content -->
+        <div class="p-6 space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">Profile Name *</label>
+                    <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="Enter profile name">
+                    <p class="text-xs text-neutral-500 mt-1">Unique identifier for this profile</p>
+                </div>
+                
+                <div>
+                    <label class="block text-sm text-neutral-700 mb-2">Connection Type *</label>
+                    <select id="connection-type-select" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                        <option value="">Select connection type</option>
+                        <option value="dhcp">DHCP (Automatic)</option>
+                        <option value="static">Static IP</option>
+                        <option value="pppoe">PPPoE</option>
+                        <option value="bridge">Bridge Mode</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div>
+                <label class="block text-sm text-neutral-700 mb-2">Description</label>
+                <textarea class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500 h-20 resize-none" placeholder="Optional description for this profile"></textarea>
+            </div>
+            
+            <div id="static-configuration" class="space-y-4 p-4 bg-neutral-50 rounded-lg border border-neutral-200" style="display: none;">
+                <h3 class="text-lg text-neutral-900 mb-4 flex items-center space-x-2">
+                    <i class="fa-solid fa-network-wired text-neutral-600"></i>
+                    <span>Static IP Configuration</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">IP Address *</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="192.168.1.100">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Subnet Mask *</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="255.255.255.0">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Gateway *</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="192.168.1.1">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Preferred DNS</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="8.8.8.8">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Alternative DNS</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="8.8.4.4">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Domain Suffix</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="local.domain">
+                    </div>
+                </div>
+            </div>
+            
+            <div id="pppoe-configuration" class="space-y-4 p-4 bg-neutral-50 rounded-lg border border-neutral-200" style="display: none;">
+                <h3 class="text-lg text-neutral-900 mb-4 flex items-center space-x-2">
+                    <i class="fa-solid fa-globe text-neutral-600"></i>
+                    <span>PPPoE Configuration</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Username *</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="ISP username">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Password *</label>
+                        <input type="password" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="ISP password">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Service Name</label>
+                        <input type="text" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="Optional service name">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Connection Timeout</label>
+                        <select class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                            <option value="30">30 seconds</option>
+                            <option value="60" selected>60 seconds</option>
+                            <option value="120">2 minutes</option>
+                            <option value="300">5 minutes</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="flex items-center space-x-2">
+                    <input type="checkbox" class="rounded border-neutral-300 focus:ring-2 focus:ring-neutral-500">
+                    <label class="text-sm text-neutral-700">Enable automatic reconnection</label>
+                </div>
+            </div>
+            
+            <div class="border-t border-neutral-200 pt-6">
+                <h3 class="text-lg text-neutral-900 mb-4 flex items-center space-x-2">
+                    <i class="fa-solid fa-gear text-neutral-600"></i>
+                    <span>Advanced Settings</span>
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">MTU Size</label>
+                        <input type="number" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" value="1500" min="576" max="9000">
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Interface Priority</label>
+                        <select class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                            <option value="high">High Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="low">Low Priority</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">Duplex Mode</label>
+                        <select class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                            <option value="auto" selected>Auto Negotiation</option>
+                            <option value="full">Full Duplex</option>
+                            <option value="half">Half Duplex</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm text-neutral-700 mb-2">VLAN ID</label>
+                        <input type="number" class="w-full px-3 py-2 border border-neutral-300 rounded-lg focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500" placeholder="Optional VLAN ID" min="1" max="4094">
+                    </div>
+                </div>
+                
+                <div class="mt-4 space-y-3">
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="rounded border-neutral-300 focus:ring-2 focus:ring-neutral-500">
+                        <label class="text-sm text-neutral-700">Enable VLAN tagging</label>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="rounded border-neutral-300 focus:ring-2 focus:ring-neutral-500">
+                        <label class="text-sm text-neutral-700">Auto-activate this profile</label>
+                    </div>
+                    
+                    <div class="flex items-center space-x-2">
+                        <input type="checkbox" class="rounded border-neutral-300 focus:ring-2 focus:ring-neutral-500">
+                        <label class="text-sm text-neutral-700">Set as default profile</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-2 text-sm text-neutral-600">
+                    <i class="fa-solid fa-circle-info"></i>
+                    <span>Required fields are marked with *</span>
+                </div>
+                <div class="flex items-center space-x-3">
+                    <button id="popup-cancel" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50">
+                        Cancel
+                    </button>
+                    <button id="create-profile-btn" class="bg-neutral-600 text-white px-8 py-2 rounded-lg hover:bg-neutral-700 flex items-center space-x-2">
+                        <i class="fa-solid fa-plus"></i>
+                        <span>Create Profile</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        registerPopupContentHandlers();
+        setupConnectionTypeHandler();
+    });
+    
+    function registerPopupContentHandlers() {
+        const closeBtn = document.getElementById('popup-close');
+        const cancelBtn = document.getElementById('popup-cancel');
+        const createBtn = document.getElementById('create-profile-btn');
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', hidePopup);
+        }
+        
+        if (cancelBtn) {
+            cancelBtn.addEventListener('click', hidePopup);
+        }
+
+        if (createBtn) {
+            createBtn.addEventListener('click', handleCreateProfile);
+        }
+    }
+
+    function setupConnectionTypeHandler() {
+        const connectionTypeSelect = document.getElementById('connection-type-select');
+        const staticConfig = document.getElementById('static-configuration');
+        const pppoeConfig = document.getElementById('pppoe-configuration');
+
+        if (connectionTypeSelect) {
+            connectionTypeSelect.addEventListener('change', function() {
+                // Hide all configuration sections
+                if (staticConfig) staticConfig.style.display = 'none';
+                if (pppoeConfig) pppoeConfig.style.display = 'none';
+
+                // Show relevant configuration section
+                if (this.value === 'static' && staticConfig) {
+                    staticConfig.style.display = 'block';
+                } else if (this.value === 'pppoe' && pppoeConfig) {
+                    pppoeConfig.style.display = 'block';
+                }
+            });
+        }
+    }
+
+    function handleCreateProfile() {
+        console.log('[PROFILE-CREATE] Starting profile creation process...');
+        
+        // Collect form data according to specification
+        const formData = collectFormData();
+        
+        if (!validateFormData(formData)) {
+            console.log('[PROFILE-CREATE] Form validation failed');
+            return;
+        }
+        
+        console.log('[PROFILE-CREATE] Sending profile data:', formData);
+        
+        // Send data to backend API
+        sendProfileToBackend(formData);
+        
+        // Send message to parent window
+        window.parent.postMessage({
+            type: 'profile-created',
+            data: formData
+        }, '*');
+        
+        hidePopup();
+    }
+    
+    function collectFormData() {
+        // Get form elements
+        const profileNameInput = document.querySelector('input[placeholder="Enter profile name"]');
+        const connectionTypeSelect = document.getElementById('connection-type-select');
+        const descriptionTextarea = document.querySelector('textarea[placeholder*="description"]');
+        
+        // Static IP configuration elements
+        const ipAddressInput = document.querySelector('#static-configuration input[placeholder="192.168.1.100"]');
+        const subnetMaskInput = document.querySelector('#static-configuration input[placeholder="255.255.255.0"]');
+        const gatewayInput = document.querySelector('#static-configuration input[placeholder="192.168.1.1"]');
+        const primaryDnsInput = document.querySelector('#static-configuration input[placeholder="8.8.8.8"]');
+        const secondaryDnsInput = document.querySelector('#static-configuration input[placeholder="8.8.4.4"]');
+        const domainSuffixInput = document.querySelector('#static-configuration input[placeholder="local.domain"]');
+        
+        // PPPoE configuration elements
+        const pppoeUsernameInput = document.querySelector('#pppoe-configuration input[placeholder="ISP username"]');
+        const pppoePasswordInput = document.querySelector('#pppoe-configuration input[placeholder="ISP password"]');
+        const pppoeServiceInput = document.querySelector('#pppoe-configuration input[placeholder="Optional service name"]');
+        const pppoeTimeoutSelect = document.querySelector('#pppoe-configuration select');
+        const pppoeAutoReconnectCheckbox = document.querySelector('#pppoe-configuration input[type="checkbox"]');
+        
+        // Advanced settings elements
+        const mtuSizeInput = document.querySelector('input[type="number"][value="1500"]');
+        const interfacePrioritySelect = document.querySelector('select option[value="medium"]').parentElement;
+        const duplexModeSelect = document.querySelector('select option[value="auto"]').parentElement;
+        const vlanIdInput = document.querySelector('input[placeholder="Optional VLAN ID"]');
+        const vlanTaggingCheckbox = document.querySelectorAll('input[type="checkbox"]')[1];
+        const autoActivateCheckbox = document.querySelectorAll('input[type="checkbox"]')[2];
+        const setDefaultCheckbox = document.querySelectorAll('input[type="checkbox"]')[3];
+        
+        // Build form data structure according to specification
+        const data = {
+            profile_name: profileNameInput ? profileNameInput.value.trim() : '',
+            description: descriptionTextarea ? descriptionTextarea.value.trim() : '',
+            connection_type: connectionTypeSelect ? connectionTypeSelect.value : '',
+            timestamp: Date.now()
+        };
+        
+        // Add static IP configuration if selected
+        if (data.connection_type === 'static') {
+            data.static_config = {
+                ip_address: ipAddressInput ? ipAddressInput.value.trim() : '',
+                subnet_mask: subnetMaskInput ? subnetMaskInput.value.trim() : '',
+                gateway: gatewayInput ? gatewayInput.value.trim() : '',
+                dns_primary: primaryDnsInput ? primaryDnsInput.value.trim() : '',
+                dns_secondary: secondaryDnsInput ? secondaryDnsInput.value.trim() : '',
+                domain_suffix: domainSuffixInput ? domainSuffixInput.value.trim() : ''
+            };
+        }
+        
+        // Add PPPoE configuration if selected
+        if (data.connection_type === 'pppoe') {
+            data.pppoe_config = {
+                username: pppoeUsernameInput ? pppoeUsernameInput.value.trim() : '',
+                password: pppoePasswordInput ? pppoePasswordInput.value.trim() : '',
+                service_name: pppoeServiceInput ? pppoeServiceInput.value.trim() : '',
+                connection_timeout: pppoeTimeoutSelect ? parseInt(pppoeTimeoutSelect.value) : 60,
+                auto_reconnect: pppoeAutoReconnectCheckbox ? pppoeAutoReconnectCheckbox.checked : false
+            };
+        }
+        
+        // Add advanced settings
+        data.advanced_settings = {
+            mtu_size: mtuSizeInput ? parseInt(mtuSizeInput.value) : 1500,
+            interface_priority: interfacePrioritySelect ? interfacePrioritySelect.value : 'medium',
+            duplex_mode: duplexModeSelect ? duplexModeSelect.value : 'auto',
+            vlan_id: vlanIdInput && vlanIdInput.value ? parseInt(vlanIdInput.value) : null,
+            vlan_tagging_enabled: vlanTaggingCheckbox ? vlanTaggingCheckbox.checked : false,
+            auto_activate: autoActivateCheckbox ? autoActivateCheckbox.checked : false,
+            set_as_default: setDefaultCheckbox ? setDefaultCheckbox.checked : false
+        };
+        
+        return data;
+    }
+    
+    function validateFormData(data) {
+        console.log('[PROFILE-VALIDATE] Validating form data...');
+        
+        // Basic validation
+        if (!data.profile_name) {
+            alert('Profile name is required');
+            return false;
+        }
+        
+        if (!data.connection_type) {
+            alert('Connection type is required');
+            return false;
+        }
+        
+        // Static IP validation
+        if (data.connection_type === 'static') {
+            if (!data.static_config.ip_address || !data.static_config.subnet_mask || !data.static_config.gateway) {
+                alert('IP address, subnet mask, and gateway are required for static configuration');
+                return false;
+            }
+        }
+        
+        // PPPoE validation
+        if (data.connection_type === 'pppoe') {
+            if (!data.pppoe_config.username || !data.pppoe_config.password) {
+                alert('Username and password are required for PPPoE configuration');
+                return false;
+            }
+        }
+        
+        console.log('[PROFILE-VALIDATE] Form validation passed');
+        return true;
+    }
+    
+    function sendProfileToBackend(data) {
+        console.log('[PROFILE-API] Sending profile data to backend...');
+        
+        // Prepare request payload according to specification
+        const requestPayload = {
+            action: 'create',
+            profile_data: data,
+            timestamp: Date.now()
+        };
+        
+        console.log('[PROFILE-API] Request payload:', requestPayload);
+        
+        // Send POST request to backend
+        fetch('/api/network/wired/profiles', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(requestPayload)
+        })
+        .then(response => {
+            console.log('[PROFILE-API] Response status:', response.status);
+            return response.json();
+        })
+        .then(data => {
+            console.log('[PROFILE-API] Backend response:', data);
+            if (data.success) {
+                console.log('[PROFILE-API] Profile created successfully');
+            } else {
+                console.log('[PROFILE-API] Profile creation failed:', data.message);
+            }
+        })
+        .catch(error => {
+            console.error('[PROFILE-API] Error sending profile to backend:', error);
+        });
+    }
+    
+    function hidePopup() {
+        // Send message to parent window to close popup
+        window.parent.postMessage({type: 'close-popup'}, '*');
+    }
+    
+    // Listen for messages from parent window
+    window.addEventListener('message', function(event) {
+        if (event.data.type === 'close-popup') {
+            // Popup is being closed, perform cleanup if needed
+        }
+    });
+</script>
+
+</body>
+</html>

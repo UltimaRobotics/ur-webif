@@ -1,0 +1,14 @@
+{
+    "access_point_status": {
+        "band": "dual",
+        "channel": 6,
+        "clients_connected": 0,
+        "connected_clients": [],
+        "data_received_mb": 0,
+        "data_transmitted_mb": 0,
+        "is_active": true,
+        "ssid": "UR-WebIF-AP",
+        "uptime_seconds": 0
+    },
+    "last_updated": "2025-09-20T13:49:20.386Z"
+}

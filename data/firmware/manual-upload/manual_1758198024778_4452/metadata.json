@@ -1,0 +1,13 @@
+{
+  "checksum_md5": "454fdcdc49766334d38fd197a4fbc0e3",
+  "checksum_sha256": "72ef50da8bf545ce44e236ebe0c69e693c854ea91a12497fa477d63d80f690fd",
+  "error_message": "",
+  "file_path": "data/firmware/manual-upload/manual_1758198024778_4452/openwrt-x86-generic-generic-kernel.bin",
+  "file_size": 5505536,
+  "file_type": "application/octet-stream",
+  "filename": "openwrt-x86-generic-generic-kernel.bin",
+  "status": "completed",
+  "upload_id": "manual_1758198024778_4452",
+  "upload_timestamp": 1758198024812,
+  "verify_signature": false
+}

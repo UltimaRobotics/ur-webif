@@ -1,0 +1,39 @@
+{
+  "available_networks": [
+    {
+      "available": true,
+      "mcc": "311",
+      "mnc": "480",
+      "network_id": "311480",
+      "operator_name": "Verizon Wireless",
+      "signal_strength": -75,
+      "technology": "LTE"
+    },
+    {
+      "available": true,
+      "mcc": "310",
+      "mnc": "410",
+      "network_id": "310410",
+      "operator_name": "AT&T",
+      "signal_strength": -85,
+      "technology": "LTE"
+    },
+    {
+      "available": true,
+      "mcc": "310",
+      "mnc": "260",
+      "network_id": "310260",
+      "operator_name": "T-Mobile",
+      "signal_strength": -70,
+      "technology": "5G"
+    }
+  ],
+  "scan_status": {
+    "last_scan": "Not scanned",
+    "networks_found": 3,
+    "scan_completed": true,
+    "scan_in_progress": false,
+    "scan_time": 1757019521092,
+    "strongest_signal": 0
+  }
+}

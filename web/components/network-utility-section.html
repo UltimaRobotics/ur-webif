@@ -1,0 +1,2644 @@
+<div class="max-w-7xl mx-auto px-6 py-8">
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="text-2xl text-neutral-900 mb-2">Network Utility & Diagnostics</h2>
+        <p class="text-neutral-600">Test network performance and diagnose connectivity issues</p>
+      </div>
+      <div class="flex items-center">
+        <i class="fa-solid fa-network-wired text-neutral-600 text-xl"></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- Server Status Section -->
+  <section id="server-status" class="mb-8">
+    <div class="bg-white rounded-lg shadow-sm border border-neutral-200">
+      <div class="p-6 cursor-pointer" onclick="toggleSection('server-status-content', 'server-status-chevron')">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl text-neutral-800 flex items-center">
+            <i class="fa-solid fa-server mr-3 text-neutral-600"></i>
+            Server Status & Information
+          </h2>
+          <i id="server-status-chevron" class="fa-solid fa-chevron-down text-neutral-600 transition-transform duration-300 rotate-180"></i>
+        </div>
+      </div>
+
+      <div id="server-status-content" class="hidden">
+        <div class="px-6 pb-6">
+          <!-- Error Message Display -->
+          <div id="network-utility-error-message" class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm mb-4" style="display: none;">
+            <i class="fa-solid fa-exclamation-triangle mr-2"></i>
+            <span id="network-utility-error-text">Error message will appear here</span>
+          </div>
+
+          <!-- Success Message Display -->
+          <div id="network-utility-success-message" class="bg-green-50 border border-green-200 text-green-700 px-4 py-3 rounded-md text-sm mb-4" style="display: none;">
+            <i class="fa-solid fa-check-circle mr-2"></i>
+            <span id="network-utility-success-text">Success message will appear here</span>
+          </div>
+
+          <!-- Control Panel -->
+          <div class="flex items-center justify-between mb-6">
+            <div class="flex items-center space-x-4">
+              <button id="refresh-server-status-btn" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-4 py-2 rounded-md text-sm flex items-center">
+                <i class="fa-solid fa-refresh mr-2"></i>
+                Refresh Status
+              </button>
+              <button id="test-all-servers-btn" class="bg-blue-100 hover:bg-blue-200 text-blue-700 px-4 py-2 rounded-md text-sm flex items-center">
+                <i class="fa-solid fa-play mr-2"></i>
+                Test All Servers
+              </button>
+              <label class="flex items-center">
+                <input type="checkbox" id="auto-refresh-toggle" checked class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+                <span class="text-sm text-neutral-700">Auto-refresh</span>
+              </label>
+              <div class="flex items-center space-x-2">
+                <label for="auto-refresh-delay" class="text-sm text-neutral-700">Delay:</label>
+                <input type="number" id="auto-refresh-delay" value="15" min="5" max="300" class="w-16 border border-neutral-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                <span class="text-sm text-neutral-500">seconds</span>
+              </div>
+              <label class="flex items-center">
+                <input type="checkbox" id="auto-test-servers" class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+                <span class="text-sm text-neutral-700">Auto-test servers</span>
+              </label>
+              <div class="flex items-center space-x-2">
+                <label for="auto-test-delay" class="text-sm text-neutral-700">Test interval:</label>
+                <input type="number" id="auto-test-delay" value="60" min="30" max="600" class="w-16 border border-neutral-300 rounded-md px-2 py-1 text-sm focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+                <span class="text-sm text-neutral-500">seconds</span>
+              </div>
+            </div>
+            <div class="text-sm text-neutral-500">
+              Last updated: <span id="last-update-time">Never</span>
+            </div>
+          </div>
+
+          <!-- Status Cards -->
+          <div id="server-status-cards" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+            <div class="bg-white p-4 rounded-lg border border-neutral-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-neutral-600">Total Servers</p>
+                  <p class="text-2xl text-neutral-800" id="total-servers">0</p>
+                </div>
+                <i class="fa-solid fa-server text-neutral-600"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-neutral-600">Online</p>
+                  <p class="text-2xl text-green-600" id="online-servers">0</p>
+                </div>
+                <i class="fa-solid fa-check-circle text-green-600"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-neutral-600">Offline</p>
+                  <p class="text-2xl text-red-600" id="offline-servers">0</p>
+                </div>
+                <i class="fa-solid fa-times-circle text-red-600"></i>
+              </div>
+            </div>
+            <div class="bg-white p-4 rounded-lg border border-neutral-200">
+              <div class="flex items-center justify-between">
+                <div>
+                  <p class="text-sm text-neutral-600">Avg Ping</p>
+                  <p class="text-2xl text-neutral-800" id="avg-ping">0ms</p>
+                </div>
+                <i class="fa-solid fa-clock text-neutral-600"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Server Status Table -->
+          <div class="overflow-x-auto">
+            <table id="server-status-table" class="w-full border-collapse">
+              <thead>
+                <tr class="border-b border-neutral-200">
+                  <th class="text-left py-3 px-4 text-neutral-700">Server</th>
+                  <th class="text-left py-3 px-4 text-neutral-700">Location</th>
+                  <th class="text-left py-3 px-4 text-neutral-700">IP Address</th>
+                  <th class="text-right py-3 px-4 text-neutral-700">Port</th>
+                  <th class="text-right py-3 px-4 text-neutral-700">Load</th>
+                  <th class="text-right py-3 px-4 text-neutral-700">Uptime</th>
+                  <th class="text-center py-3 px-4 text-neutral-700">Status</th>
+                  <th class="text-center py-3 px-4 text-neutral-700">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="server-status-tbody" class="divide-y divide-neutral-100">
+                <tr>
+                  <td colspan="8" class="py-8 text-center text-neutral-500">
+                    <i class="fa-solid fa-spinner fa-spin mr-2"></i>
+                    Loading server status...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Diagnostic Tools Section -->
+  <section id="diagnostic-tools">
+    <div class="bg-white rounded-lg shadow-sm border border-neutral-200">
+      <div class="p-6 cursor-pointer" onclick="toggleSection('diagnostic-tools-content', 'diagnostic-tools-chevron')">
+        <div class="flex items-center justify-between">
+          <h2 class="text-2xl text-neutral-800 flex items-center">
+            <i class="fa-solid fa-tools mr-3 text-neutral-600"></i>
+            Network Diagnostic Tools
+          </h2>
+          <i id="diagnostic-tools-chevron" class="fa-solid fa-chevron-down text-neutral-600 transition-transform duration-300 rotate-180"></i>
+        </div>
+      </div>
+
+      <div id="diagnostic-tools-content" class="hidden">
+        <div class="px-6 pb-6">
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="space-y-4">
+              <h3 class="text-lg text-neutral-700">Network Tests</h3>
+
+              <button id="traceroute-btn" class="w-full bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200 px-4 py-3 rounded-md text-left flex items-center justify-between transition-colors">
+                <div class="flex items-center">
+                  <i class="fa-solid fa-network-wired mr-3 text-neutral-600"></i>
+                  <div>
+                    <div class="font-medium">Traceroute</div>
+                    <div class="text-sm text-neutral-500">Trace network path to destination</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-neutral-400"></i>
+              </button>
+
+              <button id="ping-test-btn" class="w-full bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200 px-4 py-3 rounded-md text-left flex items-center justify-between transition-colors">
+                <div class="flex items-center">
+                  <i class="fa-solid fa-wifi mr-3 text-neutral-600"></i>
+                  <div>
+                    <div class="font-medium">Ping Test</div>
+                    <div class="text-sm text-neutral-500">Test connectivity and latency</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-neutral-400"></i>
+              </button>
+
+              <button id="dns-lookup-btn" class="w-full bg-neutral-50 hover:bg-neutral-100 text-neutral-700 border border-neutral-200 px-4 py-3 rounded-md text-left flex items-center justify-between transition-colors">
+                <div class="flex items-center">
+                  <i class="fa-solid fa-globe mr-3 text-neutral-600"></i>
+                  <div>
+                    <div class="font-medium">DNS Lookup</div>
+                    <div class="text-sm text-neutral-500">Resolve domain names</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-neutral-400"></i>
+              </button>
+            </div>
+
+            <div class="space-y-4">
+              <h3 class="text-lg text-neutral-700">Bandwidth Tests</h3>
+
+              <button id="bandwidth-test-btn" class="w-full bg-blue-50 hover:bg-blue-100 text-blue-700 border border-blue-200 px-4 py-3 rounded-md text-left flex items-center justify-between transition-colors">
+                <div class="flex items-center">
+                  <i class="fa-solid fa-tachometer-alt mr-3 text-blue-600"></i>
+                  <div>
+                    <div class="font-medium">Bandwidth Test</div>
+                    <div class="text-sm text-blue-500">Test upload/download speeds</div>
+                  </div>
+                </div>
+                <i class="fa-solid fa-chevron-right text-blue-400"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<!-- Traceroute Popup -->
+<div id="traceroutePopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+  <div class="bg-white w-[95vw] max-w-6xl h-[90vh] shadow-lg rounded-lg overflow-y-auto">
+    <!-- Header -->
+    <div class="border-b border-neutral-200 p-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-neutral-600 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-network-wired text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl text-neutral-900">Traceroute Test</h1>
+            <p class="text-neutral-500 text-sm">Network path tracing and hop analysis</p>
+          </div>
+        </div>
+        <button id="closeTraceroute" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-neutral-500"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Configuration Section -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div class="space-y-4">
+          <h3 class="text-lg text-neutral-700 mb-4">Test Configuration</h3>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Target Host</label>
+            <input type="text" id="traceroute-target-host" placeholder="Enter IP address or hostname" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+          </div>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Maximum Hops</label>
+            <input type="number" id="traceroute-max-hops" value="30" min="1" max="64" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+          </div>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Timeout (seconds)</label>
+            <input type="number" id="traceroute-timeout" value="5" min="1" max="30" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+          </div>
+          <div class="space-y-2">
+            <label class="block text-sm text-neutral-600">Protocol</label>
+            <div class="flex items-center space-x-4">
+              <label class="flex items-center">
+                <input type="radio" name="traceroute-protocol" value="icmp" checked class="mr-2 text-neutral-600 focus:ring-neutral-500">
+                <span class="text-sm text-neutral-700">ICMP</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="traceroute-protocol" value="udp" class="mr-2 text-neutral-600 focus:ring-neutral-500">
+                <span class="text-sm text-neutral-700">UDP</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="traceroute-protocol" value="tcp" class="mr-2 text-neutral-600 focus:ring-neutral-500">
+                <span class="text-sm text-neutral-700">TCP</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg text-neutral-700 mb-4">Test Status</h3>
+          <div class="bg-neutral-50 rounded-lg p-4 space-y-3">
+            <div class="flex justify-between">
+              <span class="text-sm text-neutral-600">Status:</span>
+              <span id="traceroute-status" class="text-sm text-neutral-800 flex items-center">
+                <div class="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+                Ready
+              </span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-neutral-600">Current Hop:</span>
+              <span id="traceroute-current-hop" class="text-sm text-neutral-800">0 of 30</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-neutral-600">Elapsed Time:</span>
+              <span id="traceroute-elapsed-time" class="text-sm text-neutral-800">00:00</span>
+            </div>
+            <div class="flex justify-between">
+              <span class="text-sm text-neutral-600">Total Hops:</span>
+              <span id="traceroute-total-hops" class="text-sm text-neutral-800">0</span>
+            </div>
+          </div>
+
+          <div class="mt-4">
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm text-neutral-600">Progress</span>
+              <span id="traceroute-progress-text" class="text-sm text-neutral-500">0% Complete</span>
+            </div>
+            <div class="w-full bg-neutral-200 rounded-full h-2">
+              <div id="traceroute-progress-bar" class="bg-neutral-600 h-2 rounded-full transition-all duration-300" style="width: 0%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Control Buttons -->
+      <div class="flex justify-center mb-6">
+        <div class="flex space-x-3">
+          <button id="start-traceroute-btn" class="bg-neutral-600 hover:bg-neutral-700 text-white px-6 py-2 rounded-md flex items-center">
+            <i class="fa-solid fa-play mr-2"></i>
+            Start Traceroute
+          </button>
+          <button id="stop-traceroute-btn" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md items-center" style="display: none;">
+            <i class="fa-solid fa-stop mr-2"></i>
+            Stop
+          </button>
+          <button id="reset-traceroute-btn" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-6 py-2 rounded-md flex items-center">
+            <i class="fa-solid fa-redo mr-2"></i>
+            Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div class="border-t border-neutral-200 pt-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-lg text-neutral-700">Traceroute Results</h3>
+          <div class="flex space-x-2">
+            <button id="copy-traceroute-results" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-3 py-1 rounded text-sm flex items-center">
+              <i class="fa-solid fa-copy mr-1"></i>
+              Copy
+            </button>
+            <button id="export-traceroute-results" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-3 py-1 rounded text-sm flex items-center">
+              <i class="fa-solid fa-download mr-1"></i>
+              Export
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+          <table class="w-full text-sm">
+            <thead class="bg-neutral-100">
+              <tr>
+                <th class="text-left py-3 px-4 text-neutral-700">Hop</th>
+                <th class="text-left py-3 px-4 text-neutral-700">IP Address</th>
+                <th class="text-left py-3 px-4 text-neutral-700">Hostname</th>
+                <th class="text-right py-3 px-4 text-neutral-700">RTT 1</th>
+                <th class="text-right py-3 px-4 text-neutral-700">RTT 2</th>
+                <th class="text-right py-3 px-4 text-neutral-700">RTT 3</th>
+                <th class="text-center py-3 px-4 text-neutral-700">Status</th>
+              </tr>
+            </thead>
+            <tbody id="traceroute-results-tbody" class="divide-y divide-neutral-100">
+              <tr id="traceroute-no-data">
+                <td colspan="7" class="py-8 text-center text-neutral-500">
+                  Click "Start Traceroute" to begin network path analysis
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+      <div class="flex items-center justify-between">
+        <div class="text-sm text-neutral-500">
+          Results are updated in real-time during the test
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="closeTracerouteFooter" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Ping Test Popup -->
+<div id="pingTestPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+  <div class="bg-white w-[95vw] max-w-5xl h-[85vh] shadow-lg rounded-lg overflow-y-auto">
+    <!-- Header -->
+    <div class="border-b border-neutral-200 p-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-neutral-600 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-wifi text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl text-neutral-900">Network Ping Test</h1>
+            <p class="text-neutral-500 text-sm">Test network connectivity and latency</p>
+          </div>
+        </div>
+        <button id="closePingTest" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-neutral-500"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Configuration Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-6">
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Target Host</label>
+          <input type="text" id="ping-target-host" placeholder="IP address or hostname" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Packet Count</label>
+          <input type="number" id="ping-count" value="10" min="1" max="100" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Packet Size (bytes)</label>
+          <input type="number" id="ping-size" value="64" min="32" max="1472" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Interval (seconds)</label>
+          <input type="number" id="ping-interval" value="1" min="0.1" step="0.1" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Timeout (seconds)</label>
+          <input type="number" id="ping-timeout" value="5" min="1" max="60" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="flex items-center">
+            <input type="checkbox" id="ping-continuous" class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+            <span class="text-sm text-neutral-700">Continuous Ping</span>
+          </label>
+        </div>
+        <div class="flex items-end">
+          <button id="start-ping-test" class="bg-neutral-600 hover:bg-neutral-700 text-white px-6 py-2 rounded-md flex items-center">
+            <i class="fa-solid fa-play mr-2"></i>
+            Start Ping Test
+          </button>
+        </div>
+      </div>
+
+      <!-- Test Status -->
+      <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <h3 class="text-lg text-neutral-700 flex items-center">
+            <i class="fa-solid fa-chart-line mr-2"></i>
+            Test Statistics
+          </h3>
+          <div class="flex items-center text-sm text-neutral-600">
+            <div id="ping-status-indicator" class="w-2 h-2 bg-gray-400 rounded-full mr-2"></div>
+            <span id="ping-status-text">Ready</span>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+          <div>
+            <span class="text-neutral-600">Packets Sent:</span>
+            <div id="ping-packets-sent" class="text-neutral-800 text-lg">0</div>
+          </div>
+          <div>
+            <span class="text-neutral-600">Packets Received:</span>
+            <div id="ping-packets-received" class="text-neutral-800 text-lg">0</div>
+          </div>
+          <div>
+            <span class="text-neutral-600">Packet Loss:</span>
+            <div id="ping-packet-loss" class="text-neutral-800 text-lg">0%</div>
+          </div>
+          <div>
+            <span class="text-neutral-600">Avg RTT:</span>
+            <div id="ping-avg-rtt" class="text-neutral-800 text-lg">0ms</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results Table -->
+      <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+        <div class="flex items-center justify-between p-4 border-b border-neutral-200">
+          <h3 class="text-lg text-neutral-700">Ping Results</h3>
+          <div class="flex space-x-2">
+            <button id="copy-ping-results" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-3 py-1 rounded text-sm flex items-center">
+              <i class="fa-solid fa-copy mr-1"></i>
+              Copy
+            </button>
+          </div>
+        </div>
+        <table class="w-full text-sm">
+          <thead class="bg-neutral-100">
+            <tr>
+              <th class="text-left py-3 px-4 text-neutral-700">Seq</th>
+              <th class="text-left py-3 px-4 text-neutral-700">Host</th>
+              <th class="text-right py-3 px-4 text-neutral-700">RTT (ms)</th>
+              <th class="text-right py-3 px-4 text-neutral-700">TTL</th>
+              <th class="text-right py-3 px-4 text-neutral-700">Size</th>
+              <th class="text-center py-3 px-4 text-neutral-700">Status</th>
+              <th class="text-left py-3 px-4 text-neutral-700">Timestamp</th>
+            </tr>
+          </thead>
+          <tbody id="ping-results-tbody" class="divide-y divide-neutral-100">
+            <tr id="ping-no-data">
+              <td colspan="7" class="py-8 text-center text-neutral-500">
+                Click "Start Ping Test" to begin connectivity testing
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <button id="stop-ping-test" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm" disabled>
+            <i class="fa-solid fa-stop mr-2"></i>
+            Stop Test
+          </button>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="closePingTestFooter" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DNS Lookup Popup -->
+<div id="dnsLookupPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+  <div class="bg-white w-[95vw] max-w-5xl h-[85vh] shadow-lg rounded-lg overflow-y-auto">
+    <!-- Header -->
+    <div class="border-b border-neutral-200 p-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-neutral-600 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-globe text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl text-neutral-900">DNS Lookup Tool</h1>
+            <p class="text-neutral-500 text-sm">Resolve domain names and analyze DNS records</p>
+          </div>
+        </div>
+        <button id="closeDnsLookup" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-neutral-500"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Query Configuration -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Domain or IP Address</label>
+          <div class="flex space-x-2">
+            <input type="text" id="dns-domain" placeholder="Enter domain name or IP address" class="flex-1 border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+            <button id="start-dns-lookup" class="bg-neutral-600 hover:bg-neutral-700 text-white px-4 py-2 rounded-md">
+              <i class="fa-solid fa-search mr-2"></i>
+              Lookup
+            </button>
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Record Type</label>
+          <div class="relative">
+            <select id="dns-record-type" class="w-full border border-neutral-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+              <option value="A">A (IPv4 Address)</option>
+              <option value="AAAA">AAAA (IPv6 Address)</option>
+              <option value="CNAME">CNAME (Canonical Name)</option>
+              <option value="MX">MX (Mail Exchange)</option>
+              <option value="NS">NS (Name Server)</option>
+              <option value="TXT">TXT (Text Record)</option>
+              <option value="SOA">SOA (Start of Authority)</option>
+              <option value="PTR">PTR (Pointer Record)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Query Options -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">DNS Server</label>
+          <input type="text" id="dns-server" placeholder="e.g., 8.8.8.8 or leave blank for system default" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div>
+          <label class="block text-sm text-neutral-600 mb-2">Timeout (seconds)</label>
+          <input type="number" id="dns-timeout" value="5" min="1" max="30" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" id="dns-trace" class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+          <label for="dns-trace" class="text-sm text-neutral-700">Trace Route</label>
+        </div>
+        <div class="flex items-center">
+          <input type="checkbox" id="dns-recursive" checked class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+          <label for="dns-recursive" class="text-sm text-neutral-700">Recursive Query</label>
+        </div>
+      </div>
+
+      <!-- Results Section -->
+      <div id="dns-results-section" class="hidden">
+        <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4 mb-6">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-lg text-neutral-700 flex items-center">
+              <i class="fa-solid fa-clock mr-2"></i>
+              Lookup Status
+            </h3>
+            <div class="flex items-center text-sm text-neutral-600">
+              <div id="dns-status-indicator" class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
+              <span id="dns-status-text">Complete</span>
+            </div>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 text-sm">
+            <div>
+              <span class="text-neutral-600">Query Time:</span>
+              <div id="dns-query-time" class="text-neutral-800">0ms</div>
+            </div>
+            <div>
+              <span class="text-neutral-600">Server Used:</span>
+              <div id="dns-server-used" class="text-neutral-800">System Default</div>
+            </div>
+            <div>
+              <span class="text-neutral-600">Records Found:</span>
+              <div id="dns-records-count" class="text-neutral-800">0</div>
+            </div>
+            <div>
+              <span class="text-neutral-600">Response Code:</span>
+              <div id="dns-response-code" class="text-neutral-800">NOERROR</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DNS Records Display -->
+        <div class="bg-white rounded-lg border border-neutral-200 overflow-hidden">
+          <div class="p-4 border-b border-neutral-200">
+            <h3 class="text-lg text-neutral-700 flex items-center">
+              <i class="fa-solid fa-list mr-2"></i>
+              DNS Records
+            </h3>
+          </div>
+          <div id="dns-records-container" class="p-4">
+            <div class="text-center text-neutral-500 py-8">
+              No DNS records to display
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <button id="copy-dns-results" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-4 py-2 rounded-md text-sm">
+            <i class="fa-solid fa-copy mr-2"></i>
+            Copy Results
+          </button>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="closeDnsLookupFooter" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bandwidth Test Popup -->
+<div id="bandwidthTestPopup" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" style="display: none;">
+  <div class="bg-white w-[95vw] max-w-4xl h-[85vh] shadow-lg rounded-lg overflow-y-auto">
+    <!-- Header -->
+    <div class="border-b border-neutral-200 p-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 bg-blue-600 rounded-lg flex items-center justify-center">
+            <i class="fa-solid fa-tachometer-alt text-white text-lg"></i>
+          </div>
+          <div>
+            <h1 class="text-2xl text-neutral-900">Bandwidth Test</h1>
+            <p class="text-neutral-500 text-sm">Test network upload and download speeds</p>
+          </div>
+        </div>
+        <button id="closeBandwidthTest" class="w-8 h-8 rounded-full bg-neutral-100 hover:bg-neutral-200 flex items-center justify-center">
+          <i class="fa-solid fa-xmark text-neutral-500"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6">
+      <!-- Configuration Section -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+        <div class="space-y-4">
+          <h3 class="text-lg text-neutral-700">Test Configuration</h3>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Test Server</label>
+            <select id="bandwidth-server" class="w-full border border-neutral-300 rounded-md px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+              <option value="">Select a server...</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Test Duration (seconds)</label>
+            <input type="number" id="bandwidth-duration" value="10" min="1" max="60" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+          </div>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Protocol</label>
+            <div class="flex items-center space-x-4">
+              <label class="flex items-center">
+                <input type="radio" name="bandwidth-protocol" value="tcp" checked class="mr-2 text-neutral-600 focus:ring-neutral-500">
+                <span class="text-sm text-neutral-700">TCP</span>
+              </label>
+              <label class="flex items-center">
+                <input type="radio" name="bandwidth-protocol" value="udp" class="mr-2 text-neutral-600 focus:ring-neutral-500">
+                <span class="text-sm text-neutral-700">UDP</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="space-y-4">
+          <h3 class="text-lg text-neutral-700">Test Options</h3>
+          <div>
+            <label class="block text-sm text-neutral-600 mb-2">Parallel Connections</label>
+            <input type="number" id="bandwidth-parallel" value="1" min="1" max="10" class="w-full border border-neutral-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-neutral-500 focus:border-neutral-500">
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="bandwidth-bidirectional" class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+            <label for="bandwidth-bidirectional" class="text-sm text-neutral-700">Bidirectional Test</label>
+          </div>
+          <div class="flex items-center">
+            <input type="checkbox" id="bandwidth-reverse" class="mr-2 text-neutral-600 focus:ring-neutral-500 rounded">
+            <label for="bandwidth-reverse" class="text-sm text-neutral-700">Reverse Mode (server sends)</label>
+          </div>
+        </div>
+      </div>
+
+      <!-- Test Controls -->
+      <div class="flex justify-center mb-6">
+        <div class="flex space-x-3">
+          <button id="start-bandwidth-test" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md flex items-center">
+            <i class="fa-solid fa-play mr-2"></i>
+            Start Test
+          </button>
+          <button id="stop-bandwidth-test" class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md flex items-center" disabled>
+            <i class="fa-solid fa-stop mr-2"></i>
+            Stop Test
+          </button>
+        </div>
+      </div>
+
+      <!-- Test Results -->
+      <div id="bandwidth-results-section" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+          <div class="bg-blue-50 rounded-lg p-4 border border-blue-200">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-sm text-blue-600">Download Speed</h4>
+              <i class="fa-solid fa-download text-blue-600"></i>
+            </div>
+            <div id="bandwidth-download" class="text-2xl text-blue-800">0 Mbps</div>
+          </div>
+          <div class="bg-green-50 rounded-lg p-4 border border-green-200">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-sm text-green-600">Upload Speed</h4>
+              <i class="fa-solid fa-upload text-green-600"></i>
+            </div>
+            <div id="bandwidth-upload" class="text-2xl text-green-800">0 Mbps</div>
+          </div>
+          <div class="bg-yellow-50 rounded-lg p-4 border border-yellow-200">
+            <div class="flex items-center justify-between mb-2">
+              <h4 class="text-sm text-yellow-600">Latency</h4>
+              <i class="fa-solid fa-clock text-yellow-600"></i>
+            </div>
+            <div id="bandwidth-latency" class="text-2xl text-yellow-800">0 ms</div>
+          </div>
+        </div>
+
+        <!-- Progress Bar -->
+        <div class="mb-6">
+          <div class="flex justify-between items-center mb-2">
+            <span class="text-sm text-neutral-600">Test Progress</span>
+            <span id="bandwidth-progress-text" class="text-sm text-neutral-500">0% Complete</span>
+          </div>
+          <div class="w-full bg-neutral-200 rounded-full h-3">
+            <div id="bandwidth-progress-bar" class="bg-blue-600 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="border-t border-neutral-200 px-6 py-4 bg-neutral-50">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center space-x-3">
+          <button id="save-bandwidth-results" class="bg-neutral-100 hover:bg-neutral-200 text-neutral-700 px-4 py-2 rounded-md text-sm">
+            <i class="fa-solid fa-save mr-2"></i>
+            Save Results
+          </button>
+        </div>
+        <div class="flex items-center space-x-3">
+          <button id="closeBandwidthTestFooter" class="border border-neutral-300 text-neutral-700 px-6 py-2 rounded-lg hover:bg-neutral-50">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// Network Utility Section Implementation
+(function() {
+    'use strict';
+
+    console.log('[NETWORK-UTILITY] Initializing network utility section...');
+
+    // State management
+    const state = {
+        servers: [],
+        activeTests: new Map(),
+        updateIntervals: new Map(),
+        isLoading: false,
+        serverTestQueue: [],
+        isTestingServers: false,
+        testProgress: { current: 0, total: 0 },
+        isVisible: true // Add visibility state
+    };
+
+    // API endpoints
+    const endpoints = {
+        servers: {
+            status: '/api/network-utility/servers/status',
+            test: '/api/network-utility/servers/test'
+        },
+        traceroute: {
+            start: '/api/network-utility/traceroute/start',
+            stop: '/api/network-utility/traceroute/stop',
+            results: '/api/network-utility/traceroute/results'
+        },
+        ping: {
+            start: '/api/network-utility/ping/start',
+            stop: '/api/network-utility/ping/stop',
+            results: '/api/network-utility/ping/results'
+        },
+        dns: {
+            lookup: '/api/network-utility/dns/lookup'
+        },
+        bandwidth: {
+            start: '/api/network-utility/bandwidth/start',
+            stop: '/api/network-utility/bandwidth/stop',
+            status: '/api/network-utility/bandwidth/status'
+        }
+    };
+
+    // Utility functions
+    function log(message, data = '') {
+        console.log(`[NETWORK-UTILITY] ${message}`, data);
+    }
+
+    function showError(message) {
+        const errorDiv = document.getElementById('network-utility-error-message');
+        const errorText = document.getElementById('network-utility-error-text');
+
+        if (errorDiv && errorText) {
+            errorText.textContent = message;
+            errorDiv.style.display = 'block';
+            setTimeout(() => errorDiv.style.display = 'none', 5000);
+        }
+    }
+
+    function showSuccess(message) {
+        const successDiv = document.getElementById('network-utility-success-message');
+        const successText = document.getElementById('network-utility-success-text');
+
+        if (successDiv && successText) {
+            successText.textContent = message;
+            successDiv.style.display = 'block';
+            setTimeout(() => successDiv.style.display = 'none', 5000);
+        }
+    }
+
+    async function makeApiRequest(method, url, data = null) {
+        try {
+            const options = {
+                method: method,
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            };
+
+            if (data && (method === 'POST' || method === 'PUT')) {
+                options.body = JSON.stringify(data);
+            }
+
+            log(`Making ${method} request to ${url}`);
+            const response = await fetch(url, options);
+
+            if (!response.ok) {
+                let errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+                try {
+                    const errorData = await response.json();
+                    errorMessage = errorData.message || errorMessage;
+                } catch (e) {
+                    // Ignore if response is not JSON
+                }
+                throw new Error(errorMessage);
+            }
+
+            const result = await response.json();
+            log(`Response received:`, Object.keys(result));
+            return result;
+        } catch (error) {
+            log(`Request failed for ${url}:`, error);
+            throw error;
+        }
+    }
+
+    function updateElement(id, content) {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = content;
+        }
+    }
+
+    function showPopup(popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'flex';
+        }
+    }
+
+    function hidePopup(popupId) {
+        const popup = document.getElementById(popupId);
+        if (popup) {
+            popup.style.display = 'none';
+        }
+    }
+
+    // Server status functions
+    async function loadServerStatus() {
+        try {
+            log('Loading server status...');
+            state.isLoading = true;
+
+            const response = await makeApiRequest('GET', endpoints.servers.status);
+
+            if (response.success && response.servers) {
+                state.servers = response.servers;
+                updateServerStatusDisplay(response.servers);
+                updateServerStatusCards(response.servers);
+                updateLastUpdateTime();
+                log('Server status loaded successfully');
+            } else {
+                showError('Failed to load server status');
+            }
+        } catch (error) {
+            log('Server status request failed:', error);
+            showError('Network error while loading server status');
+        } finally {
+            state.isLoading = false;
+        }
+    }
+
+    function updateServerStatusCards(servers) {
+        const totalServers = servers.length;
+        const onlineServers = servers.filter(s => s.status === 'Online').length;
+        const offlineServers = totalServers - onlineServers;
+        const avgPing = totalServers > 0 ?
+            (servers.reduce((sum, s) => sum + (s.ping_ms || 0), 0) / totalServers).toFixed(1) : 0;
+
+        updateElement('total-servers', totalServers.toString());
+        updateElement('online-servers', onlineServers.toString());
+        updateElement('offline-servers', offlineServers.toString());
+        updateElement('avg-ping', `${avgPing}ms`);
+    }
+
+    function updateServerStatusDisplay(servers) {
+        const tbody = document.getElementById('server-status-tbody');
+        if (!tbody) return;
+
+        if (servers.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="py-8 text-center text-neutral-500">
+                        No servers available
+                    </td>
+                </tr>
+            `;
+            return;
+        }
+
+        tbody.innerHTML = servers.map(server => `
+            <tr class="hover:bg-neutral-50">
+                <td class="py-3 px-4 text-sm text-neutral-900">${server.name || server.hostname}</td>
+                <td class="py-3 px-4 text-sm text-neutral-600">${server.location || 'Unknown'}</td>
+                <td class="py-3 px-4 text-sm text-neutral-600">${server.ip_address || server.hostname}</td>
+                <td class="py-3 px-4 text-sm text-neutral-600 text-right">${server.port}</td>
+                <td class="py-3 px-4 text-sm text-neutral-600 text-right">${server.load_percent || 0}%</td>
+                <td class="py-3 px-4 text-sm text-neutral-600 text-right">${(server.uptime_percent || 0).toFixed(1)}%</td>
+                <td class="py-3 px-4 text-center">
+                    <span class="px-2 py-1 text-xs rounded-full ${getServerStatusBadgeClass(server.status)}">
+                        ${server.status}
+                    </span>
+                </td>
+                <td class="py-3 px-4 text-center">
+                  <button class="test-server-btn text-neutral-600 hover:text-neutral-800 disabled:text-neutral-400" 
+                          onclick="window.testServer('${server.id}')" 
+                          data-server-id="${server.id}">
+                    <i class="fa-solid fa-play"></i>
+                  </button>
+                </td>
+            </tr>
+        `).join('');
+    }
+
+    function getServerStatusBadgeClass(status) {
+        switch (status?.toLowerCase()) {
+            case 'online':
+                return 'bg-green-100 text-green-800';
+            case 'offline':
+                return 'bg-red-100 text-red-800';
+            case 'degraded':
+                return 'bg-yellow-100 text-yellow-800';
+            default:
+                return 'bg-gray-100 text-gray-800';
+        }
+    }
+
+    function updateLastUpdateTime() {
+        updateElement('last-update-time', new Date().toLocaleTimeString());
+    }
+
+    async function testServer(serverId) {
+        try {
+            log('Testing server:', serverId);
+            // Find the button and disable it
+            const testButton = document.querySelector(`.test-server-btn[data-server-id="${serverId}"]`);
+            if (testButton) {
+                testButton.disabled = true;
+                testButton.querySelector('i').classList.add('fa-spin');
+            }
+
+            const response = await makeApiRequest('POST', endpoints.servers.test, { serverId });
+
+            if (response.success) {
+                log(`Server test completed for ${serverId}: ${response.connected ? 'Connected' : 'Failed'}`);
+                // Update the specific server status in our local state
+                const serverIndex = state.servers.findIndex(s => s.id === serverId);
+                if (serverIndex !== -1) {
+                    state.servers[serverIndex].status = response.connected ? 'online' : 'offline';
+                    state.servers[serverIndex].last_tested = new Date().toISOString();
+                    state.servers[serverIndex].ping_ms = response.ping_ms || -1;
+                    state.servers[serverIndex].response_time_ms = response.response_time_ms || -1;
+                }
+                // Refresh the display
+                updateServerStatusDisplay(state.servers);
+                updateServerStatusCards(state.servers);
+            } else {
+                log('Server test failed for:', serverId);
+            }
+        } catch (error) {
+            log('Server test failed:', error);
+        } finally {
+             // Re-enable the button and remove spinner if it exists
+             const testButton = document.querySelector(`.test-server-btn[data-server-id="${serverId}"]`);
+             if (testButton) {
+                testButton.disabled = false;
+                testButton.querySelector('i').classList.remove('fa-spin');
+             }
+        }
+    }
+
+    async function testAllServers() {
+        if (state.isTestingServers) {
+            log('Server testing already in progress');
+            return;
+        }
+
+        try {
+            state.isTestingServers = true;
+            state.testProgress.current = 0;
+            state.testProgress.total = state.servers.length;
+
+            const testAllBtn = document.getElementById('test-all-servers-btn');
+            if (testAllBtn) {
+                testAllBtn.disabled = true;
+                testAllBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Testing All...';
+            }
+
+            log(`Starting test of ${state.servers.length} servers`);
+            showSuccess(`Starting test of ${state.servers.length} servers...`);
+
+            // Test servers in batches to avoid overwhelming the system
+            const batchSize = 5;
+            for (let i = 0; i < state.servers.length; i += batchSize) {
+                const batch = state.servers.slice(i, i + batchSize);
+                const promises = batch.map(server => testServer(server.id));
+
+                await Promise.allSettled(promises);
+                state.testProgress.current = Math.min(i + batchSize, state.servers.length);
+
+                // Update progress
+                const progress = Math.round((state.testProgress.current / state.testProgress.total) * 100);
+                if (testAllBtn) {
+                    testAllBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin mr-2"></i>Testing... ${progress}%`;
+                }
+
+                // Small delay between batches
+                if (i + batchSize < state.servers.length) {
+                    await new Promise(resolve => setTimeout(resolve, 1000));
+                }
+            }
+
+            showSuccess(`Server testing completed. Tested ${state.servers.length} servers.`);
+            log('All server testing completed');
+
+        } catch (error) {
+            log('Error during bulk server testing:', error);
+            showError('Error occurred during server testing');
+        } finally {
+            state.isTestingServers = false;
+
+            const testAllBtn = document.getElementById('test-all-servers-btn');
+            if (testAllBtn) {
+                testAllBtn.disabled = false;
+                testAllBtn.innerHTML = '<i class="fa-solid fa-play mr-2"></i>Test All Servers';
+            }
+        }
+    }
+
+    function startAutoServerTesting() {
+        stopAutoServerTesting(); // Clear any existing interval
+
+        // Only start if section is visible
+        if (!state.isVisible) {
+            log('Auto server testing not started - section not visible');
+            return;
+        }
+
+        const autoTestToggle = document.getElementById('auto-test-servers');
+        if (!autoTestToggle.checked) {
+            return;
+        }
+
+        const autoTestDelayInput = document.getElementById('auto-test-delay');
+        const delay = parseInt(autoTestDelayInput.value) || 60;
+
+        const interval = setInterval(() => {
+            // Double-check visibility before testing servers
+            if (!state.isTestingServers && state.servers.length > 0 && state.isVisible) {
+                log('Auto-testing servers...');
+                testAllServers();
+            }
+        }, delay * 1000);
+
+        state.updateIntervals.set('autoServerTest', interval);
+        log(`Auto server testing started with ${delay}s interval`);
+    }
+
+    function stopAutoServerTesting() {
+        const interval = state.updateIntervals.get('autoServerTest');
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete('autoServerTest');
+            log('Auto server testing stopped');
+        }
+    }
+
+    // Traceroute functions
+    async function startTraceroute() {
+        try {
+            const targetHost = document.getElementById('traceroute-target-host')?.value.trim();
+            const maxHops = parseInt(document.getElementById('traceroute-max-hops')?.value) || 30;
+            const timeout = parseInt(document.getElementById('traceroute-timeout')?.value) || 5;
+            const protocol = document.querySelector('input[name="traceroute-protocol"]:checked')?.value || 'icmp';
+
+            if (!targetHost) {
+                showError('Please enter a target host');
+                return;
+            }
+
+            const config = {
+                targetHost: targetHost,
+                maxHops: maxHops,
+                timeout: timeout,
+                protocol: protocol
+            };
+
+            log('Starting traceroute test:', config);
+            clearTracerouteResults();
+            updateTracerouteUI('running');
+
+            // Start the traceroute test
+            const response = await makeApiRequest('POST', endpoints.traceroute.start, config);
+
+            if (response.success) {
+                const testId = response.testId;
+                state.activeTests.set('traceroute', testId);
+                startTracerouteMonitoring(testId);
+                showSuccess('Traceroute started successfully');
+
+                // Start elapsed time counter
+                startElapsedTimeCounter('traceroute');
+            } else {
+                updateTracerouteUI('ready');
+                throw new Error(response.message || 'Failed to start traceroute');
+            }
+        } catch (error) {
+            log('Traceroute start failed:', error);
+            updateTracerouteUI('ready');
+            showError('Failed to start traceroute: ' + error.message);
+        }
+    }
+
+    async function stopTraceroute() {
+        try {
+            const testId = state.activeTests.get('traceroute');
+            const response = await makeApiRequest('POST', endpoints.traceroute.stop, { test_id: testId });
+
+            stopTracerouteMonitoring();
+            stopElapsedTimeCounter('traceroute');
+            updateTracerouteUI('stopped');
+
+            if (response.success) {
+                showSuccess('Traceroute stopped successfully');
+            }
+        } catch (error) {
+            log('Traceroute stop failed:', error);
+            showError('Failed to stop traceroute');
+        }
+    }
+
+    function resetTraceroute() {
+        stopTracerouteMonitoring();
+        stopElapsedTimeCounter('traceroute');
+        clearTracerouteResults();
+        updateTracerouteUI('ready');
+        state.activeTests.delete('traceroute');
+    }
+
+    function startTracerouteMonitoring(testId) {
+        stopTracerouteMonitoring();
+
+        const interval = setInterval(async () => {
+            await updateTracerouteProgress(testId);
+        }, 2000); // Poll every 2 seconds
+
+        state.updateIntervals.set('traceroute', interval);
+    }
+
+    function stopTracerouteMonitoring() {
+        const interval = state.updateIntervals.get('traceroute');
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete('traceroute');
+        }
+    }
+
+    async function updateTracerouteProgress(testId) {
+        try {
+            const response = await makeApiRequest('GET', `${endpoints.traceroute.results}?test_id=${testId}`);
+
+            if (response.success && response.activeTests && response.activeTests.length > 0) {
+                const testData = response.activeTests.find(test => test.testId === testId);
+
+                if (!testData) {
+                    log('Test not found:', testId);
+                    return;
+                }
+
+                // Update progress information
+                if (testData.progress !== undefined) {
+                    const progress = Math.round(testData.progress);
+                    updateElement('traceroute-progress-text', `${progress}% Complete`);
+
+                    const progressBar = document.getElementById('traceroute-progress-bar');
+                    if (progressBar) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }
+
+                // Parse results from JSON string if needed
+                let hops = [];
+                if (testData.results) {
+                    try {
+                        hops = typeof testData.results === 'string' ? JSON.parse(testData.results) : testData.results;
+                    } catch (parseError) {
+                        log('Failed to parse traceroute results:', parseError);
+                        hops = [];
+                    }
+                }
+
+                // Update current hop information
+                const maxHops = parseInt(document.getElementById('traceroute-max-hops')?.value || 30);
+                const currentHop = hops.length > 0 ? hops[hops.length - 1].hop : 0;
+                updateElement('traceroute-current-hop', `${currentHop} of ${maxHops}`);
+
+                // Update results table
+                if (Array.isArray(hops) && hops.length > 0) {
+                    updateTracerouteResults(hops);
+                    updateElement('traceroute-total-hops', hops.length.toString());
+                }
+
+                // Check if test is complete
+                if (testData.isRunning === false) {
+                    stopTracerouteMonitoring();
+                    stopElapsedTimeCounter('traceroute');
+                    updateTracerouteUI('complete');
+                } else if (testData.isRunning === true) {
+                    // Update UI to show running state
+                    updateTracerouteUI('running');
+                }
+            }
+        } catch (error) {
+            log('Traceroute progress update failed:', error);
+            // Don't show error messages for monitoring failures to avoid spam
+        }
+    }
+
+    function updateTracerouteResults(hops) {
+        const tbody = document.getElementById('traceroute-results-tbody');
+        if (!tbody) return;
+
+        // Remove no-data row if it exists
+        const noDataRow = document.getElementById('traceroute-no-data');
+        if (noDataRow) {
+            noDataRow.remove();
+        }
+
+        // Clear existing rows to avoid duplicates
+        tbody.innerHTML = '';
+
+        // Add or update each hop
+        hops.forEach(hop => {
+            addOrUpdateTracerouteHop(hop);
+        });
+    }
+
+    function addOrUpdateTracerouteHop(hop) {
+        const tbody = document.getElementById('traceroute-results-tbody');
+        if (!tbody) return;
+
+        // Check if row already exists and update it, or create new one
+        let row = tbody.querySelector(`tr[data-hop="${hop.hop}"]`);
+        if (!row) {
+            row = document.createElement('tr');
+            row.className = 'hover:bg-neutral-50';
+            row.dataset.hop = hop.hop;
+            tbody.appendChild(row);
+        }
+
+        const statusIcon = getTracerouteStatusIcon(hop.status);
+        const formatRTT = (rtt) => {
+            if (rtt === null || rtt === undefined || rtt <= 0) return '*';
+            return `${rtt.toFixed(3)}ms`;
+        };
+
+        // Map backend field names correctly
+        const hopNumber = hop.hop || 0;
+        const ipAddress = hop.ip || hop.hostname || '*';
+        const hostname = hop.hostname || hop.ip || '*';
+        const rtt1 = hop.rtt1 || null;
+        const rtt2 = hop.rtt2 || null;
+        const rtt3 = hop.rtt3 || null;
+
+        row.innerHTML = `
+            <td class="py-3 px-4 text-neutral-800">${hopNumber}</td>
+            <td class="py-3 px-4 text-neutral-600 font-mono text-sm">${ipAddress}</td>
+            <td class="py-3 px-4 text-neutral-600 text-sm">${hostname}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right font-mono text-sm">${formatRTT(rtt1)}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right font-mono text-sm">${formatRTT(rtt2)}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right font-mono text-sm">${formatRTT(rtt3)}</td>
+            <td class="py-3 px-4 text-center">${statusIcon}</td>
+        `;
+    }
+
+    function getTracerouteStatusIcon(status) {
+        switch (status?.toLowerCase()) {
+            case 'success':
+            case 'completed':
+            case 'reached':
+                return '<i class="fa-solid fa-check text-green-500"></i>';
+            case 'timeout':
+            case 'no_response':
+                return '<i class="fa-solid fa-clock text-yellow-500"></i>';
+            case 'running':
+            case 'in_progress':
+                return '<i class="fa-solid fa-spinner fa-spin text-blue-500"></i>';
+            case 'error':
+            case 'failed':
+                return '<i class="fa-solid fa-exclamation-triangle text-red-500"></i>';
+            default:
+                return '<i class="fa-solid fa-question text-gray-500"></i>';
+        }
+    }
+
+    function updateTracerouteUI(status) {
+        const startBtn = document.getElementById('start-traceroute-btn');
+        const stopBtn = document.getElementById('stop-traceroute-btn');
+        const resetBtn = document.getElementById('reset-traceroute-btn');
+        const statusElement = document.getElementById('traceroute-status');
+
+        // Update button visibility and states
+        switch (status) {
+            case 'ready':
+            case 'complete':
+            case 'stopped':
+            case 'error':
+                if (startBtn) {
+                    startBtn.disabled = false;
+                    startBtn.style.display = 'flex';
+                }
+                if (stopBtn) {
+                    stopBtn.disabled = true;
+                    stopBtn.style.display = 'none';
+                }
+                if (resetBtn) {
+                    resetBtn.disabled = false;
+                }
+                break;
+            case 'running':
+                if (startBtn) {
+                    startBtn.disabled = true;
+                    startBtn.style.display = 'none';
+                }
+                if (stopBtn) {
+                    stopBtn.disabled = false;
+                    stopBtn.style.display = 'flex';
+                }
+                if (resetBtn) {
+                    resetBtn.disabled = true;
+                }
+                break;
+        }
+
+        // Update status indicator
+        if (statusElement) {
+            let colorClass = '';
+            let statusText = '';
+
+            switch (status) {
+                case 'ready':
+                    colorClass = 'bg-gray-400';
+                    statusText = 'Ready';
+                    break;
+                case 'running':
+                    colorClass = 'bg-blue-500 animate-pulse';
+                    statusText = 'Running';
+                    break;
+                case 'complete':
+                    colorClass = 'bg-green-500';
+                    statusText = 'Complete';
+                    break;
+                case 'stopped':
+                    colorClass = 'bg-yellow-500';
+                    statusText = 'Stopped';
+                    break;
+                case 'error':
+                    colorClass = 'bg-red-500';
+                    statusText = 'Error';
+                    break;
+            }
+
+            statusElement.innerHTML = `<div class="w-2 h-2 ${colorClass} rounded-full mr-2"></div>${statusText}`;
+        }
+    }
+
+    function clearTracerouteResults() {
+        const tbody = document.getElementById('traceroute-results-tbody');
+        if (tbody) {
+            tbody.innerHTML = '<tr id="traceroute-no-data"><td colspan="7" class="py-8 text-center text-neutral-500">Click "Start Traceroute" to begin network path analysis</td></tr>';
+        }
+
+        updateElement('traceroute-current-hop', '0 of 30');
+        updateElement('traceroute-elapsed-time', '00:00');
+        updateElement('traceroute-total-hops', '0');
+        updateElement('traceroute-progress-text', '0% Complete');
+
+        const progressBar = document.getElementById('traceroute-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+    }
+
+    // Elapsed time counter for traceroute
+    function startElapsedTimeCounter(testType) {
+        stopElapsedTimeCounter(testType);
+
+        const startTime = Date.now();
+        const interval = setInterval(() => {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const minutes = Math.floor(elapsed / 60);
+            const seconds = elapsed % 60;
+            const timeString = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+
+            updateElement(`${testType}-elapsed-time`, timeString);
+        }, 1000);
+
+        state.updateIntervals.set(`${testType}-timer`, interval);
+    }
+
+    function stopElapsedTimeCounter(testType) {
+        const interval = state.updateIntervals.get(`${testType}-timer`);
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete(`${testType}-timer`);
+        }
+    }
+
+    // Ping test functions
+    async function startPingTest() {
+        try {
+            const targetHost = document.getElementById('ping-target-host')?.value.trim();
+            const count = parseInt(document.getElementById('ping-count')?.value) || 10;
+            const packetSize = parseInt(document.getElementById('ping-size')?.value) || 64;
+            const interval = parseFloat(document.getElementById('ping-interval')?.value) || 1;
+            const timeout = parseInt(document.getElementById('ping-timeout')?.value) || 5;
+            const continuous = document.getElementById('ping-continuous')?.checked || false;
+
+
+            if (!targetHost) {
+                showError('Please enter a target host');
+                return;
+            }
+
+            const config = {
+                targetHost: targetHost,
+                count: continuous ? 0 : count, // If continuous, send 0 count to indicate continuous
+                packetSize: packetSize,
+                interval: interval,
+                timeout: timeout,
+                continuous: continuous // Explicitly pass the continuous flag
+            };
+
+            log('Starting ping test:', config);
+
+            const response = await makeApiRequest('POST', endpoints.ping.start, config);
+
+            if (response.success) {
+                const testId = response.testId;
+                state.activeTests.set('ping', testId);
+                updatePingUI('running');
+                clearPingResults();
+                startPingMonitoring(testId);
+                showSuccess('Ping test started successfully');
+            } else {
+                throw new Error(response.message || 'Failed to start ping test');
+            }
+        } catch (error) {
+            log('Ping test start failed:', error);
+            showError('Failed to start ping test: ' + error.message);
+        }
+    }
+
+    async function stopPingTest() {
+        try {
+            const response = await makeApiRequest('POST', endpoints.ping.stop);
+
+            if (response.success) {
+                stopPingMonitoring();
+                updatePingUI('stopped');
+                showSuccess('Ping test stopped successfully');
+            }
+        } catch (error) {
+            log('Ping test stop failed:', error);
+            showError('Failed to stop ping test');
+        }
+    }
+
+    function startPingMonitoring(testId) {
+        stopPingMonitoring();
+
+        const interval = setInterval(async () => {
+            await updatePingProgress(testId);
+        }, 1000);
+
+        state.updateIntervals.set('ping', interval);
+    }
+
+    function stopPingMonitoring() {
+        const interval = state.updateIntervals.get('ping');
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete('ping');
+        }
+    }
+
+    async function updatePingProgress(testId) {
+        try {
+            const response = await makeApiRequest('GET', endpoints.ping.results);
+
+            if (response.success && response.activeTests) {
+                const test = response.activeTests.find(t => t.testId === testId);
+
+                if (test) {
+                    updatePingDisplay(test);
+
+                    if (!test.isRunning) {
+                        stopPingMonitoring();
+                        updatePingUI('complete');
+                    }
+                }
+            }
+        } catch (error) {
+            log('Ping progress update failed:', error);
+        }
+    }
+
+    function updatePingDisplay(test) {
+        // Update statistics
+        updateElement('ping-packets-sent', test.packetsSent || 0);
+        updateElement('ping-packets-received', test.packetsReceived || 0);
+
+        const packetLoss = test.packetsSent > 0 ?
+            Math.round(((test.packetsSent - test.packetsReceived) / test.packetsSent) * 100) : 0;
+        updateElement('ping-packet-loss', `${packetLoss}%`);
+
+        const avgRtt = test.averageRtt || 0;
+        updateElement('ping-avg-rtt', `${avgRtt.toFixed(1)}ms`);
+
+        // Update results table
+        if (test.realTimeResults && Array.isArray(test.realTimeResults)) {
+            updatePingResults(test.realTimeResults);
+        }
+    }
+
+    function updatePingResults(results) {
+        const tbody = document.getElementById('ping-results-tbody');
+        if (!tbody) return;
+
+        const noDataRow = document.getElementById('ping-no-data');
+        if (noDataRow) {
+            noDataRow.remove();
+        }
+
+        results.forEach(ping => {
+            addOrUpdatePingResult(ping);
+        });
+    }
+
+    function addOrUpdatePingResult(ping) {
+        const tbody = document.getElementById('ping-results-tbody');
+        if (!tbody) return;
+
+        let row = tbody.querySelector(`tr[data-seq="${ping.sequence}"]`);
+
+        if (!row) {
+            row = document.createElement('tr');
+            row.className = 'hover:bg-neutral-50';
+            row.dataset.seq = ping.sequence;
+            tbody.appendChild(row);
+        }
+
+        const statusIcon = getPingStatusIcon(ping.status);
+        const rtt = ping.rtt && ping.rtt > 0 ? `${ping.rtt.toFixed(1)}` : 'timeout';
+
+        row.innerHTML = `
+            <td class="py-3 px-4 text-neutral-800">${ping.sequence}</td>
+            <td class="py-3 px-4 text-neutral-600">${ping.host || ping.targetHost}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right">${rtt}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right">${ping.ttl || '-'}</td>
+            <td class="py-3 px-4 text-neutral-600 text-right">${ping.size || 64}</td>
+            <td class="py-3 px-4 text-center">${statusIcon}</td>
+            <td class="py-3 px-4 text-neutral-600">${new Date(ping.timestamp).toLocaleTimeString()}</td>
+        `;
+    }
+
+    function getPingStatusIcon(status) {
+        switch (status?.toLowerCase()) {
+            case 'success':
+                return '<i class="fa-solid fa-check text-green-500"></i>';
+            case 'timeout':
+                return '<i class="fa-solid fa-clock text-red-500"></i>';
+            case 'running':
+                return '<i class="fa-solid fa-spinner fa-spin text-blue-500"></i>';
+            case 'error':
+                return '<i class="fa-solid fa-exclamation-triangle text-red-500"></i>';
+            default:
+                return '<i class="fa-solid fa-question text-gray-500"></i>';
+        }
+    }
+
+    function updatePingUI(status) {
+        const startBtn = document.getElementById('start-ping-test');
+        const stopBtn = document.getElementById('stop-ping-test');
+        const statusIndicator = document.getElementById('ping-status-indicator');
+        const statusText = document.getElementById('ping-status-text');
+
+        if (startBtn) startBtn.disabled = (status === 'running');
+        if (stopBtn) stopBtn.disabled = (status !== 'running');
+
+        if (statusIndicator && statusText) {
+            let colorClass = '';
+            let statusTextValue = '';
+
+            switch (status) {
+                case 'ready':
+                    colorClass = 'bg-gray-400';
+                    statusTextValue = 'Ready';
+                    break;
+                case 'running':
+                    colorClass = 'bg-blue-500 animate-pulse';
+                    statusTextValue = 'Running';
+                    break;
+                case 'complete':
+                    colorClass = 'bg-green-500';
+                    statusTextValue = 'Complete';
+                    break;
+                case 'stopped':
+                    colorClass = 'bg-yellow-500';
+                    statusTextValue = 'Stopped';
+                    break;
+                case 'error':
+                    colorClass = 'bg-red-500';
+                    statusTextValue = 'Error';
+                    break;
+            }
+
+            statusIndicator.className = `w-2 h-2 ${colorClass} rounded-full mr-2`;
+            statusText.textContent = statusTextValue;
+        }
+    }
+
+    function clearPingResults() {
+        const tbody = document.getElementById('ping-results-tbody');
+        if (tbody) {
+            tbody.innerHTML = '<tr id="ping-no-data"><td colspan="7" class="py-8 text-center text-neutral-500">Click "Start Ping Test" to begin connectivity testing</td></tr>';
+        }
+
+        updateElement('ping-packets-sent', '0');
+        updateElement('ping-packets-received', '0');
+        updateElement('ping-packet-loss', '0%');
+        updateElement('ping-avg-rtt', '0ms');
+    }
+
+    // DNS lookup functions
+    async function startDnsLookup() {
+        try {
+            const domain = document.getElementById('dns-domain')?.value.trim();
+            const recordType = document.getElementById('dns-record-type')?.value || 'A';
+            const dnsServer = document.getElementById('dns-server')?.value.trim() || 'default'; // Use 'default' if empty
+            const timeout = parseInt(document.getElementById('dns-timeout')?.value) || 5;
+            const trace = document.getElementById('dns-trace')?.checked || false;
+            const recursive = document.getElementById('dns-recursive')?.checked || true;
+
+            if (!domain) {
+                showError('Please enter a domain or IP address');
+                return;
+            }
+
+            const config = {
+                domain: domain,
+                recordType: recordType,
+                dnsServer: dnsServer,
+                timeout: timeout,
+                trace: trace,
+                recursive: recursive
+            };
+
+            log('Starting DNS lookup:', config);
+
+            // Clear previous results
+            clearDnsResults();
+            updateDnsUI('running');
+
+            const response = await makeApiRequest('POST', endpoints.dns.lookup, config);
+
+            if (response.success) {
+                showSuccess('DNS lookup completed successfully');
+                displayDnsResults(response);
+                updateDnsUI('complete');
+            } else {
+                updateDnsUI('error'); // Update UI to error state
+                throw new Error(response.message || 'Failed to perform DNS lookup');
+            }
+        } catch (error) {
+            log('DNS lookup failed:', error);
+            updateDnsUI('error'); // Ensure UI is in error state
+            showError('Failed to perform DNS lookup: ' + error.message);
+        }
+    }
+
+    function displayDnsResults(response) {
+        const resultsSection = document.getElementById('dns-results-section');
+        const recordsContainer = document.getElementById('dns-records-container');
+
+        if (resultsSection) {
+            resultsSection.classList.remove('hidden');
+        }
+
+        // Update status information with real data from response
+        const queryTime = response.query_time_ms || response.queryTime || 0;
+        const serverUsed = response.dns_server || response.server_used || 'System Default';
+        const recordsCount = response.records ? response.records.length : 0;
+        const responseCode = response.response_code || response.responseCode || 'NOERROR';
+
+        updateElement('dns-query-time', `${queryTime}ms`);
+        updateElement('dns-server-used', serverUsed);
+        updateElement('dns-records-count', recordsCount.toString());
+        updateElement('dns-response-code', responseCode);
+
+        // Display actual DNS records
+        if (recordsContainer && response.records && Array.isArray(response.records)) {
+            if (response.records.length === 0) {
+                recordsContainer.innerHTML = `
+                    <div class="text-center text-neutral-500 py-8">
+                        <i class="fa-solid fa-exclamation-triangle text-neutral-400 text-2xl mb-2"></i>
+                        <div>No DNS records found for this query</div>
+                    </div>
+                `;
+            } else {
+                recordsContainer.innerHTML = `
+                    <div class="space-y-3">
+                        ${response.records.map(record => createDnsRecordElement(record)).join('')}
+                    </div>
+                `;
+            }
+        } else {
+            recordsContainer.innerHTML = `
+                <div class="text-center text-neutral-500 py-8">
+                    <i class="fa-solid fa-exclamation-triangle text-neutral-400 text-2xl mb-2"></i>
+                    <div>Invalid response format received</div>
+                </div>
+            `;
+        }
+    }
+
+    function createDnsRecordElement(record) {
+        const recordType = record.type || record.record_type || 'UNKNOWN';
+        const recordValue = record.value || record.data || record.address || 'No data';
+        const ttl = record.ttl || record.time_to_live || 'Unknown';
+        const priority = record.priority || record.preference;
+        const name = record.name || record.hostname || 'Unknown';
+
+        let additionalInfo = '';
+
+        // Add specific information based on record type
+        switch (recordType.toUpperCase()) {
+            case 'MX':
+                if (priority !== undefined) {
+                    additionalInfo = `<div class="text-xs text-neutral-500 mt-1">Priority: ${priority}</div>`;
+                }
+                break;
+            case 'SOA':
+                if (record.serial) {
+                    additionalInfo = `<div class="text-xs text-neutral-500 mt-1">Serial: ${record.serial}</div>`;
+                }
+                break;
+            case 'SRV':
+                if (record.port && record.weight) {
+                    additionalInfo = `<div class="text-xs text-neutral-500 mt-1">Port: ${record.port}, Weight: ${record.weight}</div>`;
+                }
+                break;
+        }
+
+        return `
+            <div class="bg-neutral-50 border border-neutral-200 rounded-lg p-4">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-sm bg-neutral-100 text-neutral-800 px-2 py-1 rounded font-mono">${recordType}</span>
+                    <span class="text-sm text-neutral-500">TTL: ${ttl}</span>
+                </div>
+                <div class="text-neutral-800 font-medium">${name}</div>
+                <div class="text-neutral-600 font-mono text-sm mt-1">${recordValue}</div>
+                ${additionalInfo}
+            </div>
+        `;
+    }
+
+    function updateDnsUI(status) {
+        const lookupBtn = document.getElementById('start-dns-lookup');
+        const statusIndicator = document.getElementById('dns-status-indicator');
+        const statusText = document.getElementById('dns-status-text');
+
+        if (lookupBtn) {
+            lookupBtn.disabled = (status === 'running');
+
+            if (status === 'running') {
+                lookupBtn.innerHTML = '<i class="fa-solid fa-spinner fa-spin mr-2"></i>Looking up...';
+            } else {
+                lookupBtn.innerHTML = '<i class="fa-solid fa-search mr-2"></i>Lookup';
+            }
+        }
+
+        if (statusIndicator && statusText) {
+            let colorClass = '';
+            let statusTextValue = '';
+
+            switch (status) {
+                case 'ready':
+                    colorClass = 'bg-gray-400';
+                    statusTextValue = 'Ready';
+                    break;
+                case 'running':
+                    colorClass = 'bg-blue-500 animate-pulse';
+                    statusTextValue = 'Looking up...';
+                    break;
+                case 'complete':
+                    colorClass = 'bg-green-500';
+                    statusTextValue = 'Complete';
+                    break;
+                case 'error':
+                    colorClass = 'bg-red-500';
+                    statusTextValue = 'Error';
+                    break;
+            }
+
+            statusIndicator.className = `w-2 h-2 ${colorClass} rounded-full mr-2`;
+            statusText.textContent = statusTextValue;
+        }
+    }
+
+    function clearDnsResults() {
+        const resultsSection = document.getElementById('dns-results-section');
+        const recordsContainer = document.getElementById('dns-records-container');
+
+        if (resultsSection) {
+            resultsSection.classList.add('hidden');
+        }
+
+        if (recordsContainer) {
+            recordsContainer.innerHTML = `
+                <div class="text-center text-neutral-500 py-8">
+                    No DNS records to display
+                </div>
+            `;
+        }
+
+        // Reset status fields
+        updateElement('dns-query-time', '0ms');
+        updateElement('dns-server-used', 'System Default');
+        updateElement('dns-records-count', '0');
+        updateElement('dns-response-code', 'NOERROR');
+    }
+
+    function copyDnsResults() {
+        const recordsContainer = document.getElementById('dns-records-container');
+        if (!recordsContainer) return;
+
+        const domain = document.getElementById('dns-domain')?.value || 'unknown';
+        const recordType = document.getElementById('dns-record-type')?.value || 'A';
+        const queryTime = document.getElementById('dns-query-time')?.textContent || '0ms';
+        const serverUsed = document.getElementById('dns-server-used')?.textContent || 'Unknown';
+
+        let text = `DNS Lookup Results for ${domain} (${recordType})\n`;
+        text += `Query Time: ${queryTime}\n`;
+        text += `DNS Server: ${serverUsed}\n`;
+        text += `Timestamp: ${new Date().toLocaleString()}\n\n`;
+
+        const records = recordsContainer.querySelectorAll('.bg-neutral-50');
+        if (records.length === 0) {
+            text += 'No records found\n';
+        } else {
+            records.forEach((record, index) => {
+                const type = record.querySelector('.bg-neutral-100')?.textContent?.trim() || 'Unknown';
+                const name = record.querySelector('.text-neutral-800')?.textContent?.trim() || 'Unknown';
+                const value = record.querySelector('.font-mono')?.textContent?.trim() || 'Unknown';
+                const ttl = record.querySelector('.text-neutral-500')?.textContent?.replace('TTL: ', '').trim() || 'Unknown';
+
+                text += `Record ${index + 1}:\n`;
+                text += `  Type: ${type}\n`;
+                text += `  Name: ${name}\n`;
+                text += `  Value: ${value}\n`;
+                text += `  TTL: ${ttl}\n\n`;
+            });
+        }
+
+        navigator.clipboard.writeText(text).then(() => {
+            showSuccess('DNS results copied to clipboard');
+        }).catch(() => {
+            showError('Failed to copy results to clipboard');
+        });
+    }
+
+    // Bandwidth test functions
+    async function startBandwidthTest() {
+        try {
+            const targetServer = document.getElementById('bandwidth-server')?.value;
+            const duration = parseInt(document.getElementById('bandwidth-duration')?.value) || 10;
+            const protocol = document.querySelector('input[name="bandwidth-protocol"]:checked')?.value || 'tcp';
+            const parallelConnections = parseInt(document.getElementById('bandwidth-parallel')?.value) || 1;
+            const bidirectional = document.getElementById('bandwidth-bidirectional')?.checked || false;
+            const reverseMode = document.getElementById('bandwidth-reverse')?.checked || false;
+
+            if (!targetServer) {
+                showError('Please select a target server');
+                return;
+            }
+
+            const config = {
+                target_server: targetServer,
+                duration: duration,
+                protocol: protocol,
+                parallel_connections: parallelConnections,
+                bidirectional: bidirectional,
+                reverse_mode: reverseMode
+            };
+
+            log('Starting bandwidth test:', config);
+            clearBandwidthResults();
+            updateBandwidthUI('running');
+
+            const response = await makeApiRequest('POST', endpoints.bandwidth.start, config);
+
+            if (response.success) {
+                const testId = response.test_id || response.testId;
+                state.activeTests.set('bandwidth', testId);
+                startBandwidthMonitoring(testId);
+                showSuccess('Bandwidth test started successfully');
+
+                // Show results section
+                const resultsSection = document.getElementById('bandwidth-results-section');
+                if (resultsSection) {
+                    resultsSection.classList.remove('hidden');
+                }
+            } else {
+                updateBandwidthUI('ready');
+                throw new Error(response.message || 'Failed to start bandwidth test');
+            }
+        } catch (error) {
+            log('Bandwidth test start failed:', error);
+            updateBandwidthUI('ready');
+            showError('Failed to start bandwidth test: ' + error.message);
+        }
+    }
+
+    async function stopBandwidthTest() {
+        try {
+            const testId = state.activeTests.get('bandwidth');
+            const response = await makeApiRequest('POST', endpoints.bandwidth.stop, { test_id: testId });
+
+            stopBandwidthMonitoring();
+            updateBandwidthUI('stopped');
+
+            if (response.success) {
+                showSuccess('Bandwidth test stopped successfully');
+            }
+        } catch (error) {
+            log('Bandwidth test stop failed:', error);
+            showError('Failed to stop bandwidth test');
+        }
+    }
+
+    function startBandwidthMonitoring(testId) {
+        stopBandwidthMonitoring();
+
+        const interval = setInterval(async () => {
+            await updateBandwidthProgress(testId);
+        }, 1000); // Poll every second for real-time updates
+
+        state.updateIntervals.set('bandwidth', interval);
+    }
+
+    function stopBandwidthMonitoring() {
+        const interval = state.updateIntervals.get('bandwidth');
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete('bandwidth');
+        }
+    }
+
+    async function updateBandwidthProgress(testId) {
+        try {
+            const response = await makeApiRequest('GET', `${endpoints.bandwidth.status}?test_id=${testId}`);
+
+            if (response.success) {
+                const testData = response.test_data || response;
+
+                // Update speed displays
+                if (testData.download_speed !== undefined) {
+                    updateElement('bandwidth-download', `${testData.download_speed.toFixed(2)} Mbps`);
+                }
+
+                if (testData.upload_speed !== undefined) {
+                    updateElement('bandwidth-upload', `${testData.upload_speed.toFixed(2)} Mbps`);
+                }
+
+                if (testData.latency !== undefined) {
+                    updateElement('bandwidth-latency', `${testData.latency.toFixed(1)} ms`);
+                }
+
+                // Update progress bar
+                if (testData.progress !== undefined) {
+                    const progress = Math.round(testData.progress);
+                    updateElement('bandwidth-progress-text', `${progress}% Complete`);
+
+                    const progressBar = document.getElementById('bandwidth-progress-bar');
+                    if (progressBar) {
+                        progressBar.style.width = `${progress}%`;
+                    }
+                }
+
+                // Check if test is complete
+                if (testData.status === 'completed' || testData.is_running === false) {
+                    stopBandwidthMonitoring();
+                    updateBandwidthUI('complete');
+
+                    // Final results update
+                    if (testData.final_results) {
+                        displayFinalBandwidthResults(testData.final_results);
+                    }
+                }
+            }
+        } catch (error) {
+            log('Bandwidth progress update failed:', error);
+            // Don't show error messages for monitoring failures to avoid spam
+        }
+    }
+
+    function displayFinalBandwidthResults(results) {
+        if (results.download_speed_mbps !== undefined) {
+            updateElement('bandwidth-download', `${results.download_speed_mbps.toFixed(2)} Mbps`);
+        }
+
+        if (results.upload_speed_mbps !== undefined) {
+            updateElement('bandwidth-upload', `${results.upload_speed_mbps.toFixed(2)} Mbps`);
+        }
+
+        if (results.average_latency_ms !== undefined) {
+            updateElement('bandwidth-latency', `${results.average_latency_ms.toFixed(1)} ms`);
+        }
+    }
+
+    function updateBandwidthUI(status) {
+        const startBtn = document.getElementById('start-bandwidth-test');
+        const stopBtn = document.getElementById('stop-bandwidth-test');
+
+        if (startBtn) startBtn.disabled = (status === 'running');
+        if (stopBtn) stopBtn.disabled = (status !== 'running');
+    }
+
+    function clearBandwidthResults() {
+        updateElement('bandwidth-download', '0 Mbps');
+        updateElement('bandwidth-upload', '0 Mbps');
+        updateElement('bandwidth-latency', '0 ms');
+        updateElement('bandwidth-progress-text', '0% Complete');
+
+        const progressBar = document.getElementById('bandwidth-progress-bar');
+        if (progressBar) {
+            progressBar.style.width = '0%';
+        }
+    }
+
+    async function loadBandwidthServers() {
+        try {
+            // Use the existing server status data if available
+            if (state.servers && state.servers.length > 0) {
+                populateBandwidthServerDropdown(state.servers);
+                return;
+            }
+
+            // If no server status data is available, try loading it first
+            await loadServerStatus();
+
+            if (state.servers && state.servers.length > 0) {
+                populateBandwidthServerDropdown(state.servers);
+            } else {
+                log('No servers available for bandwidth testing');
+                populateBandwidthServerDropdown([]);
+            }
+        } catch (error) {
+            log('Failed to load bandwidth servers:', error);
+            populateBandwidthServerDropdown([]);
+        }
+    }
+
+    function populateBandwidthServerDropdown(servers) {
+        const select = document.getElementById('bandwidth-server');
+        if (!select) return;
+
+        // Clear existing options except the first one
+        select.innerHTML = '<option value="">Select a server...</option>';
+
+        if (!servers || servers.length === 0) {
+            const option = document.createElement('option');
+            option.value = '';
+            option.textContent = 'No servers available';
+            option.disabled = true;
+            select.appendChild(option);
+            return;
+        }
+
+        servers.forEach(server => {
+            const option = document.createElement('option');
+            // Use server hostname or IP as the value
+            option.value = server.hostname || server.ip_address || server.id;
+            // Display server name, hostname, location and status
+            const name = server.name || server.hostname || server.ip_address;
+            const location = server.location || 'Unknown location';
+            const status = server.status || 'Unknown';
+            const statusIndicator = status.toLowerCase() === 'online' ? '🟢' : '🔴';
+
+            option.textContent = `${statusIndicator} ${name} (${location}) - ${status}`;
+
+            // Disable offline servers
+            if (status.toLowerCase() !== 'online') {
+                option.disabled = true;
+                option.style.color = '#999';
+            }
+
+            select.appendChild(option);
+        });
+    }
+
+    function saveBandwidthResults() {
+        const results = {
+            timestamp: new Date().toISOString(),
+            test_config: {
+                target_server: document.getElementById('bandwidth-server')?.value || 'Unknown',
+                duration: document.getElementById('bandwidth-duration')?.value || '10',
+                protocol: document.querySelector('input[name="bandwidth-protocol"]:checked')?.value || 'tcp'
+            },
+            results: {
+                download_speed: document.getElementById('bandwidth-download')?.textContent || '0 Mbps',
+                upload_speed: document.getElementById('bandwidth-upload')?.textContent || '0 Mbps',
+                latency: document.getElementById('bandwidth-latency')?.textContent || '0 ms'
+            }
+        };
+
+        const jsonString = JSON.stringify(results, null, 2);
+        const blob = new Blob([jsonString], { type: 'application/json' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `bandwidth_test_${new Date().toISOString().replace(/[:.]/g, '-')}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        showSuccess('Bandwidth test results saved successfully');
+    }
+
+    // Event handlers setup
+    function setupEventHandlers() {
+        log('Setting up event handlers...');
+
+        // Server status refresh
+        const refreshBtn = document.getElementById('refresh-server-status-btn');
+        if (refreshBtn) {
+            refreshBtn.addEventListener('click', loadServerStatus);
+        }
+
+        // Test all servers button
+        const testAllBtn = document.getElementById('test-all-servers-btn');
+        if (testAllBtn) {
+            testAllBtn.addEventListener('click', testAllServers);
+        }
+
+        // Auto-refresh toggle and delay
+        const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
+        const autoRefreshDelayInput = document.getElementById('auto-refresh-delay');
+
+        function updateAutoRefresh() {
+            if (autoRefreshToggle.checked) {
+                startAutoRefresh();
+            } else {
+                stopAutoRefresh();
+            }
+        }
+
+        if (autoRefreshToggle) {
+            autoRefreshToggle.addEventListener('change', updateAutoRefresh);
+        }
+
+        if (autoRefreshDelayInput) {
+            autoRefreshDelayInput.addEventListener('input', () => {
+                // Restart the interval if auto-refresh is currently active
+                if (autoRefreshToggle.checked) {
+                    startAutoRefresh();
+                }
+            });
+        }
+
+        // Auto server testing controls
+        const autoTestToggle = document.getElementById('auto-test-servers');
+        const autoTestDelayInput = document.getElementById('auto-test-delay');
+
+        function updateAutoServerTesting() {
+            if (autoTestToggle.checked) {
+                startAutoServerTesting();
+            } else {
+                stopAutoServerTesting();
+            }
+        }
+
+        if (autoTestToggle) {
+            autoTestToggle.addEventListener('change', updateAutoServerTesting);
+        }
+
+        if (autoTestDelayInput) {
+            autoTestDelayInput.addEventListener('input', () => {
+                // Restart the interval if auto-testing is currently active
+                if (autoTestToggle.checked) {
+                    startAutoServerTesting();
+                }
+            });
+        }
+
+        // Diagnostic tool buttons
+        const tracerouteBtn = document.getElementById('traceroute-btn');
+        if (tracerouteBtn) {
+            tracerouteBtn.addEventListener('click', () => {
+                showPopup('traceroutePopup');
+                // Initialize UI state when popup opens
+                updateTracerouteUI('ready');
+                clearTracerouteResults();
+            });
+        }
+
+        const pingTestBtn = document.getElementById('ping-test-btn');
+        if (pingTestBtn) {
+            pingTestBtn.addEventListener('click', () => showPopup('pingTestPopup'));
+        }
+
+        const dnsLookupBtn = document.getElementById('dns-lookup-btn');
+        if (dnsLookupBtn) {
+            dnsLookupBtn.addEventListener('click', () => showPopup('dnsLookupPopup'));
+        }
+
+        const bandwidthTestBtn = document.getElementById('bandwidth-test-btn');
+        if (bandwidthTestBtn) {
+            bandwidthTestBtn.addEventListener('click', () => {
+                showPopup('bandwidthTestPopup');
+                loadBandwidthServers(); // Load available servers when popup opens
+            });
+        }
+
+        // Popup close handlers
+        setupPopupCloseHandlers();
+
+        // Test control handlers
+        setupTestControlHandlers();
+
+        log('Event handlers setup complete');
+    }
+
+    function setupPopupCloseHandlers() {
+        const popups = ['traceroutePopup', 'pingTestPopup', 'dnsLookupPopup', 'bandwidthTestPopup'];
+
+        popups.forEach(popupId => {
+            // Close button
+            const closeBtn = document.getElementById(`close${popupId.replace('Popup', '')}`);
+            if (closeBtn) {
+                closeBtn.addEventListener('click', () => hidePopup(popupId));
+            }
+
+            // Footer close button
+            const footerCloseBtn = document.getElementById(`close${popupId.replace('Popup', '')}Footer`);
+            if (footerCloseBtn) {
+                footerCloseBtn.addEventListener('click', () => {
+                    // Stop any running tests when closing
+                    if (popupId === 'bandwidthTestPopup') {
+                        stopBandwidthMonitoring();
+                        state.activeTests.delete('bandwidth');
+                    }
+                    // Also stop other tests if they are running
+                    if (popupId === 'traceroutePopup') {
+                        stopTracerouteMonitoring();
+                        state.activeTests.delete('traceroute');
+                    }
+                    if (popupId === 'pingTestPopup') {
+                        stopPingMonitoring();
+                        state.activeTests.delete('ping');
+                    }
+                    hidePopup(popupId);
+                });
+            }
+
+            // Click outside to close
+            const popup = document.getElementById(popupId);
+            if (popup) {
+                popup.addEventListener('click', (e) => {
+                    if (e.target === popup) {
+                        hidePopup(popupId);
+                    }
+                });
+            }
+        });
+
+        // Escape key handler
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                popups.forEach(popupId => hidePopup(popupId));
+            }
+        });
+    }
+
+    function setupTestControlHandlers() {
+        // Traceroute controls
+        const startTracerouteBtn = document.getElementById('start-traceroute-btn');
+        if (startTracerouteBtn) {
+            startTracerouteBtn.addEventListener('click', startTraceroute);
+        }
+
+        const stopTracerouteBtn = document.getElementById('stop-traceroute-btn');
+        if (stopTracerouteBtn) {
+            stopTracerouteBtn.addEventListener('click', stopTraceroute);
+        }
+
+        const resetTracerouteBtn = document.getElementById('reset-traceroute-btn');
+        if (resetTracerouteBtn) {
+            resetTracerouteBtn.addEventListener('click', resetTraceroute);
+        }
+
+        // Traceroute copy and export functionality
+        const copyTracerouteBtn = document.getElementById('copy-traceroute-results');
+        if (copyTracerouteBtn) {
+            copyTracerouteBtn.addEventListener('click', () => {
+                copyTracerouteResults();
+            });
+        }
+
+        const exportTracerouteBtn = document.getElementById('export-traceroute-results');
+        if (exportTracerouteBtn) {
+            exportTracerouteBtn.addEventListener('click', () => {
+                exportTracerouteResults();
+            });
+        }
+
+        // Ping controls
+        const startPingBtn = document.getElementById('start-ping-test');
+        if (startPingBtn) {
+            startPingBtn.addEventListener('click', startPingTest);
+        }
+
+        const stopPingBtn = document.getElementById('stop-ping-test');
+        if (stopPingBtn) {
+            stopPingBtn.addEventListener('click', stopPingTest);
+        }
+
+        // DNS controls
+        const startDnsBtn = document.getElementById('start-dns-lookup');
+        if (startDnsBtn) {
+            startDnsBtn.addEventListener('click', startDnsLookup);
+        }
+
+        // DNS copy functionality
+        const copyDnsBtn = document.getElementById('copy-dns-results');
+        if (copyDnsBtn) {
+            copyDnsBtn.addEventListener('click', copyDnsResults);
+        }
+
+        // Bandwidth controls
+        const startBandwidthBtn = document.getElementById('start-bandwidth-test');
+        if (startBandwidthBtn) {
+            startBandwidthBtn.addEventListener('click', startBandwidthTest);
+        }
+
+        const stopBandwidthBtn = document.getElementById('stop-bandwidth-test');
+        if (stopBandwidthBtn) {
+            stopBandwidthBtn.addEventListener('click', stopBandwidthTest);
+        }
+
+        const saveBandwidthBtn = document.getElementById('save-bandwidth-results');
+        if (saveBandwidthBtn) {
+            saveBandwidthBtn.addEventListener('click', saveBandwidthResults);
+        }
+    }
+
+    function startAutoRefresh() {
+        stopAutoRefresh(); // Clear any existing interval first
+
+        const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
+        if (!autoRefreshToggle.checked) {
+            return;
+        }
+
+        const autoRefreshDelayInput = document.getElementById('auto-refresh-delay');
+        const delay = parseInt(autoRefreshDelayInput.value) || 15; // Default to 15 seconds
+
+        const interval = setInterval(() => {
+            if (!state.isLoading) {
+                loadServerStatus();
+            }
+        }, delay * 1000); // Convert seconds to milliseconds
+
+        state.updateIntervals.set('serverStatus', interval);
+        log(`Auto-refresh started with ${delay}s interval`);
+    }
+
+    function stopAutoRefresh() {
+        const interval = state.updateIntervals.get('serverStatus');
+        if (interval) {
+            clearInterval(interval);
+            state.updateIntervals.delete('serverStatus');
+            log('Auto-refresh stopped');
+        }
+    }
+
+    // Global toggle function for sections
+    window.toggleSection = function(contentId, chevronId) {
+        const content = document.getElementById(contentId);
+        const chevron = document.getElementById(chevronId);
+
+        if (content && chevron) {
+            const isHidden = content.classList.contains('hidden');
+
+            if (isHidden) {
+                content.classList.remove('hidden');
+                chevron.classList.remove('rotate-180');
+                state.isVisible = true; // Set visibility to true when section is opened
+            } else {
+                content.classList.add('hidden');
+                chevron.classList.add('rotate-180');
+                state.isVisible = false; // Set visibility to false when section is closed
+            }
+            // Restart intervals based on visibility change
+            startAutoRefresh();
+            startAutoServerTesting();
+        }
+    };
+
+    // Copy and export functions for traceroute
+    function copyTracerouteResults() {
+        const tbody = document.getElementById('traceroute-results-tbody');
+        if (!tbody) return;
+
+        const rows = tbody.querySelectorAll('tr:not(#traceroute-no-data)');
+        if (rows.length === 0) {
+            showError('No traceroute results to copy');
+            return;
+        }
+
+        let text = 'Hop\tIP Address\tHostname\tRTT 1\tRTT 2\tRTT 3\tStatus\n';
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 7) {
+                const rowData = [
+                    cells[0].textContent.trim(),
+                    cells[1].textContent.trim(),
+                    cells[2].textContent.trim(),
+                    cells[3].textContent.trim(),
+                    cells[4].textContent.trim(),
+                    cells[5].textContent.trim(),
+                    cells[6].textContent.trim().replace(/\s+/g, ' ')
+                ];
+                text += rowData.join('\t') + '\n';
+            }
+        });
+
+        navigator.clipboard.writeText(text).then(() => {
+            showSuccess('Traceroute results copied to clipboard');
+        }).catch(() => {
+            showError('Failed to copy results to clipboard');
+        });
+    }
+
+    function exportTracerouteResults() {
+        const tbody = document.getElementById('traceroute-results-tbody');
+        if (!tbody) return;
+
+        const rows = tbody.querySelectorAll('tr:not(#traceroute-no-data)');
+        if (rows.length === 0) {
+            showError('No traceroute results to export');
+            return;
+        }
+
+        const targetHost = document.getElementById('traceroute-target-host')?.value || 'unknown';
+        const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
+
+        let csvContent = 'Hop,IP Address,Hostname,RTT 1,RTT 2,RTT 3,Status\n';
+
+        rows.forEach(row => {
+            const cells = row.querySelectorAll('td');
+            if (cells.length >= 7) {
+                const rowData = [
+                    cells[0].textContent.trim(),
+                    `"${cells[1].textContent.trim()}"`,
+                    `"${cells[2].textContent.trim()}"`,
+                    cells[3].textContent.trim(),
+                    cells[4].textContent.trim(),
+                    cells[5].textContent.trim(),
+                    `"${cells[6].textContent.trim().replace(/\s+/g, ' ')}"`
+                ];
+                csvContent += rowData.join(',') + '\n';
+            }
+        });
+
+        const blob = new Blob([csvContent], { type: 'text/csv' });
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `traceroute_${targetHost}_${timestamp}.csv`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        window.URL.revokeObjectURL(url);
+
+        showSuccess('Traceroute results exported successfully');
+    }
+
+    // Global test server function
+    window.testServer = testServer;
+
+    // Initialize when DOM is ready
+    function init() {
+        // Check initial visibility of the section
+        const serverStatusContent = document.getElementById('server-status-content');
+        if (serverStatusContent) {
+            state.isVisible = !serverStatusContent.classList.contains('hidden');
+        }
+
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                setupEventHandlers();
+                loadServerStatus();
+                startAutoRefresh(); // Start initial auto-refresh
+                startAutoServerTesting(); // Start initial auto server testing
+                // Initialize UI states
+                updateDnsUI('ready');
+            });
+        } else {
+            setupEventHandlers();
+            loadServerStatus();
+            startAutoRefresh(); // Start initial auto-refresh
+            startAutoServerTesting(); // Start initial auto server testing
+            // Initialize UI states
+            updateDnsUI('ready');
+        }
+    }
+
+    // Cleanup function to stop all intervals
+    function cleanup() {
+        stopAutoRefresh();
+        stopAutoServerTesting();
+        // Stop all other intervals
+        state.updateIntervals.forEach(interval => clearInterval(interval));
+        state.updateIntervals.clear();
+    }
+
+    // Setup cleanup on page unload
+    window.addEventListener('beforeunload', cleanup);
+
+    init();
+    log('Network utility section initialized successfully');
+})();
+</script>

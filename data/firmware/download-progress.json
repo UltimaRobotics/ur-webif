@@ -1,0 +1,17 @@
+{
+  "bytes_downloaded": 0,
+  "completed_at": "1758189188357",
+  "download_id": "tftp_1758189147626",
+  "download_speed_kbps": 0.0,
+  "elapsed_time_seconds": 0,
+  "error_message": "Receive timeout or network error",
+  "estimated_remaining_seconds": 0,
+  "filename": "firmware.bin",
+  "last_updated": "1758189188357",
+  "progress_percentage": -1,
+  "server_ip": "127.0.0.1",
+  "server_port": 6969,
+  "started_at": "1758189147626",
+  "status": "failed",
+  "total_bytes": 0
+}
